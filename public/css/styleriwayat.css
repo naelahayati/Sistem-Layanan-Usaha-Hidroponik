@@ -1,0 +1,788 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500;600;700;800&display=swap");
+
+/* ── Variabel ── */
+:root {
+    --sage:       #87a96b;
+    --dark-green: #1b3022;
+    --mid-green:  #2D5A27;
+    --soft-green: #4A7C44;
+    --off-white:  #f5f7f5;
+    --pure-white: #ffffff;
+    --text-dark:  #1A2E19;
+    --text-soft:  #758a70;
+    --border:     rgba(0,0,0,0.05);
+    --shadow:     0 8px 32px rgba(27,48,34,0.07);
+    --shadow-hover: 0 20px 50px rgba(27,48,34,0.13);
+    --radius-card: 28px;
+    --radius-badge: 10px;
+}
+
+/* ── Base ── */
+body {
+    font-family: "Montserrat", sans-serif;
+    line-height: 1.6;
+    letter-spacing: 0.2px;
+}
+
+.produk-page {
+    min-height: 100vh;
+    background-color: var(--off-white);
+    padding-bottom: 80px;
+}
+
+/* ── Hero Header ── */
+.produk-hero {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background-image: url("/image/5.png");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.produk-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.28);
+    z-index: 1;
+}
+
+.produk-hero::after {
+    content: "";
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%;
+    height: 90px;
+    background: linear-gradient(to bottom, transparent, var(--off-white));
+    z-index: 2;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 3;
+}
+
+.hero-content h1 {
+    font-family: "Playfair Display", serif;
+    font-size: 4rem;
+    color: #fff;
+    letter-spacing: 12px;
+    margin: 0;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.25);
+}
+
+/* ── Action Bar (Tombol Kembali) ── */
+.action-bar-riwayat {
+    max-width: 1100px;
+    margin: 20px auto 18px;
+    padding: 0 20px;
+    display: block;
+    text-align: left;
+}
+
+.btn-back-riwayat {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--pure-white);
+    color: var(--sage);
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding: 15px 30px;
+    border-radius: 50px;
+    text-decoration: none;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    letter-spacing: 1px;
+}
+
+.btn-back-riwayat:hover {
+    background: var(--sage);
+    color: var(--pure-white);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+}
+
+/* ── Grid Kartu ── */
+.container-riwayat {
+    max-width: 1100px;
+    margin: 0 auto 50px;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    align-items: stretch;
+}
+
+/* ── Order Card ── */
+.order-card {
+    background: var(--pure-white);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(27,48,34,0.03);
+    border: 1px solid #f0f3f0;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    height: 100%;
+}
+
+.order-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-hover);
+}
+
+/* ── Order Header (Desktop default) ── */
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f1f4f1;
+    flex-wrap: wrap;
+}
+
+.order-header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.order-id {
+    font-weight: 700;
+    color: var(--dark-green);
+    font-size: 0.85rem;
+}
+
+.order-date {
+    color: var(--text-soft);
+    font-size: 0.78rem;
+    font-weight: 500;
+}
+
+/* ── Badge Status ── */
+.order-status-badge {
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    text-align: center;
+    white-space: nowrap;
+    line-height: 1.4;
+    flex-shrink: 0;
+}
+
+/* Untuk status yang panjang (2 kata atau lebih) akan turun ke bawah */
+.order-status-badge.long-status {
+    width: 100%;
+    margin-top: 6px;
+    white-space: normal;
+    word-break: break-word;
+}
+
+.status-pending   { background: #fef9ec; color: #a07c10; border: 1px solid #f5e5a0; }
+.status-processed { background: #eaf6fb; color: #0c6678; border: 1px solid #b8e4ef; }
+.status-shipped   { background: #eef3ff; color: #2c4db0; border: 1px solid #c0d0f7; }
+.status-completed { background: #edf7ee; color: #1e6630; border: 1px solid #aaddb5; }
+.status-cancelled { background: #fef0f0; color: #a02020; border: 1px solid #f5b8b8; }
+
+/* ── Body ── */
+.order-body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+}
+
+.order-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-soft);
+    font-weight: 600;
+}
+
+.order-summary .total-pembayaran {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--dark-green);
+    margin-top: 2px;
+}
+
+.order-pengiriman {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    color: var(--text-soft);
+    font-weight: 500;
+    margin-top: 4px;
+}
+
+.order-pengiriman i { color: var(--sage); font-size: 0.75rem; }
+
+/* ── Actions ── */
+.order-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-top: 15px;
+    border-top: 1px solid #f1f4f1;
+}
+
+/* Tombol Bayar */
+.btn-bayar {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--dark-green);
+    color: var(--pure-white);
+    border: 1px solid var(--dark-green);
+    padding: 7px 14px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.btn-bayar:hover {
+    background: var(--sage);
+    color: var(--pure-white);
+    border-color: var(--sage);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(135,169,107,0.3);
+}
+
+/* Tombol Detail (ikon minimalis) */
+.btn-detail-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: #f8faf8;
+    color: var(--sage);
+    border: 1px solid rgba(135,169,107,0.2);
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    margin-left: auto;
+}
+
+.btn-detail-icon:hover {
+    background: var(--sage);
+    color: var(--pure-white);
+    border-color: var(--sage);
+    box-shadow: 0 4px 14px rgba(135,169,107,0.3);
+    transform: scale(1.1);
+}
+
+/* ── Empty State ── */
+.riwayat-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--text-soft);
+}
+
+.riwayat-empty i {
+    font-size: 4rem;
+    color: #cdd9c5;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.riwayat-empty p {
+    font-size: 1.1rem;
+    margin-bottom: 0;
+}
+
+/* ── Modal ── */
+.nz-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.nz-modal.active { display: flex; }
+
+.nz-modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(6px);
+}
+
+.nz-modal-container {
+    position: relative;
+    background: var(--pure-white);
+    width: 100%;
+    max-width: 560px;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.25);
+    z-index: 10;
+    animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modalPop {
+    from { transform: scale(0.85); opacity: 0; }
+    to   { transform: scale(1);    opacity: 1; }
+}
+
+.nz-modal-header {
+    background: linear-gradient(135deg, var(--dark-green), var(--mid-green));
+    color: #fff;
+    padding: 22px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nz-modal-title {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+
+.nz-modal-close {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.nz-modal-close:hover { background: rgba(255,255,255,0.3); }
+
+.nz-modal-body {
+    padding: 28px;
+    max-height: 72vh;
+    overflow-y: auto;
+}
+
+.item-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 14px 0;
+    border-bottom: 1px solid #f0f2f0;
+}
+
+.item-img {
+    width: 58px;
+    height: 58px;
+    border-radius: 14px;
+    object-fit: cover;
+    background: var(--off-white);
+}
+
+.item-info { flex: 1; }
+
+.item-name {
+    font-weight: 700;
+    color: var(--text-dark);
+    font-size: 0.92rem;
+}
+
+.item-price {
+    color: var(--text-soft);
+    font-size: 0.82rem;
+    margin-top: 2px;
+}
+
+.item-subtotal {
+    font-weight: 800;
+    color: var(--dark-green);
+    font-size: 0.92rem;
+    white-space: nowrap;
+}
+
+.payment-details {
+    background: #f9fbf9;
+    padding: 20px;
+    border-radius: 16px;
+    font-size: 0.95rem;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    border: 1px solid #e8f0e8;
+}
+
+.payment-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text-soft);
+}
+
+.payment-row.grand {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--dark-green);
+    padding-top: 15px;
+    border-top: 1px dashed #cce0cc;
+    margin-top: 5px;
+}
+
+.info-details {
+    background: var(--pure-white);
+    padding: 20px;
+    border-radius: 16px;
+    font-size: 0.9rem;
+    color: var(--text-soft);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    border: 1px solid #eef2ee;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+}
+
+.info-details > div {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    line-height: 1.5;
+}
+
+.info-details strong {
+    color: var(--dark-green);
+    display: block;
+    margin-bottom: 2px;
+}
+
+/* ── Pagination Styling ── */
+.pagination-wrapper {
+    margin: 50px 0 20px 0;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    clear: both;
+    position: relative;
+}
+
+.pagination-wrapper .pagination {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 0;
+    list-style: none;
+    flex-wrap: wrap;
+}
+
+.pagination-wrapper .page-item:not(:first-child):not(:last-child):not(.view-all-item) {
+    display: none;
+}
+
+.pagination-wrapper .page-link {
+    color: #1b3a1a;
+    padding: 10px 25px;
+    border-radius: 50px;
+    border: 1px solid #1b3a1a;
+    background: #fff;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.pagination-wrapper .page-link:hover {
+    background-color: #1b3a1a;
+    color: #fff;
+}
+
+.pagination-wrapper .page-item.disabled .page-link {
+    color: #ccc;
+    border-color: #eee;
+    pointer-events: none;
+}
+
+.pagination-wrapper .page-item.active .page-link {
+    background-color: #1b3a1a;
+    color: #fff;
+}
+
+.btn-view-all {
+    color: #1b3a1a !important;
+    background: rgba(27, 58, 26, 0.05) !important;
+    border: 1px solid rgba(27, 58, 26, 0.1) !important;
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    font-size: 12px !important;
+    letter-spacing: 1px;
+    padding: 10px 20px !important;
+}
+
+.btn-view-all:hover {
+    background: #1b3a1a !important;
+    color: #fff !important;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+/* Desktop Large (min 1441px) */
+@media (min-width: 1441px) {
+    .container-riwayat {
+        max-width: 1200px;
+        grid-template-columns: repeat(4, 1fr);
+    }
+    .action-bar-riwayat { max-width: 1200px; }
+    .produk-hero { height: 300px; }
+}
+
+/* Desktop (1101px - 1440px) - 4 kolom */
+@media (min-width: 1101px) and (max-width: 1440px) {
+    .container-riwayat {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+    }
+    .produk-hero { height: 300px; }
+}
+
+/* Tablet (769px - 1100px) - 3 kolom, status ke bawah */
+@media (max-width: 1100px) and (min-width: 769px) {
+    .container-riwayat {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+    }
+    .order-card { padding: 16px; gap: 12px; }
+
+    /* Status pindah ke bawah */
+    .order-header {
+        flex-direction: column;
+        gap: 8px;
+        padding-bottom: 10px;
+    }
+    .order-header-left {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+    .order-id { font-size: 0.8rem; }
+    .order-date { font-size: 0.7rem; }
+    .order-status-badge {
+        font-size: 0.55rem;
+        padding: 3px 7px;
+        white-space: nowrap;
+        align-self: flex-start;
+    }
+    .order-summary .total-pembayaran { font-size: 1.1rem; }
+    .order-pengiriman { font-size: 0.75rem; }
+    .btn-bayar { padding: 6px 12px; font-size: 0.7rem; }
+    .btn-detail-icon { width: 28px; height: 28px; font-size: 0.85rem; }
+    .hero-content h1 { font-size: 3.2rem; letter-spacing: 8px; }
+    .produk-hero { height: 300px; }
+}
+
+/* Tablet kecil (max 900px) - 3 kolom */
+@media (max-width: 900px) and (min-width: 769px) {
+    .container-riwayat {
+        gap: 15px;
+    }
+    .order-card { padding: 14px; }
+    .order-id { font-size: 0.75rem; }
+    .order-date { font-size: 0.65rem; }
+    .order-status-badge {
+        font-size: 0.5rem;
+        padding: 2px 6px;
+    }
+    .order-summary .total-pembayaran { font-size: 1rem; }
+    .hero-content h1 { font-size: 2.8rem; letter-spacing: 7px; }
+}
+
+/* Mobile (max 768px) - 2 kolom, status ke bawah */
+@media (max-width: 768px) {
+    .container-riwayat {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        padding: 0 15px;
+    }
+    .order-card {
+        padding: 14px;
+        gap: 10px;
+        border-radius: 18px;
+    }
+    /* Status pindah ke bawah */
+    .order-header {
+        flex-direction: column;
+        gap: 8px;
+        padding-bottom: 10px;
+    }
+    .order-header-left {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+    .order-id { font-size: 0.7rem; }
+    .order-date { font-size: 0.6rem; }
+    .order-status-badge {
+        font-size: 0.5rem;
+        padding: 3px 8px;
+        white-space: nowrap;
+        align-self: flex-start;
+    }
+    .order-label { font-size: 0.6rem; }
+    .order-summary .total-pembayaran { font-size: 0.95rem; }
+    .order-pengiriman { font-size: 0.65rem; gap: 4px; }
+    .order-pengiriman i { font-size: 0.6rem; }
+    .order-actions {
+        padding-top: 10px;
+        gap: 6px;
+    }
+    .btn-bayar {
+        padding: 5px 10px;
+        font-size: 0.6rem;
+        gap: 3px;
+        border-radius: 6px;
+    }
+    .btn-bayar i { font-size: 0.55rem; }
+    .btn-detail-icon {
+        width: 26px;
+        height: 26px;
+        font-size: 0.75rem;
+        border-radius: 6px;
+    }
+    .action-bar-riwayat { margin: 15px auto 12px; }
+    .btn-back-riwayat { padding: 12px 24px; font-size: 0.85rem; }
+    .hero-content h1 { font-size: 2.2rem; letter-spacing: 6px; }
+    .produk-hero { height: 300px; }
+}
+
+/* Mobile kecil (max 600px) - 2 kolom */
+@media (max-width: 600px) {
+    .container-riwayat {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        padding: 0 12px;
+    }
+    .order-card {
+        padding: 12px;
+        gap: 8px;
+        border-radius: 16px;
+    }
+    .order-id { font-size: 0.65rem; }
+    .order-date { font-size: 0.55rem; }
+    .order-status-badge {
+        font-size: 0.45rem;
+        padding: 2px 6px;
+    }
+    .order-label { font-size: 0.55rem; }
+    .order-summary .total-pembayaran { font-size: 0.85rem; }
+    .order-pengiriman { font-size: 0.6rem; }
+    .btn-bayar {
+        padding: 4px 8px;
+        font-size: 0.55rem;
+    }
+    .btn-detail-icon {
+        width: 24px;
+        height: 24px;
+        font-size: 0.7rem;
+    }
+    .hero-content h1 { font-size: 2rem; letter-spacing: 5px; }
+}
+
+/* Mobile sangat kecil (max 480px) - 2 kolom */
+@media (max-width: 480px) {
+    .container-riwayat {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        padding: 0 10px;
+    }
+    .order-card {
+        padding: 10px;
+        gap: 6px;
+        border-radius: 14px;
+    }
+    .order-header {
+        gap: 6px;
+        padding-bottom: 8px;
+    }
+    .order-id { font-size: 0.55rem; }
+    .order-date { font-size: 0.5rem; }
+    .order-status-badge {
+        font-size: 0.4rem;
+        padding: 2px 5px;
+        border-radius: 5px;
+    }
+    .order-label {
+        font-size: 0.5rem;
+        letter-spacing: 0.5px;
+    }
+    .order-summary .total-pembayaran { font-size: 0.75rem; }
+    .order-pengiriman {
+        font-size: 0.5rem;
+        gap: 3px;
+    }
+    .order-pengiriman i { font-size: 0.5rem; }
+    .order-actions {
+        padding-top: 6px;
+        gap: 4px;
+    }
+    .btn-bayar {
+        padding: 3px 6px;
+        font-size: 0.45rem;
+        gap: 2px;
+        border-radius: 5px;
+    }
+    .btn-bayar i { font-size: 0.4rem; }
+    .btn-detail-icon {
+        width: 22px;
+        height: 22px;
+        font-size: 0.65rem;
+        border-radius: 5px;
+    }
+    .btn-back-riwayat span { display: none; }
+    .btn-back-riwayat {
+        padding: 10px 15px;
+        font-size: 0.8rem;
+    }
+    .btn-back-riwayat i { font-size: 1rem; margin: 0; }
+    .hero-content h1 { font-size: 1.6rem; letter-spacing: 4px; }
+    .produk-hero { height: 300px; }
+
+    /* Modal responsive */
+    .nz-modal-container { max-width: 95%; }
+    .nz-modal-header { padding: 14px 16px; }
+    .nz-modal-title { font-size: 0.9rem; }
+    .nz-modal-body { padding: 16px; }
+    .item-row { gap: 10px; padding: 10px 0; }
+    .item-img { width: 45px; height: 45px; border-radius: 10px; }
+    .item-name { font-size: 0.75rem; }
+    .item-price { font-size: 0.65rem; }
+    .item-subtotal { font-size: 0.75rem; white-space: normal; }
+    .payment-details { padding: 12px; font-size: 0.8rem; gap: 8px; }
+    .payment-row.grand { font-size: 0.9rem; padding-top: 10px; }
+    .info-details { padding: 12px; font-size: 0.75rem; gap: 8px; }
+    .info-details > div { gap: 8px; }
+
+    /* Pagination responsive */
+    .pagination-wrapper .page-link { padding: 5px 12px; font-size: 0.65rem; }
+    .btn-view-all { font-size: 8px !important; padding: 5px 10px !important; }
+}

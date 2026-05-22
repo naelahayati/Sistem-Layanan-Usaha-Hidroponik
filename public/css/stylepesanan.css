@@ -1,0 +1,754 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Playfair+Display:wght@700&display=swap');
+
+:root {
+    --blue-soft: rgba(11, 94, 215, 0.7);
+    --yellow-soft: rgba(242, 181, 11, 0.7);
+    --green-soft: rgba(45, 90, 39, 0.7);
+    --sage-green: #87a96b;
+    --off-white: #F1F4F2;
+    --pure-white: #ffffff;
+    --text-dark: #2d3a27;
+    --text-soft: #707a6c;
+    --dark-green: #1b3022;
+
+    /* Desktop default */
+    --font-header: 4rem;
+    --font-title: 0.9rem;
+    --font-subtitle: 0.85rem;
+    --font-text: 0.85rem;
+    --font-small: 0.75rem;
+    --font-back: 0.85rem;
+    --font-total: 1.3rem;
+    --font-btn: 0.9rem;
+    --section-title: 1rem;
+    --padding-frame: 35px;
+    --photo-size: 75px;
+    --photo-height: 60px;
+    --card-gap: 20px;
+}
+
+body {
+    background-color: var(--off-white);
+    font-family: "Montserrat", sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    color: var(--text-dark);
+}
+
+.pesanan-page {
+    padding-bottom: 80px;
+}
+
+/* Header */
+.product-header {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background-image: url("/image/5.png");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.product-header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.25);
+    z-index: 1;
+}
+
+.product-header::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    background: linear-gradient(to bottom, transparent, var(--off-white));
+    z-index: 2;
+}
+
+.product-header h1 {
+    position: relative;
+    z-index: 3;
+    font-family: "Playfair Display", serif;
+    font-size: var(--font-header);
+    color: #ffffff;
+    letter-spacing: 6px;
+    margin: 0;
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.gambar-produk {
+    display: none;
+}
+
+.container-pesanan {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Action Bar & Back Button */
+.action-bar {
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+}
+
+.btn-back {
+    background: var(--pure-white);
+    color: var(--green-soft);
+    font-size: var(--font-back);
+    font-weight: 700;
+    padding: 10px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: 0.3s;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    gap: 8px;
+    letter-spacing: 1px;
+    width: fit-content;
+    white-space: nowrap;
+}
+
+.btn-back:hover {
+    background: var(--green-soft);
+    color: white;
+    transform: translateX(-5px);
+}
+
+/* Section Title */
+.section-title {
+    font-size: var(--section-title);
+    font-weight: 700;
+    color: var(--dark-green);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Single Frame Checkout */
+.checkout-main-frame {
+    background: var(--pure-white);
+    border-radius: 30px;
+    padding: var(--padding-frame);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+    margin-bottom: 40px;
+    border: 1px solid #f0f3f0;
+}
+
+/* Radio Card */
+.radio-card {
+    border: 1px solid #eef2ee;
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+    background: #fff;
+}
+
+.radio-card:hover {
+    border-color: var(--green-soft);
+    background-color: #f9fbf9;
+}
+
+.radio-card.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background-color: #f5f5f5;
+    filter: grayscale(1);
+}
+
+.radio-card input {
+    margin: 0;
+    width: 18px;
+    height: 18px;
+    accent-color: var(--green-soft);
+}
+
+.radio-card strong {
+    font-size: var(--font-title);
+}
+
+.radio-card div[style*="font-size: 0.85rem"] {
+    font-size: var(--font-small) !important;
+}
+
+/* Address Box */
+.address-box {
+    background: #f8faf8;
+    padding: 18px;
+    border-radius: 15px;
+    margin-top: 20px;
+    border-left: 5px solid var(--green-soft);
+}
+
+.address-box strong {
+    color: var(--dark-green);
+    display: block;
+    margin-bottom: 5px;
+    font-size: var(--font-subtitle);
+}
+
+.address-box p {
+    margin: 0;
+    color: var(--text-soft);
+    line-height: 1.6;
+    font-size: var(--font-text);
+}
+
+.address-box a {
+    font-size: var(--font-small);
+}
+
+/* Form Group */
+.form-group-jarak {
+    margin-top: 25px;
+}
+
+.form-group-jarak label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 700;
+    color: var(--dark-green);
+    font-size: var(--font-text);
+}
+
+.form-group-jarak input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e0e6e0;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: var(--font-text);
+    background: #fcfdfc;
+    box-sizing: border-box;
+}
+
+#jarak-hint {
+    font-size: var(--font-small);
+}
+
+.text-danger {
+    color: #e74c3c;
+    font-size: var(--font-small);
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+}
+
+/* QRIS Info */
+#qris-info {
+    margin-top: 20px;
+    padding: 16px;
+    background: #fff9e6;
+    border-radius: 15px;
+    border-left: 5px solid #f1c40f;
+    color: #856404;
+    font-size: var(--font-text);
+    line-height: 1.5;
+}
+
+/* Order Items */
+.order-items {
+    background: transparent;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+    margin-bottom: 25px;
+    border-bottom: 1px dashed #eef4ee;
+    padding-bottom: 25px;
+}
+
+.order-item {
+    background: transparent;
+    padding: 15px 0;
+    display: flex;
+    align-items: center;
+    gap: var(--card-gap);
+    border-bottom: 1px solid #f8faf8;
+    flex-wrap: wrap;
+}
+
+.order-item:last-child {
+    border-bottom: none;
+}
+
+.item-photo {
+    width: var(--photo-size);
+    height: var(--photo-height);
+    border-radius: 10px;
+    overflow: hidden;
+    background: #f8f9f8;
+    flex-shrink: 0;
+}
+
+.item-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.item-details {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.item-name {
+    font-weight: 700;
+    color: var(--dark-green);
+    font-size: var(--font-title);
+    flex: 1;
+    min-width: 100px;
+}
+
+.item-price, .item-qty {
+    color: var(--text-soft);
+    font-size: var(--font-text);
+    text-align: right;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+}
+
+/* Info Box */
+.order-items div[style*="background: #e8f5e9"] {
+    font-size: var(--font-small) !important;
+}
+
+/* Cost Summary */
+.cost-summary {
+    background: #f4f9f4;
+    padding: 20px;
+    border-radius: 20px;
+    margin-bottom: 25px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    color: var(--text-soft);
+    font-size: var(--font-text);
+    flex-wrap: wrap;
+}
+
+.summary-row.grand-total {
+    border-top: 2px solid #EEE;
+    padding-top: 15px;
+    margin-top: 12px;
+    color: var(--dark-green);
+    font-weight: 800;
+    font-size: var(--font-total);
+}
+
+/* Button Submit */
+.btn-submit-order {
+    background: var(--dark-green);
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 15px;
+    font-size: var(--font-btn);
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 700;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+    letter-spacing: 1.5px;
+}
+
+.btn-submit-order:hover {
+    background: var(--green-soft);
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(27, 48, 34, 0.15);
+}
+
+/* =========================================
+   TABLET (max 900px)
+   ========================================= */
+@media (max-width: 900px) {
+    :root {
+        --font-header: 3rem;
+        --font-title: 0.85rem;
+        --font-subtitle: 0.8rem;
+        --font-text: 0.8rem;
+        --font-small: 0.7rem;
+        --font-back: 0.8rem;
+        --font-total: 1.2rem;
+        --font-btn: 0.85rem;
+        --section-title: 0.95rem;
+        --padding-frame: 28px;
+        --photo-size: 65px;
+        --photo-height: 50px;
+        --card-gap: 15px;
+    }
+
+    .product-header {
+        margin-bottom: 35px;
+    }
+
+    .checkout-main-frame {
+        padding: 25px;
+    }
+
+    .btn-back {
+        padding: 8px 18px;
+    }
+
+    .radio-card {
+        padding: 12px 15px;
+        gap: 10px;
+    }
+
+    .address-box {
+        padding: 15px;
+    }
+
+    .cost-summary {
+        padding: 18px;
+    }
+}
+
+/* =========================================
+   MOBILE (max 600px)
+   ========================================= */
+@media (max-width: 600px) {
+    :root {
+        --font-header: 2.2rem;
+        --font-title: 0.8rem;
+        --font-subtitle: 0.75rem;
+        --font-text: 0.75rem;
+        --font-small: 0.65rem;
+        --font-back: 0.75rem;
+        --font-total: 1.1rem;
+        --font-btn: 0.8rem;
+        --section-title: 0.9rem;
+        --padding-frame: 20px;
+        --photo-size: 55px;
+        --photo-height: 45px;
+        --card-gap: 12px;
+    }
+
+    .product-header {
+        height: 300px;
+        margin-bottom: 25px;
+    }
+
+    .product-header h1 {
+        letter-spacing: 4px;
+    }
+
+    .container-pesanan {
+        padding: 0 15px;
+    }
+
+    .checkout-main-frame {
+        padding: 20px;
+        border-radius: 25px;
+    }
+
+    .btn-back {
+        padding: 7px 14px;
+        font-size: 0.75rem;
+    }
+
+    .radio-card {
+        padding: 10px 12px;
+        gap: 10px;
+        border-radius: 10px;
+    }
+
+    .radio-card input {
+        width: 16px;
+        height: 16px;
+    }
+
+    .address-box {
+        padding: 12px;
+        border-radius: 12px;
+    }
+
+    .address-box strong {
+        font-size: 0.75rem;
+    }
+
+    .address-box p {
+        font-size: 0.7rem;
+    }
+
+    .order-item {
+        padding: 12px 0;
+        gap: 12px;
+    }
+
+    .item-photo {
+        width: 55px;
+        height: 45px;
+    }
+
+    .item-details {
+        gap: 10px;
+    }
+
+    .item-name {
+        font-size: 0.8rem;
+        min-width: 70px;
+    }
+
+    .item-price, .item-qty {
+        font-size: 0.7rem;
+    }
+
+    .cost-summary {
+        padding: 15px;
+        border-radius: 15px;
+    }
+
+    .summary-row {
+        font-size: 0.7rem;
+        margin-bottom: 10px;
+    }
+
+    .summary-row.grand-total {
+        font-size: 1rem;
+        padding-top: 12px;
+    }
+
+    .btn-submit-order {
+        padding: 12px;
+        font-size: 0.8rem;
+        border-radius: 10px;
+    }
+
+    .form-group-jarak {
+        margin-top: 18px;
+    }
+
+    .form-group-jarak label {
+        font-size: 0.7rem;
+        margin-bottom: 6px;
+    }
+
+    .form-group-jarak input {
+        padding: 10px;
+        font-size: 0.7rem;
+        border-radius: 10px;
+    }
+
+    .text-danger {
+        font-size: 0.6rem;
+        gap: 6px;
+    }
+
+    #qris-info {
+        padding: 12px;
+        font-size: 0.7rem;
+        border-radius: 12px;
+    }
+}
+
+/* =========================================
+   SMALL MOBILE (max 480px)
+   ========================================= */
+@media (max-width: 480px) {
+    :root {
+        --font-header: 1.8rem;
+        --font-title: 0.75rem;
+        --font-subtitle: 0.7rem;
+        --font-text: 0.7rem;
+        --font-small: 0.6rem;
+        --font-back: 0.7rem;
+        --font-total: 1rem;
+        --font-btn: 0.75rem;
+        --section-title: 0.85rem;
+        --padding-frame: 16px;
+        --photo-size: 50px;
+        --photo-height: 40px;
+        --card-gap: 10px;
+    }
+
+    .product-header {
+        height: 300px;
+        margin-bottom: 20px;
+    }
+
+    .product-header h1 {
+        letter-spacing: 3px;
+    }
+
+    .container-pesanan {
+        padding: 0 12px;
+    }
+
+    .checkout-main-frame {
+        padding: 16px;
+        border-radius: 20px;
+    }
+
+    .btn-back span {
+        display: none;
+    }
+
+    .btn-back {
+        padding: 7px 10px;
+    }
+
+    .btn-back i {
+        font-size: 0.9rem;
+        margin: 0;
+    }
+
+    .section-title {
+        margin-bottom: 14px;
+    }
+
+    .radio-card {
+        padding: 8px 10px;
+        gap: 8px;
+        border-radius: 8px;
+    }
+
+    .radio-card input {
+        width: 14px;
+        height: 14px;
+    }
+
+    .address-box {
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+    .address-box strong {
+        font-size: 0.7rem;
+    }
+
+    .address-box p {
+        font-size: 0.65rem;
+    }
+
+    .order-item {
+        padding: 10px 0;
+        gap: 10px;
+    }
+
+    .item-photo {
+        width: 50px;
+        height: 40px;
+        border-radius: 8px;
+    }
+
+    .item-details {
+        gap: 8px;
+    }
+
+    .item-name {
+        font-size: 0.75rem;
+        min-width: 100%;
+        margin-bottom: 4px;
+    }
+
+    .item-price, .item-qty {
+        font-size: 0.65rem;
+        text-align: left;
+        white-space: normal;
+    }
+
+    .cost-summary {
+        padding: 12px;
+        border-radius: 12px;
+    }
+
+    .summary-row {
+        font-size: 0.65rem;
+        margin-bottom: 8px;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .summary-row.grand-total {
+        font-size: 0.9rem;
+        padding-top: 10px;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .btn-submit-order {
+        padding: 10px;
+        font-size: 0.7rem;
+        border-radius: 8px;
+        margin-top: 15px;
+    }
+
+    .form-group-jarak {
+        margin-top: 15px;
+    }
+
+    .form-group-jarak label {
+        font-size: 0.65rem;
+        margin-bottom: 5px;
+    }
+
+    .form-group-jarak input {
+        padding: 8px;
+        font-size: 0.65rem;
+        border-radius: 8px;
+    }
+
+    .text-danger {
+        font-size: 0.55rem;
+        gap: 5px;
+    }
+
+    #qris-info {
+        padding: 10px;
+        font-size: 0.65rem;
+        border-radius: 10px;
+        margin-top: 15px;
+    }
+}
+
+/* =========================================
+   LARGE DESKTOP (> 1440px)
+   ========================================= */
+@media (min-width: 1441px) {
+    .container-pesanan {
+        max-width: 1000px;
+    }
+
+    .product-header {
+        height: 300px;
+    }
+
+    :root {
+        --font-header: 4rem;
+        --font-title: 0.95rem;
+        --font-subtitle: 0.9rem;
+        --section-title: 1.05rem;
+        --photo-size: 85px;
+        --photo-height: 70px;
+    }
+}

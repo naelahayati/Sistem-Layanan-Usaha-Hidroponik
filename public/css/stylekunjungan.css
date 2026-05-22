@@ -1,0 +1,649 @@
+/* Variables - Consistent with Product Style */
+:root {
+    --sage-green: #87a96b;
+    --dark-green: #1b3022;
+    --off-white: #f1f4f2;
+    --pure-white: #ffffff;
+    --text-soft: #707a6c;
+    --bright-green: #4caf50;
+    --sun-yellow: #f2b50b;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--off-white);
+    font-family: "Montserrat", sans-serif;
+    overflow-x: hidden;
+}
+
+/* =========================================
+   Container Utama Halaman Kunjungan
+   ========================================= */
+.kunjungan-page {
+    background-color: #ffffff;
+    padding-bottom: 80px;
+}
+
+/* =========================================
+   HEADER BANNER - SAMA SEPERTI HOME (GRADASI + CLAMP)
+   ========================================= */
+.kunjungan-banner {
+    background-image: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0) 65%,
+            rgba(255, 255, 255, 1) 100%
+        ),
+        linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)),
+        url("../image/kunjungan.webp") !important;
+    background-size: cover !important;
+    background-position: center 40% !important;
+    background-repeat: no-repeat;
+    height: 500px !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+}
+
+/* Header Versi Form (Lebih Pendek) */
+.kunjungan-header-form {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    background-image: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0) 65%,
+            rgba(255, 255, 255, 1) 100%
+        ),
+        linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)),
+        url("../image/kunjungan.webp") !important;
+    background-size: cover !important;
+    background-position: center 40% !important;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+}
+
+.kunjungan-header-form h1 {
+    font-family: "Playfair Display", serif;
+    font-size: clamp(2.5rem, 8vw, 5.5rem);
+    color: #ffffff;
+    letter-spacing: clamp(4px, 2vw, 12px);
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    padding: 0 20px;
+}
+
+.kunjungan-banner h1 {
+    font-family: "Playfair Display", serif;
+   font-size: clamp(2.5rem, 8vw, 5.5rem);
+    color: #ffffff;
+    letter-spacing: clamp(2px, 2vw, 8px);
+    margin: 0;
+    text-transform: uppercase;
+    font-weight: 700;
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    padding: 0 20px;
+}
+
+/* Hero Riwayat Link - Sama dengan Produk */
+.hero-riwayat-link {
+    display: inline-block;
+    width: fit-content;
+    margin-top: 20px;
+    color: var(--sun-yellow);
+    text-decoration: none;
+    font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+    font-style: italic;
+    font-weight: 500;
+    letter-spacing: 2px;
+    padding: 5px 0;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    z-index: 3;
+}
+
+.hero-riwayat-link:hover,
+.hero-riwayat-link:active {
+    color: #ffffff;
+    transform: translateY(-3px);
+    text-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+}
+
+/* =========================================
+   MODERN FORM RESERVASI (Responsif)
+   ========================================= */
+.reservasi-page-wrapper {
+    background-color: var(--off-white);
+    min-height: 100vh;
+    padding-bottom: 100px;
+}
+
+.action-bar-reservasi {
+    max-width: 700px;
+    margin: 30px auto 25px;
+    padding: 0 20px;
+}
+
+.btn-back-modern {
+    background: var(--pure-white);
+    color: var(--sage-green);
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
+    font-weight: 700;
+    padding: clamp(8px, 2vw, 12px) clamp(15px, 4vw, 25px);
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    border-radius: 50px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    transition: 0.3s;
+    gap: 10px;
+}
+
+.btn-back-modern:hover {
+    background: var(--sage-green);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.reservasi-form-frame {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.reservasi-card-modern {
+    background: var(--pure-white);
+    border-radius: clamp(20px, 4vw, 25px);
+    padding: clamp(20px, 4vw, 35px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+}
+
+.form-title-modern {
+    font-family: "Playfair Display", serif;
+    color: var(--dark-green);
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+    margin-bottom: 25px;
+    border-bottom: 2px solid var(--off-white);
+    padding-bottom: 15px;
+}
+
+.form-group-modern {
+    margin-bottom: 18px;
+}
+
+.form-group-modern label {
+    display: block;
+    font-weight: 700;
+    color: var(--dark-green);
+    margin-bottom: 6px;
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
+}
+
+.form-group-modern input,
+.form-group-modern select,
+.form-group-modern textarea {
+    width: 100%;
+    padding: clamp(10px, 2vw, 12px) clamp(12px, 3vw, 18px);
+    border: 1px solid #e0e6e0;
+    border-radius: 12px;
+    font-family: "Montserrat", sans-serif;
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
+    background: #fcfdfc;
+    resize: vertical;
+    transition: 0.3s;
+}
+
+.form-group-modern input:focus {
+    outline: none;
+    border-color: var(--sage-green);
+    box-shadow: 0 0 0 4px rgba(135, 169, 107, 0.1);
+}
+
+/* Payment Method Styles */
+.payment-selection-wrapper {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed #e0f0e0;
+}
+
+.radio-card {
+    border: 1px solid #e0e6e0;
+    border-radius: 12px;
+    padding: clamp(12px, 2vw, 15px);
+    margin-bottom: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: 0.3s;
+    background: #fff;
+}
+
+.radio-card:hover {
+    border-color: var(--sage-green);
+    background-color: #f9fbf9;
+}
+
+.radio-card input {
+    margin: 0;
+    width: 20px;
+    height: 20px;
+    accent-color: var(--sage-green);
+}
+
+.radio-card i {
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+    color: var(--sage-green);
+    width: 30px;
+    text-align: center;
+}
+
+.radio-card span {
+    font-weight: 600;
+    color: var(--dark-green);
+    font-size: clamp(0.85rem, 2vw, 1rem);
+}
+
+#qris-info {
+    margin-top: 20px;
+    padding: 20px;
+    background: #fff9e6;
+    border-radius: 15px;
+    border-left: 5px solid #f1c40f;
+    color: #856404;
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
+    line-height: 1.5;
+}
+
+/* Total Box Modern */
+.total-box-modern {
+    background: #fcfdfc;
+    border: 1px solid #e0e6e0;
+    padding: clamp(12px, 2vw, 15px) clamp(15px, 3vw, 20px);
+    border-radius: 15px;
+    margin: 25px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.02);
+}
+
+.total-box-modern p {
+    margin: 0;
+    color: var(--text-soft);
+    font-weight: 600;
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
+}
+
+.total-box-modern h3 {
+    margin: 0;
+    color: var(--dark-green);
+    font-size: clamp(1.2rem, 4vw, 1.6rem);
+    font-family: "Playfair Display", serif;
+}
+
+.btn-submit {
+    width: 100%;
+    background-color: var(--dark-green);
+    color: white;
+    padding: clamp(12px, 2vw, 15px);
+    border: none;
+    border-radius: 12px;
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 10px 20px rgba(27, 48, 34, 0.15);
+}
+
+.btn-submit:hover {
+    background-color: var(--sage-green);
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(135, 169, 107, 0.2);
+}
+
+/* =========================================
+   LAYOUT LIST KUNJUNGAN (ZIG-ZAG) - RESPONSIF
+   ========================================= */
+.container-kunjungan-list {
+    max-width: 1100px;
+    margin: 50px auto 0;
+    padding: 0 20px;
+}
+
+.kunjungan-item {
+    display: flex;
+    align-items: center;
+    gap: clamp(20px, 5vw, 60px);
+    margin-bottom: clamp(50px, 8vw, 100px);
+}
+
+.kunjungan-item:nth-child(even) {
+    flex-direction: row-reverse;
+}
+
+/* Kotak Foto List - Responsif */
+.kunjungan-photo-box {
+    flex: 1;
+    height: clamp(220px, 35vw, 350px) !important;
+    background-color: #f0f0f0;
+    border-radius: clamp(15px, 3vw, 25px);
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+.kunjungan-photo-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover !important;
+    object-position: center;
+    transition: transform 0.5s ease;
+}
+
+.kunjungan-item:hover .kunjungan-photo-box img {
+    transform: scale(1.05);
+}
+
+/* Kotak Deskripsi - Responsif */
+.kunjungan-desc-box {
+    flex: 1;
+}
+
+.kunjungan-desc-box h2 {
+    font-family: "Playfair Display", serif;
+    color: #1b3c18;
+    margin-bottom: clamp(10px, 2vw, 20px);
+    font-size: clamp(1.5rem, 4vw, 2.8rem);
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.kunjungan-desc-box p {
+    color: #444;
+    line-height: 1.7;
+    font-size: clamp(0.85rem, 2vw, 1.15rem);
+    margin-bottom: clamp(20px, 4vw, 35px);
+}
+
+/* Tombol Daftar - Responsif */
+.btn-Daftar {
+    display: inline-flex !important;
+    align-items: center;
+    background-color: #1b3c18 !important;
+    color: #ffffff !important;
+    padding: clamp(10px, 2vw, 14px) clamp(25px, 5vw, 40px);
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: clamp(0.85rem, 2vw, 1.1rem);
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-Daftar::after {
+    content: " →" !important;
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    margin-left: 10px;
+    transition: transform 0.3s ease;
+}
+
+.btn-Daftar:hover {
+    background-color: #2d5a27 !important;
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.btn-Daftar:hover::after {
+    transform: translateX(8px);
+}
+
+/* =========================================
+   KALENDER RESERVASI
+   ========================================= */
+#calendar-reservasi {
+    background: #ffffff;
+    padding: 12px;
+    border-radius: 15px;
+    border: 1px solid #e0e6e0;
+    margin-bottom: 15px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.fc-header-toolbar {
+    margin-bottom: 1.5em !important;
+    text-transform: capitalize;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+}
+
+.fc-day-today {
+    background: rgba(135, 169, 107, 0.1) !important;
+}
+
+.selected-date-highlight {
+    background-color: var(--sage-green) !important;
+    color: white !important;
+}
+
+#calendar-reservasi .fc-day-sun,
+#calendar-reservasi .fc-day-sat {
+    background-color: #fff1f1 !important;
+}
+
+#calendar-reservasi .fc-day-sun .fc-daygrid-day-number,
+#calendar-reservasi .fc-day-sat .fc-daygrid-day-number {
+    color: #d9534f !important;
+    font-weight: 700;
+}
+
+/* =========================================
+   RESPONSIVE TABLET (768px - 1024px)
+   ========================================= */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .kunjungan-banner {
+        height: 500px !important;
+    }
+
+    .kunjungan-header-form {
+        height: 350px;
+    }
+
+    .kunjungan-photo-box {
+        height: 280px !important;
+    }
+
+    .kunjungan-desc-box h2 {
+        font-size: 2rem;
+    }
+
+    .kunjungan-desc-box p {
+        font-size: 0.9rem;
+    }
+}
+
+/* =========================================
+   RESPONSIVE MOBILE (max-width: 768px)
+   ========================================= */
+@media (max-width: 768px) {
+    .kunjungan-banner {
+        height: 450px !important;
+    }
+
+    .kunjungan-header-form {
+        height: 300px;
+        padding-top: 60px;
+    }
+
+    .kunjungan-header-form h1 {
+            font-size: clamp(2.5rem, 8vw, 5.5rem);
+
+        letter-spacing: 4px;
+    }
+
+    .kunjungan-banner h1 {
+        font-size: clamp(2.5rem, 8vw, 5.5rem);
+    }
+
+    .kunjungan-item,
+    .kunjungan-item:nth-child(even) {
+        flex-direction: column;
+        gap: 25px;
+        text-align: center;
+    }
+
+    .kunjungan-photo-box {
+        width: 100%;
+        height: 250px !important;
+    }
+
+    .kunjungan-desc-box {
+        text-align: center;
+    }
+
+    .kunjungan-desc-box h2 {
+        font-size: 1.6rem;
+    }
+
+    .kunjungan-desc-box p {
+        font-size: 0.85rem;
+    }
+
+    .btn-Daftar {
+        padding: 10px 25px;
+        font-size: 0.85rem;
+    }
+
+    .reservasi-card-modern {
+        padding: 20px;
+    }
+
+    .form-title-modern {
+        font-size: 1.2rem;
+    }
+
+    .total-box-modern {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+/* =========================================
+   MOBILE KECIL (max-width: 480px)
+   ========================================= */
+@media (max-width: 480px) {
+    .kunjungan-banner {
+        height: 380px !important;
+    }
+
+    .kunjungan-header-form {
+        height: 250px;
+    }
+
+    .kunjungan-header-form h1 {
+        font-size: 1.5rem;
+        letter-spacing: 2px;
+    }
+
+    .kunjungan-banner h1 {
+        font-size: 1.6rem;
+    }
+
+    .kunjungan-photo-box {
+        height: 200px !important;
+    }
+
+    .kunjungan-desc-box h2 {
+        font-size: 1.3rem;
+    }
+
+    .kunjungan-desc-box p {
+        font-size: 0.8rem;
+    }
+
+    .btn-Daftar {
+        padding: 8px 20px;
+        font-size: 0.75rem;
+    }
+
+    .btn-Daftar::after {
+        font-size: 1rem;
+    }
+
+    .hero-riwayat-link {
+        font-size: 0.75rem;
+        margin-top: 10px;
+    }
+
+    .radio-card {
+        gap: 12px;
+        padding: 10px;
+    }
+
+    .radio-card i {
+        font-size: 1rem;
+        width: 25px;
+    }
+
+    .radio-card span {
+        font-size: 0.8rem;
+    }
+}
+
+/* =========================================
+   LANDSCAPE MODE (HP horizontal)
+   ========================================= */
+@media (max-width: 900px) and (orientation: landscape) {
+    .kunjungan-banner {
+        height: 400px !important;
+    }
+
+    .kunjungan-header-form {
+        height: 280px;
+    }
+
+    .kunjungan-item,
+    .kunjungan-item:nth-child(even) {
+        flex-direction: row;
+        gap: 30px;
+    }
+
+    .kunjungan-photo-box {
+        height: 180px !important;
+    }
+
+    .kunjungan-desc-box h2 {
+        font-size: 1.3rem;
+    }
+
+    .kunjungan-desc-box p {
+        font-size: 0.8rem;
+    }
+
+    .btn-Daftar {
+        padding: 6px 18px;
+        font-size: 0.7rem;
+    }
+}
+
+/* =========================================
+   UTILITY
+   ========================================= */
+img {
+    max-width: 100%;
+    height: auto;
+}

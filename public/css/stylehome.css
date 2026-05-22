@@ -1,0 +1,579 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@400;500;700&display=swap");
+
+:root {
+    --sage-green: #b2c9ab;
+    --sage-dark: #7a9d73;
+    --cream-light: #fdfcf0;
+    --cream-warm: #f7f3e3;
+    --text-dark: #2d3436;
+    --text-muted: #4a5568;
+    --white: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "DM Sans", sans-serif;
+    background-color: var(--cream-light);
+    color: var(--text-dark);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* =========================================
+   HERO SECTION - DIJAGA PERSIS SEPERTI ASLINYA
+   AGAR ANIMASI TETAP JALAN
+   ========================================= */
+.hero-section {
+    background-image:
+        linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0) 65%,
+            var(--cream-light) 100%
+        ),
+        linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+        url("/image/home.webp") !important;
+    background-size: cover !important;
+    background-position: center !important;
+    height: 600px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    color: #f2b50b;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 5px;
+    margin-bottom: 20px;
+}
+
+.hero-title {
+    font-family: "Playfair Display", serif;
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    color: #ffffff;
+    margin: 0 auto;
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    display: block;
+    max-width: 90%;
+}
+
+.hero-title span {
+    display: inline-block;
+}
+
+/* =========================================
+   ANIMASI HEADLINE - TETAP SAMA PERSIS
+   JANGAN DIUBAH APAPUN DI SINI
+   ========================================= */
+.cd-headline {
+    font-size: 4.5rem;
+    line-height: 1.2;
+}
+
+.cd-words-wrapper {
+    display: inline-block;
+    position: relative;
+    text-align: left;
+    vertical-align: top;
+    height: 1.2em; /* Memberi tinggi tetap agar stabil */
+}
+
+.cd-words-wrapper b {
+    display: inline-block;
+    position: absolute;
+    white-space: nowrap;
+    left: 0;
+    top: 0;
+    color: #f2b50b;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.5s, transform 0.5s;
+}
+
+.cd-words-wrapper b.is-visible {
+    position: relative;
+    opacity: 1;
+}
+
+.cd-headline.rotate-1 b {
+    transform: none;
+    transition: opacity 0.5s;
+}
+
+.cd-headline.rotate-1 b.is-visible {
+    transform: none;
+}
+
+.cd-headline.rotate-1 b.is-hidden {
+    opacity: 0;
+    transform: none;
+}
+
+.cd-headline.rotate-1 i {
+    display: inline-block;
+    font-style: normal;
+    opacity: 0;
+}
+
+.cd-headline.rotate-1 b.is-visible i {
+    opacity: 1;
+}
+
+.cd-headline.rotate-1 i.in {
+    opacity: 1;
+    animation: cd-fadeslide-in 0.5s forwards;
+}
+
+.cd-headline.rotate-1 i.out {
+    animation: cd-fadeslide-out 0.5s forwards;
+}
+
+@keyframes cd-fadeslide-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes cd-fadeslide-out {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+/* About Section */
+.about-asymmetric {
+    padding: 100px 10% 10px 10%;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 80px;
+    align-items: center;
+    background-color: var(--cream-light);
+    position: relative;
+}
+
+.about-asymmetric1 {
+    padding: 10px 10% 100px 10%;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 80px;
+    align-items: center;
+    background-color: var(--cream-light);
+    position: relative;
+}
+
+.about-text-offset {
+    position: relative;
+    padding-top: 50px;
+}
+
+.offset-title {
+    font-family: "Playfair Display", serif;
+    font-size: 4rem;
+    color: var(--sage-dark);
+    line-height: 1.2;
+    margin-bottom: 20px;
+    position: relative;
+    opacity: 0.9;
+}
+
+.description-text {
+    max-width: 500px;
+}
+
+.description-text p {
+    font-size: 1.05rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    line-height: 2;
+    margin-bottom: 30px;
+}
+
+/* Photo Collage */
+.photo-collage {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    position: relative;
+}
+
+.collage-item {
+    border-radius: 30px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+    transition: transform 0.5s ease;
+}
+
+.collage-item:hover {
+    transform: scale(1.02);
+}
+
+.collage-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.item-vertical {
+    grid-row: span 2;
+    height: 600px;
+}
+
+.item-horizontal {
+    height: 280px;
+    margin-top: 40px;
+}
+
+.item-small {
+    height: 280px;
+}
+
+/* Product Section */
+.product-section {
+    padding: 150px 10%;
+    text-align: center;
+    background: linear-gradient(
+        to bottom,
+        var(--cream-light),
+        var(--cream-warm)
+    );
+}
+
+.section-title-centered {
+    font-family: "Playfair Display", serif;
+    font-size: 3.5rem;
+    color: var(--sage-dark);
+    margin-bottom: 100px;
+}
+
+.product-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto 80px;
+}
+
+.product-square-card {
+    background: var(--white);
+    aspect-ratio: 1 / 1;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border: 1px solid rgba(178, 201, 171, 0.2);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    position: relative;
+}
+
+.product-square-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--sage-green);
+    box-shadow: 0 20px 40px rgba(122, 157, 115, 0.1);
+}
+
+.product-icon {
+    font-size: 2.5rem;
+    color: var(--sage-green);
+    margin-bottom: 20px;
+}
+
+.product-square-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+.product-square-card:hover img {
+    opacity: 1;
+}
+
+.product-info-overlay {
+    z-index: 5;
+    background: rgba(255, 255, 255, 0.9);
+    width: 80%;
+    padding: 20px;
+    border-radius: 15px;
+    backdrop-filter: blur(5px);
+}
+
+.product-info-overlay h4 {
+    font-family: "Playfair Display", serif;
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+}
+
+/* Button */
+.btn-outline-elegant {
+    display: inline-block;
+    padding: 15px 45px;
+    border: 1px solid var(--sage-dark);
+    color: var(--sage-dark);
+    text-decoration: none;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 700;
+    border-radius: 50px;
+    transition: all 0.4s ease;
+}
+
+.btn-outline-elegant:hover {
+    background-color: var(--sage-dark);
+    color: var(--white);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(122, 157, 115, 0.2);
+}
+
+.button-group {
+    display: flex;
+    gap: 20px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+/* =========================================
+   RESPONSIVE - HANYA UNTUK UKURAN, 
+   ANIMASI TETAP JALAN
+   ========================================= */
+
+/* TABLET */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .hero-section {
+        height: 500px !important;
+    }
+    
+    /* PENTING: Jangan ubah properti animasi */
+    .cd-headline {
+        font-size: 3.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+        letter-spacing: 4px;
+    }
+    
+    .about-asymmetric,
+    .about-asymmetric1 {
+        padding: 60px 6%;
+        gap: 50px;
+    }
+    
+    .offset-title {
+        font-size: 3rem;
+    }
+    
+    .item-vertical {
+        height: 450px;
+    }
+    
+    .item-horizontal,
+    .item-small {
+        height: 200px;
+    }
+    
+    .product-section {
+        padding: 80px 6%;
+    }
+    
+    .section-title-centered {
+        font-size: 2.8rem;
+        margin-bottom: 60px;
+    }
+    
+    .product-gallery {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+    }
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+    .hero-section {
+        height: 450px !important;
+        background-position: 70% center !important;
+    }
+    
+    .hero-subtitle {
+        font-size: 0.8rem;
+        letter-spacing: 3px;
+        margin-bottom: 10px;
+    }
+    
+    /* PENTING: Hanya ubah ukuran font, jangan ubah properti lain yang berkaitan dengan animasi */
+    .hero-title {
+        font-size: 2rem !important;
+    }
+    
+    .cd-headline {
+        font-size: 2rem !important;
+        line-height: 1.3;
+    }
+    
+    .about-asymmetric,
+    .about-asymmetric1 {
+        grid-template-columns: 1fr;
+        padding: 50px 5%;
+        gap: 40px;
+    }
+    
+    .about-asymmetric1 .photo-collage {
+        order: 2;
+    }
+    
+    .about-text-offset {
+        padding-top: 0;
+        text-align: center;
+    }
+    
+    .offset-title {
+        font-size: 2.5rem;
+        text-align: center;
+    }
+    
+    .description-text {
+        max-width: 100%;
+        text-align: center;
+    }
+    
+    .description-text p {
+        font-size: 0.9rem;
+        text-align: left;
+    }
+    
+    .photo-collage {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .item-vertical {
+        grid-row: span 1;
+        height: 280px;
+    }
+    
+    .item-horizontal,
+    .item-small {
+        height: 200px;
+        margin-top: 0;
+    }
+    
+    .product-section {
+        padding: 60px 5%;
+    }
+    
+    .section-title-centered {
+        font-size: 2rem;
+        margin-bottom: 40px;
+    }
+    
+    .product-gallery {
+        grid-template-columns: 1fr;
+        gap: 25px;
+        margin-bottom: 50px;
+    }
+    
+    .product-square-card {
+        aspect-ratio: 4 / 3;
+    }
+    
+    .product-info-overlay {
+        width: 85%;
+        padding: 15px;
+    }
+    
+    .product-info-overlay h4 {
+        font-size: 1.1rem;
+    }
+    
+    .btn-outline-elegant {
+        padding: 10px 30px;
+        font-size: 0.8rem;
+    }
+    
+    .button-group {
+        justify-content: center;
+    }
+}
+
+/* MOBILE KECIL */
+@media (max-width: 480px) {
+    .hero-section {
+        height: 380px !important;
+    }
+    
+    .hero-title,
+    .cd-headline {
+        font-size: 1.5rem !important;
+    }
+    
+    .hero-subtitle {
+        font-size: 0.65rem;
+        letter-spacing: 2px;
+    }
+    
+    .offset-title {
+        font-size: 2rem;
+    }
+    
+    .description-text p {
+        font-size: 0.85rem;
+    }
+    
+    .item-vertical {
+        height: 220px;
+    }
+    
+    .item-horizontal,
+    .item-small {
+        height: 160px;
+    }
+    
+    .section-title-centered {
+        font-size: 1.6rem;
+    }
+    
+    .product-info-overlay h4 {
+        font-size: 0.9rem;
+    }
+    
+    .btn-outline-elegant {
+        padding: 8px 20px;
+        font-size: 0.7rem;
+    }
+}

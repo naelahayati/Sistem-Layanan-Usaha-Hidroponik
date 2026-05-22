@@ -1,0 +1,103 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    overflow: hidden;
+}
+
+.register-container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+}
+
+/* Sisi Kiri - Logo */
+.logo-section {
+    flex: 1;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-placeholder {
+    width: 300px;
+    height: 250px;
+    background-color: #D9D9D9; /* Abu-abu placeholder sesuai gambar */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    color: #555;
+    border-radius: 4px;
+}
+
+/* Sisi Kanan - Form */
+.form-section {
+    flex: 1;
+    background-color: #D1D8C4; /* Warna Sage Green lembut */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+#registerForm {
+    width: 80%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: none;
+    background-color: #F8F9F8;
+    font-size: 1rem;
+    outline: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.register-btn {
+    margin-top: 10px;
+    padding: 12px;
+    border: none;
+    background-color: #F8F9F8;
+    color: #333;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.register-btn:hover {
+    background-color: #2D5A27;
+    color: #fff;
+}
+
+.login-link {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 0.85rem;
+    color: #444;
+}
+
+.login-link a {
+    color: #000;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}

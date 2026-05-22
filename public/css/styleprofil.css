@@ -1,0 +1,743 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@400;500;700&display=swap');
+
+:root {
+    --sage-green: #B2C9AB;
+    --sage-dark: #7A9D73;
+    --cream-light: #FDFCF0;
+    --cream-warm: #F7F3E3;
+    --text-dark: #2D3436;
+    --text-muted: #4A5568;
+    --white: #ffffff;
+}
+
+/* Dasar */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--cream-light);
+    color: var(--text-dark);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+}
+
+/* Reset dan perbaikan untuk halaman profil */
+.main-content-profil {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* Pastikan konten tidak terpotong */
+.history-section,
+.visi-misi-minimal,
+.struktur-minimal {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+/* Perbaiki slider agar tidak terpotong */
+.history-slider-container {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.history-slide p {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Carousel item tidak terpotong */
+.carousel-item {
+    flex-shrink: 0;
+    box-sizing: border-box;
+}
+
+.carousel-horizontal {
+    width: 100%;
+    overflow-x: auto;
+}
+
+
+/* =========================================
+   MAIN CONTENT PROFIL
+   ========================================= */
+.main-content-profil {
+    background: linear-gradient(to bottom, var(--cream-light) 60%, #e8f0e6 100%);
+    min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+/* =========================================
+   HEADER BANNER - SAMA SEPERTI HOME (GRADASI + CLAMP)
+   ========================================= */
+.header-banner {
+    background-image:
+        linear-gradient(to bottom, rgba(255, 255, 255, 0) 65%, var(--cream-light) 100%),
+        linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+        url('/image/2.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 500px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.header-title-large {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 8vw, 5.5rem);
+    font-weight: 700;
+    color: white;
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    letter-spacing: 4px;
+}
+
+/* =========================================
+   HISTORY SECTION - FULLY RESPONSIVE
+   ========================================= */
+.history-section {
+    padding: 180px 10% 60px 10%;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.history-header-flex {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    margin-bottom: 50px;
+    flex-wrap: wrap;
+}
+
+.minimal-logo-container {
+    flex-shrink: 0;
+}
+
+.minimal-logo-container img {
+    width: 180px;
+    height: auto;
+    filter: drop-shadow(0 10px 20px rgba(122, 157, 115, 0.15));
+}
+
+.history-title-container {
+    flex: 1;
+    min-width: 200px;
+}
+
+.history-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    color: var(--sage-dark);
+    margin-bottom: 15px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.intro-p {
+    font-size: clamp(0.85rem, 2.5vw, 1.15rem);
+    line-height: 1.7;
+    color: var(--text-dark);
+}
+
+.history-slider-container {
+    background: white;
+    padding: 40px;
+    border-radius: 30px;
+    box-shadow: 0 15px 45px rgba(0,0,0,0.03);
+    border: 1px solid rgba(178, 201, 171, 0.15);
+    margin-bottom: 80px;
+    position: relative;
+}
+
+.history-slider {
+    position: relative;
+    min-height: 120px;
+    overflow: hidden;
+}
+
+.history-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease;
+    pointer-events: none;
+}
+
+.history-slide.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+    position: relative;
+}
+
+.history-slide p {
+    font-size: clamp(0.85rem, 2vw, 1.05rem);
+    line-height: 1.8;
+    color: var(--text-muted);
+}
+
+.slider-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.slider-nav button {
+    background: var(--sage-green);
+    color: white;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.slider-nav button:hover {
+    background: var(--sage-dark);
+}
+
+.dots-container {
+    display: flex;
+    gap: 8px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    background: #ddd;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.dot.active {
+    background: var(--sage-green);
+    width: 25px;
+    border-radius: 10px;
+}
+
+/* =========================================
+   CAROUSEL SECTION
+   ========================================= */
+.aesthetic-carousel-section {
+    padding: 0 0 10px;
+}
+
+.layanan-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 5vw, 2.2rem);
+    color: var(--sage-dark);
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.carousel-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.carousel-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    background: white;
+    border: none;
+    border-radius: 50%;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    cursor: pointer;
+    z-index: 10;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--sage-dark);
+    font-size: 1.2rem;
+}
+
+.carousel-control.prev { left: -25px; }
+.carousel-control.next { right: -25px; }
+
+.carousel-control:hover {
+    background: var(--sage-green);
+    color: white;
+}
+
+.carousel-horizontal {
+    display: flex;
+    overflow-x: auto;
+    gap: 30px;
+    padding: 20px 5px 40px;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+}
+
+.carousel-horizontal::-webkit-scrollbar {
+    display: none;
+}
+
+.carousel-item {
+    min-width: 500px;
+    height: 350px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+    position: relative;
+    transition: transform 0.4s ease;
+}
+
+.carousel-item:hover {
+    transform: translateY(-10px);
+}
+
+.carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.carousel-item .caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 30px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.7));
+    color: white;
+}
+
+.carousel-item .caption h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    margin-bottom: 5px;
+}
+
+.carousel-item .caption p {
+    font-size: clamp(0.7rem, 2vw, 0.85rem);
+}
+
+/* =========================================
+   VISI MISI
+   ========================================= */
+.visi-misi-minimal {
+    background-color: var(--cream-warm);
+    padding: 80px 15%;
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+}
+
+.visi-box h3, .misi-box h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 4vw, 2.1rem);
+    color: var(--sage-dark);
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.visi-box h3::after, .misi-box h3::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background-color: var(--sage-green);
+}
+
+.visi-box p, .misi-box li {
+    font-size: clamp(0.85rem, 2vw, 1.1rem);
+    line-height: 1.9;
+    color: var(--text-muted);
+}
+
+.misi-box ol {
+    list-style: none;
+    counter-reset: my-counter;
+}
+
+.misi-box li {
+    counter-increment: my-counter;
+    margin-bottom: 20px;
+    padding-left: 45px;
+    position: relative;
+}
+
+.misi-box li::before {
+    content: counter(my-counter);
+    position: absolute;
+    left: 0;
+    top: 5px;
+    width: 28px;
+    height: 28px;
+    background-color: var(--sage-green);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+
+/* =========================================
+   STRUKTUR ORGANISASI
+   ========================================= */
+.struktur-minimal {
+    padding: 80px 15%;
+    text-align: center;
+}
+
+.struktur-minimal h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
+    color: var(--sage-dark);
+    margin-bottom: 50px;
+}
+
+.struktur-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.member-card {
+    background: white;
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+    border: 1px solid rgba(178, 201, 171, 0.2);
+    transition: all 0.3s ease;
+}
+
+.member-card:hover {
+    border-color: var(--sage-green);
+    transform: translateY(-5px);
+}
+
+.member-card .role {
+    font-size: clamp(0.65rem, 2vw, 0.85rem);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--sage-dark);
+    font-weight: 700;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.member-card .name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(0.95rem, 3vw, 1.4rem);
+    color: var(--text-dark);
+    font-weight: 700;
+}
+
+/* =========================================
+   RESPONSIVE TABLET (768px - 1024px)
+   ========================================= */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .header-banner {
+        height: 500px;
+    }
+
+    .history-section {
+        padding: 160px 6% 50px 6%;
+    }
+
+    .history-header-flex {
+        gap: 30px;
+    }
+
+    .minimal-logo-container img {
+        width: 140px;
+    }
+
+    .history-slider-container {
+        padding: 30px;
+        margin-bottom: 60px;
+    }
+
+    .carousel-control {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+
+    .carousel-control.prev { left: -15px; }
+    .carousel-control.next { right: -15px; }
+
+    .carousel-item {
+        min-width: 400px;
+        height: 300px;
+    }
+
+    .visi-misi-minimal {
+        padding: 60px 10%;
+    }
+
+    .content-grid {
+        gap: 50px;
+    }
+
+    .struktur-minimal {
+        padding: 60px 10%;
+    }
+}
+
+/* =========================================
+   RESPONSIVE MOBILE (max-width: 768px)
+   ========================================= */
+@media (max-width: 768px) {
+    .header-banner {
+        height: 450px;
+    }
+
+    .history-section {
+        padding: 120px 5% 40px 5%;
+    }
+
+    .history-header-flex {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+
+    .minimal-logo-container img {
+        width: 100px;
+    }
+
+    .history-section h2 {
+        text-align: center;
+    }
+
+    .intro-p {
+        text-align: center;
+    }
+
+    .history-slider-container {
+        padding: 25px 20px;
+        margin-bottom: 50px;
+        border-radius: 20px;
+    }
+
+    .history-slider {
+        min-height: 200px;
+    }
+
+    .history-slide p {
+        text-align: center;
+    }
+
+    .slider-nav button {
+        width: 32px;
+        height: 32px;
+    }
+
+    .carousel-control {
+        display: none;
+    }
+
+    .carousel-horizontal {
+        gap: 20px;
+        padding: 15px 10px 30px;
+    }
+
+    .carousel-item {
+        min-width: 85vw;
+        height: 280px;
+    }
+
+    .carousel-item .caption {
+        padding: 20px;
+    }
+
+    .visi-misi-minimal {
+        padding: 50px 8%;
+    }
+
+    .content-grid {
+        grid-template-columns: 1fr;
+        gap: 50px;
+    }
+
+    .visi-box h3::after,
+    .misi-box h3::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .visi-box h3,
+    .misi-box h3 {
+        text-align: center;
+    }
+
+    .visi-box p {
+        text-align: center;
+    }
+
+    .misi-box li {
+        text-align: left;
+    }
+
+    .struktur-minimal {
+        padding: 50px 8%;
+    }
+
+    .struktur-minimal h3 {
+        margin-bottom: 40px;
+    }
+
+    .struktur-grid {
+        gap: 20px;
+    }
+
+    .member-card {
+        padding: 30px 20px;
+    }
+}
+
+/* =========================================
+   MOBILE KECIL (max-width: 480px)
+   ========================================= */
+@media (max-width: 480px) {
+    .header-banner {
+        height: 380px;
+    }
+
+    .history-section {
+        padding: 100px 4% 30px 4%;
+    }
+
+    .minimal-logo-container img {
+        width: 75px;
+    }
+
+    .history-slider-container {
+        padding: 20px 15px;
+        margin-bottom: 40px;
+        border-radius: 16px;
+    }
+
+    .history-slider {
+        min-height: 260px;
+    }
+
+    .slider-nav button {
+        width: 28px;
+        height: 28px;
+    }
+
+    .dot {
+        width: 6px;
+        height: 6px;
+    }
+
+    .dot.active {
+        width: 18px;
+    }
+
+    .carousel-item {
+        min-width: 90vw;
+        height: 220px;
+    }
+
+    .carousel-item .caption {
+        padding: 12px;
+    }
+
+    .visi-misi-minimal {
+        padding: 40px 5%;
+    }
+
+    .misi-box li {
+        padding-left: 32px;
+    }
+
+    .misi-box li::before {
+        width: 22px;
+        height: 22px;
+        font-size: 0.7rem;
+    }
+
+    .struktur-minimal {
+        padding: 40px 5%;
+    }
+
+    .member-card {
+        padding: 20px 12px;
+    }
+}
+
+/* =========================================
+   LANDSCAPE MODE (HP horizontal)
+   ========================================= */
+@media (max-width: 900px) and (orientation: landscape) {
+    .header-banner {
+        height: 400px;
+    }
+
+    .history-section {
+        padding: 100px 5% 30px 5%;
+    }
+
+    .history-header-flex {
+        gap: 15px;
+    }
+
+    .minimal-logo-container img {
+        width: 70px;
+    }
+
+    .history-slider {
+        min-height: 140px;
+    }
+
+    .carousel-item {
+        min-width: 60vw;
+        height: 200px;
+    }
+
+    .visi-misi-minimal {
+        padding: 30px 8%;
+    }
+
+    .struktur-minimal {
+        padding: 30px 8%;
+    }
+
+    .struktur-grid {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 15px;
+    }
+
+    .member-card {
+        padding: 20px 15px;
+    }
+}
+
+/* Utility */
+img {
+    max-width: 100%;
+    height: auto;
+}

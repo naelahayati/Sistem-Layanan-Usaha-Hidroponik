@@ -1,0 +1,320 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Playfair+Display:wght@700&display=swap");
+
+:root {
+    --blue-soft: rgba(11, 94, 215, 0.7);
+    --yellow-soft: rgba(242, 181, 11, 0.7);
+    --green-soft: rgba(45, 90, 39, 0.7);
+    --sage-green: #87a96b;
+    --dark-green: #1b3022;
+    --sun-yellow: #f2b50b;
+    --off-white: #f1f4f2;
+    --pure-white: #ffffff;
+    --text-soft: #707a6c;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--off-white);
+    font-family: "Montserrat", sans-serif;
+    overflow-x: hidden;
+}
+
+/* =========================================
+   HERO SECTION - SAMA SEPERTI HOME (GRADASI + CLAMP)
+   ========================================= */
+.produk-hero {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    background-image: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0) 65%,
+            var(--off-white) 100%
+        ),
+        linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+        url("/image/5.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    padding: 0 20px;
+}
+
+.hero-content h1 {
+    font-family: "Playfair Display", serif;
+    font-size: clamp(2.5rem, 8vw, 5.5rem);
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: clamp(2px, 2vw, 8px);
+    margin: 0;
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Hero Beli Link */
+.hero-beli-link {
+    display: inline-block;
+    margin-top: 20px;
+    color: var(--sun-yellow);
+    text-decoration: none;
+    font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+    font-style: italic;
+    font-weight: 500;
+    letter-spacing: 2px;
+    padding: 5px 0;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.hero-beli-link:hover,
+.hero-beli-link:active {
+    color: #ffffff;
+    transform: translateY(-3px);
+    text-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+}
+
+/* =========================================
+   PRODUK LIST - RESPONSIVE GRID
+   ========================================= */
+.container-produk-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(20px, 4vw, 45px);
+    max-width: 1100px;
+    margin: 120px auto 100px;
+    padding: 0 clamp(15px, 4vw, 20px);
+}
+
+/* =========================================
+   PRODUCT CARD - RESPONSIF
+   ========================================= */
+.produk-item {
+    background: var(--pure-white);
+    border-radius: clamp(20px, 4vw, 35px);
+    padding: clamp(15px, 3vw, 30px);
+    display: flex;
+    align-items: center;
+    gap: clamp(15px, 3vw, 35px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
+    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    border: 1px solid rgba(0, 0, 0, 0.01);
+    flex-wrap: wrap;
+}
+
+.produk-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 30px 60px rgba(135, 169, 107, 0.15);
+}
+
+/* Photo Box */
+.produk-photo-box {
+    flex: 0 0 clamp(100px, 20vw, 170px);
+    height: clamp(100px, 20vw, 150px);
+    border-radius: clamp(15px, 3vw, 25px);
+    overflow: hidden;
+    background: #f4f6f3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.produk-photo-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+}
+
+.produk-photo-box img.loaded {
+    opacity: 1;
+}
+
+/* Description Box */
+.produk-desc-box {
+    flex: 1;
+    min-width: 150px;
+}
+
+.produk-desc-box h2 {
+    font-size: clamp(1rem, 3vw, 1.6rem);
+    color: var(--dark-green);
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: clamp(1px, 0.5vw, 2px);
+    margin: 0 0 8px 0;
+    line-height: 1.3;
+}
+
+.price-tag {
+    font-size: clamp(0.9rem, 3vw, 1.4rem);
+    font-weight: 700;
+    color: var(--sage-green);
+    margin-bottom: 5px;
+}
+
+.stock-tag {
+    font-size: clamp(0.7rem, 2vw, 0.9rem);
+    color: var(--text-soft);
+    font-weight: 500;
+}
+
+.produk-deskripsi {
+    font-size: clamp(0.75rem, 2.2vw, 0.9rem);
+    color: var(--text-soft);
+    font-style: italic;
+    line-height: 1.6;
+    margin-top: clamp(8px, 2vw, 15px);
+    opacity: 0.8;
+}
+
+/* =========================================
+   RESPONSIVE TABLET (768px - 1024px)
+   ========================================= */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .produk-hero {
+        height: 500px;
+    }
+
+    .container-produk-list {
+        margin: 80px auto 60px;
+        gap: 30px;
+    }
+
+    .produk-item {
+        padding: 20px;
+    }
+
+    .produk-photo-box {
+        flex-basis: 120px;
+        height: 120px;
+    }
+}
+
+/* =========================================
+   RESPONSIVE MOBILE (max-width: 768px)
+   ========================================= */
+@media (max-width: 768px) {
+    .produk-hero {
+        height: 450px;
+    }
+
+    .container-produk-list {
+        grid-template-columns: 1fr;
+        margin: 60px auto 50px;
+        gap: 25px;
+    }
+
+    .produk-item {
+        flex-direction: column;
+        text-align: center;
+        padding: 25px 20px;
+    }
+
+    .produk-photo-box {
+        flex-basis: auto;
+        width: 140px;
+        height: 140px;
+        margin-bottom: 15px;
+    }
+
+    .produk-desc-box {
+        text-align: center;
+        padding-left: 0;
+    }
+
+    .produk-desc-box h2 {
+        letter-spacing: 1px;
+    }
+}
+
+/* =========================================
+   MOBILE KECIL (max-width: 480px)
+   ========================================= */
+@media (max-width: 480px) {
+    .produk-hero {
+        height: 380px;
+    }
+
+    .container-produk-list {
+        margin: 40px auto 40px;
+        gap: 20px;
+    }
+
+    .produk-item {
+        padding: 20px 15px;
+    }
+
+    .produk-photo-box {
+        width: 110px;
+        height: 110px;
+    }
+
+    .produk-desc-box h2 {
+        font-size: 1rem;
+    }
+
+    .price-tag {
+        font-size: 0.9rem;
+    }
+
+    .produk-deskripsi {
+        font-size: 0.7rem;
+        line-height: 1.5;
+    }
+
+    .hero-beli-link {
+        font-size: 0.8rem;
+        margin-top: 10px;
+    }
+}
+
+/* =========================================
+   LANDSCAPE MODE (HP horizontal)
+   ========================================= */
+@media (max-width: 900px) and (orientation: landscape) {
+    .produk-hero {
+        height: 400px;
+    }
+
+    .container-produk-list {
+        margin: 50px auto 40px;
+    }
+
+    .produk-item {
+        flex-direction: row;
+        text-align: left;
+        padding: 20px;
+    }
+
+    .produk-photo-box {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 0;
+    }
+
+    .produk-desc-box {
+        text-align: left;
+    }
+}
+
+/* =========================================
+   UTILITY
+   ========================================= */
+img {
+    max-width: 100%;
+    height: auto;
+}
