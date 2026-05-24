@@ -542,7 +542,8 @@ body {
     }
 
     .history-slider {
-        min-height: 200px;
+        min-height: 100px;
+        max-height: 130px;
     }
 
     .history-slide p {
@@ -640,7 +641,8 @@ body {
     }
 
     .history-slider {
-        min-height: 260px;
+        min-height: 88px;
+        max-height: 115px;
     }
 
     .slider-nav button {

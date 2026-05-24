@@ -1,5 +1,9 @@
 @extends('admin.Theme.defualt')
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/admin/kelola_admin_form.css') }}">
+@endpush
+
 @section('content')
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -21,7 +25,7 @@
     </div>
 </div>
 
-<section class="content">
+<section class="content page-admin-form">
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">

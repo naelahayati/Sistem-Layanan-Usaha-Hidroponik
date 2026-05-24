@@ -129,7 +129,16 @@ class AdminController extends Controller
         $orders = Order::with('user')
             ->whereNotIn('status', ['Expired', 'Dibatalkan Pengguna'])
             ->when($status, function ($query, $status) {
+                if ($status == 'offline') {
+                    return $query->where('is_offline', 1);
+                }
                 return $query->where('status', $status);
+            })
+            ->when($status != 'offline', function ($query) use ($status) {
+                if ($status == 'Selesai') {
+                    return $query;
+                }
+                return $query->where('is_offline', 0);
             })
             ->when($date, function ($query, $date) {
                 return $query->whereDate('created_at', $date);
@@ -196,14 +205,31 @@ class AdminController extends Controller
     /**
      * Menampilkan daftar semua user (kecuali admin)
      */
-    public function daftarUser()
+    public function daftarUser(Request $request)
     {
         if (!$this->isAdmin()) {
             return redirect()->route("login")->with("error", "Akses ditolak.");
         }
 
-        $users = User::where("role", "!=", "admin")->get();
-        return view("admin.daftar_user", ["users" => $users]);
+        $filter = $request->input('filter', 'online');
+        if (!in_array($filter, ['online', 'offline'], true)) {
+            $filter = 'online';
+        }
+
+        $query = User::where("role", "!=", "admin");
+
+        if ($filter === 'offline') {
+            $query->where('username', 'like', 'offline_%');
+        } else {
+            $query->where(function ($q) {
+                $q->where('username', 'not like', 'offline_%')
+                  ->orWhereNull('username');
+            });
+        }
+
+        $users = $query->get();
+
+        return view("admin.daftar_user", compact("users", "filter"));
     }
 
     /**
@@ -1455,12 +1481,16 @@ class AdminController extends Controller
 
             // Logika Pencocokan Filter Tab
             $statusMatch = false;
-            if (!$statusFilter || $statusFilter == '' || $statusFilter == 'Semua') {
-                $statusMatch = true;
-            } elseif ($statusFilter == 'Diterima') {
-                $statusMatch = ($k->status_pembayaran == 'Diterima');
+            if ($statusFilter == 'offline') {
+                $statusMatch = ($k->is_offline == 1);
             } else {
-                $statusMatch = ($k->status_kunjungan_filter == $statusFilter);
+                if (!$statusFilter || $statusFilter == '' || $statusFilter == 'Semua') {
+                    $statusMatch = ($k->is_offline == 0);
+                } elseif ($statusFilter == 'Diterima') {
+                    $statusMatch = ($k->status_pembayaran == 'Diterima');
+                } else {
+                    $statusMatch = ($k->status_kunjungan_filter == $statusFilter);
+                }
             }
 
             // Filter Pencarian
@@ -1560,7 +1590,7 @@ class AdminController extends Controller
             if ($m->status_pembayaran == 'Menunggu Pembayaran' && $m->expires_at && \Carbon\Carbon::parse($m->expires_at)->isPast()) {
                 DB::table('pendaftaran_magang')
                     ->where('id_pendaftaran', $m->id_pendaftaran)
-                    ->update(['status_pembayaran' => 'Expired', 'updated_at' => now()]);
+                    ->update(['status_pembayaran' => 'Expired', 'expires_at' => null, 'updated_at' => now()]);
                 $m->status_pembayaran = 'Expired';
             }
 
@@ -1607,10 +1637,18 @@ class AdminController extends Controller
             }
 
             // Penyesuaian Filter Status Match
-            if ($statusFilter == 'Diterima') {
-                $statusMatch = ($m->status_pembayaran == 'Diterima');
+            if ($statusFilter == 'offline') {
+                $statusMatch = ($m->is_offline == 1);
             } else {
-                $statusMatch = (!$statusFilter || $statusFilter == 'Semua' || $m->status_magang_filter == $statusFilter);
+                if ($statusFilter == 'Diterima') {
+                    $statusMatch = ($m->status_pembayaran == 'Diterima');
+                } else {
+                    $statusMatch = (!$statusFilter || $statusFilter == 'Semua' || $m->status_magang_filter == $statusFilter);
+                }
+                
+                if (!$statusFilter || $statusFilter == 'Semua') {
+                    $statusMatch = $statusMatch && ($m->is_offline == 0);
+                }
             }
 
             $dateMatch = true;
@@ -1682,9 +1720,19 @@ class AdminController extends Controller
             'status' => 'required|string'
         ]);
 
+        $update = [
+            'status_pembayaran' => $request->status,
+            'updated_at' => now(),
+        ];
+
+        if ($request->status === 'Terkonfirmasi') {
+            $update['expires_at'] = null;
+            $update['midtrans_order_id'] = null;
+        }
+
         DB::table('pendaftaran_magang')
             ->where('id_pendaftaran', $id)
-            ->update(['status_pembayaran' => $request->status, 'updated_at' => now()]);
+            ->update($update);
 
         return response()->json(["success" => true, "message" => "Status pendaftaran berhasil diperbarui"]);
     }
@@ -1720,5 +1768,314 @@ class AdminController extends Controller
         }
 
         return response()->json(["success" => true, "message" => "Pengaturan berhasil diperbarui"]);
+    }
+
+    public function searchUsersOfflineTransaksi(Request $request)
+    {
+        if (!$this->isAdmin()) {
+            return response()->json(["success" => false, "message" => "Akses ditolak"], 403);
+        }
+
+        $search = $request->input('search', '');
+        $type = $request->input('type', 'online'); // 'online' atau 'offline'
+
+        $query = User::where('role', 'user');
+
+        if ($type === 'offline') {
+            $query->where('username', 'like', 'offline_%');
+        } else {
+            $query->where(function($q) {
+                $q->where('username', 'not like', 'offline_%')
+                  ->orWhereNull('username');
+            });
+        }
+
+        if (!empty($search)) {
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                  ->orWhere('username', 'like', '%' . $search . '%');
+            });
+        }
+
+        $users = $query->limit(20)->get(['id', 'name', 'username', 'nohp', 'email']);
+
+        return response()->json($users);
+    }
+    public function transaksiOffline(Request $request)
+    {
+        if (!$this->isAdmin()) {
+            return redirect()->route("login")->with("error", "Akses ditolak.");
+        }
+
+        $products = Product::orderBy('name', 'asc')->get();
+        $kunjungans = DB::table('kunjungans')->orderBy('name', 'asc')->get();
+        $magangs = DB::table('magangs')->orderBy('name', 'asc')->get();
+
+        return view("admin.transaksi_offline", compact("products", "kunjungans", "magangs"));
+    }
+
+    public function storeTransaksiOfflineProduk(Request $request)
+    {
+        if (!$this->isAdmin()) {
+            return response()->json(["success" => false, "message" => "Akses ditolak"], 403);
+        }
+
+        $request->validate([
+            'tipe_pembeli_prod' => 'required|in:online,offline',
+            'metode_pembayaran' => 'required|in:tunai,qris',
+            'items' => 'required|array|min:1',
+            'items.*.product_id' => 'required|exists:products,id',
+            'items.*.quantity' => 'required|integer|min:1',
+        ]);
+
+        if ($request->tipe_pembeli_prod === 'online') {
+            $request->validate(['user_id_online_prod' => 'required|exists:users,id']);
+        } else {
+            $request->validate(['nama_pembeli_offline_prod' => 'required|string|max:255']);
+        }
+
+        DB::beginTransaction();
+        try {
+            $totalQty = 0;
+            $grandTotal = 0;
+            $itemsData = [];
+
+            // 1. Validasi stok untuk semua produk terlebih dahulu
+            foreach ($request->items as $item) {
+                $product = Product::findOrFail($item['product_id']);
+                if ($product->stock < $item['quantity']) {
+                    return response()->json([
+                        "success" => false, 
+                        "message" => "Stok produk '" . $product->name . "' tidak mencukupi. Stok saat ini: " . $product->stock . " kg"
+                    ], 400);
+                }
+                
+                $subtotal = $product->price * $item['quantity'];
+                $totalQty += $item['quantity'];
+                $grandTotal += $subtotal;
+
+                $itemsData[] = [
+                    'product' => $product,
+                    'quantity' => $item['quantity'],
+                    'price' => $product->price,
+                ];
+            }
+
+            // 2. Gunakan User Existing atau Buat User Offline
+            if ($request->tipe_pembeli_prod === 'online') {
+                $user = User::findOrFail($request->user_id_online_prod);
+            } else {
+                $nama = $request->nama_pembeli_offline_prod;
+                $user = User::where('name', $nama)->where('role', 'user')->where('username', 'like', 'offline_%')->first();
+                if (!$user) {
+                    $username = 'offline_prod_' . time() . '_' . rand(100, 999);
+                    $email = $username . '@nazfram.com';
+                    $user = User::create([
+                        'name' => $nama,
+                        'username' => $username,
+                        'email' => $email,
+                        'role' => 'user',
+                        'status' => 'active',
+                        'password' => bcrypt(\Illuminate\Support\Str::random(10)),
+                        'nohp' => $request->input('no_hp_prod', '-'),
+                        'alamat' => 'Ambil Di Tempat (Offline)',
+                    ]);
+                } elseif ($request->filled('no_hp_prod')) {
+                    $user->update(['nohp' => $request->no_hp_prod]);
+                }
+            }
+
+            // 3. Buat Order
+            $order = Order::create([
+                'user_id' => $user->id,
+                'total_produk' => $totalQty,
+                'ongkir' => 0,
+                'grand_total' => $grandTotal,
+                'metode_pembayaran' => $request->metode_pembayaran,
+                'metode_pengiriman' => 'Ambil Di Tempat',
+                'alamat' => 'Ambil Di Tempat (Offline)',
+                'jarak' => 0,
+                'status' => 'Selesai',
+                'is_offline' => 1,
+            ]);
+
+            // 4. Buat OrderItems & Decrement Stock
+            foreach ($itemsData as $itemData) {
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $itemData['product']->id,
+                    'quantity' => $itemData['quantity'],
+                    'price' => $itemData['price'],
+                ]);
+
+                $itemData['product']->decrement('stock', $itemData['quantity']);
+            }
+
+            DB::commit();
+            return response()->json(["success" => true, "message" => "Transaksi produk offline berhasil dicatat!"]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(["success" => false, "message" => "Terjadi kesalahan: " . $e->getMessage()], 500);
+        }
+    }
+
+    public function storeTransaksiOfflineKunjungan(Request $request)
+    {
+        if (!$this->isAdmin()) {
+            return response()->json(["success" => false, "message" => "Akses ditolak"], 403);
+        }
+
+        $request->validate([
+            'tipe_pembeli_kun'  => 'required|in:online,offline',
+            'instansi'        => 'required|string|max:255',
+            'tanggal_reservasi' => 'required|date',
+            'id_kunjungan'    => 'required|exists:kunjungans,id',
+            'jumlah_peserta'  => 'required|integer|min:1',
+            'metode_pembayaran' => 'required|in:tunai,qris',
+        ]);
+
+        if ($request->tipe_pembeli_kun === 'online') {
+            $request->validate(['user_id_online_kun' => 'required|exists:users,id']);
+        } else {
+            $request->validate([
+                'nama_pembeli_offline_kun' => 'required|string|max:255',
+                'no_wa'           => 'required|string|max:20'
+            ]);
+        }
+
+        $paket = DB::table('kunjungans')->where('id', $request->id_kunjungan)->first();
+
+        if ($request->jumlah_peserta < $paket->min_people) {
+            return response()->json(["success" => false, "message" => "Jumlah peserta minimal untuk paket ini adalah " . $paket->min_people . " orang."], 400);
+        }
+        if ($paket->max_people && $request->jumlah_peserta > $paket->max_people) {
+            return response()->json(["success" => false, "message" => "Jumlah peserta maksimal untuk paket ini adalah " . $paket->max_people . " orang."], 400);
+        }
+
+        DB::beginTransaction();
+        try {
+            if ($request->tipe_pembeli_kun === 'online') {
+                $user = User::findOrFail($request->user_id_online_kun);
+            } else {
+                $nama = $request->nama_pembeli_offline_kun;
+                $user = User::where('name', $nama)->where('role', 'user')->where('username', 'like', 'offline_%')->first();
+                if (!$user) {
+                    $username = 'offline_kun_' . time() . '_' . rand(100, 999);
+                    $email = $username . '@nazfram.com';
+                    $user = User::create([
+                        'name'     => $nama,
+                        'username' => $username,
+                        'email'    => $email,
+                        'role'     => 'user',
+                        'status'   => 'active',
+                        'password' => bcrypt(\Illuminate\Support\Str::random(10)),
+                        'nohp'     => $request->no_wa,
+                        'alamat'   => $request->instansi,
+                    ]);
+                } else {
+                    if ($request->filled('no_wa')) $user->update(['nohp' => $request->no_wa]);
+                    $user->update(['alamat' => $request->instansi]);
+                }
+            }
+
+            $total_harga = $paket->price * $request->jumlah_peserta;
+
+            DB::table('reservasi_kunjungan')->insert([
+                'id_user' => $user->id,
+                'id_kunjungan' => $paket->id,
+                'tanggal_reservasi' => $request->tanggal_reservasi,
+                'jumlah_peserta' => $request->jumlah_peserta,
+                'instansi' => $request->instansi,
+                'total_harga' => $total_harga,
+                'metode_pembayaran' => $request->metode_pembayaran,
+                'status_pembayaran' => 'Diterima',
+                'is_offline' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            DB::commit();
+            return response()->json(["success" => true, "message" => "Transaksi kunjungan offline berhasil dicatat!"]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(["success" => false, "message" => "Terjadi kesalahan: " . $e->getMessage()], 500);
+        }
+    }
+
+    public function storeTransaksiOfflineMagang(Request $request)
+    {
+        if (!$this->isAdmin()) {
+            return response()->json(["success" => false, "message" => "Akses ditolak"], 403);
+        }
+
+        $request->validate([
+            'tipe_pembeli_mag'  => 'required|in:online,offline',
+            'instansi'        => 'required|string|max:255',
+            'tanggal_magang'  => 'required|date',
+            'id_magang'       => 'required|exists:magangs,id',
+            'durasi_magang'   => 'required|integer|min:1',
+            'metode_pembayaran' => 'required|in:tunai,qris',
+        ]);
+
+        if ($request->tipe_pembeli_mag === 'online') {
+            $request->validate(['user_id_online_mag' => 'required|exists:users,id']);
+        } else {
+            $request->validate([
+                'nama_pembeli_offline_mag' => 'required|string|max:255',
+                'no_wa'           => 'required|string|max:20'
+            ]);
+        }
+
+        $paket = DB::table('magangs')->where('id', $request->id_magang)->first();
+
+        DB::beginTransaction();
+        try {
+            if ($request->tipe_pembeli_mag === 'online') {
+                $user = User::findOrFail($request->user_id_online_mag);
+            } else {
+                $nama = $request->nama_pembeli_offline_mag;
+                $user = User::where('name', $nama)->where('role', 'user')->where('username', 'like', 'offline_%')->first();
+                if (!$user) {
+                    $username = 'offline_mag_' . time() . '_' . rand(100, 999);
+                    $email = $username . '@nazfram.com';
+                    $user = User::create([
+                        'name'     => $nama,
+                        'username' => $username,
+                        'email'    => $email,
+                        'role'     => 'user',
+                        'status'   => 'active',
+                        'password' => bcrypt(\Illuminate\Support\Str::random(10)),
+                        'nohp'     => $request->no_wa,
+                        'alamat'   => $request->instansi,
+                    ]);
+                } else {
+                    if ($request->filled('no_wa')) $user->update(['nohp' => $request->no_wa]);
+                    $user->update(['alamat' => $request->instansi]);
+                }
+            }
+
+            $total_harga = $paket->price * $request->durasi_magang;
+
+            DB::table('pendaftaran_magang')->insert([
+                'id_user' => $user->id,
+                'id_magang' => $paket->id,
+                'pekerjaan' => $request->instansi,
+                'tanggal_magang' => $request->tanggal_magang,
+                'durasi_magang' => $request->durasi_magang,
+                'deskripsi_kemampuan' => 'Pendaftaran Offline',
+                'metode_pembayaran' => $request->metode_pembayaran,
+                'status_pembayaran' => 'Diterima',
+                'total_harga' => $total_harga,
+                'is_offline' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            DB::commit();
+            return response()->json(["success" => true, "message" => "Transaksi magang offline berhasil dicatat!"]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(["success" => false, "message" => "Terjadi kesalahan: " . $e->getMessage()], 500);
+        }
     }
 }

@@ -1,0 +1,114 @@
+﻿/* CUSTOM MODERN SIDEBAR NAZ HIDROFARM */
+
+/* Sidebar Background - Solid Blue Menyamakan Top Navbar */
+.main-sidebar.custom-sidebar {
+    background-color: #72A8D8 !important; /* Warna biru sesuai pesanan */
+    border-right: none !important;
+}
+
+.main-sidebar.custom-sidebar, 
+.main-sidebar.custom-sidebar .brand-link {
+    background-color: #72A8D8 !important; 
+    border-right: none !important;
+}
+
+/* Teks putih bersih */
+.custom-sidebar .nav-link,
+.custom-sidebar .brand-text,
+.custom-sidebar .user-panel a {
+    color: #ffffff !important;
+}
+
+/* Hilangkan border bawah bawaan AdminLTE */
+.custom-sidebar .brand-link, .custom-sidebar .user-panel {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Nav Item (Bentuk Pill Modern) */
+.custom-sidebar .nav-pills .nav-link {
+    border-radius: 8px !important;
+    margin: 1px 8px !important; /* Jarak lebih rapat ke bawah, beri sela ke samping */
+    transition: all 0.2s ease-in-out;
+    padding: 8px 12px;
+}
+
+/* Saat menu Utama SEDANG AKTIF (Pill warna gelap) */
+.custom-sidebar .nav-pills .nav-link.active {
+    background-color: #0b5ed7 !important; /* Deep Royal Blue */
+    color: #ffffff !important;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.2) !important;
+}
+
+/* Saat anak menu SEDANG AKTIF (Warna lebih soft) */
+.custom-sidebar .nav-pills .nav-link.active-sub {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+    font-weight: bold;
+}
+
+/* Efek Sorotan saat Di-hover */
+.custom-sidebar .nav-pills .nav-link:not(.active):hover {
+    background-color: rgba(255,255,255,0.15) !important;
+}
+
+/* Memperkecil dan mengedepankan jarak Ikon dengan Teks */
+.custom-sidebar .nav-icon {
+    font-size: 1.15rem;
+    width: 30px;
+    text-align: center;
+}
+
+/* Header Text (Kategori Navigasi) */
+.custom-sidebar .nav-header {
+    color: #ffffff !important;
+    background-color: transparent !important;
+    font-size: 0.8rem;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    padding-top: 15px;
+    padding-bottom: 5px;
+}
+
+/* Anak Menu (Sub-menu) Layout */
+.custom-sidebar .nav-treeview {
+    padding-top: 2px;
+}
+.custom-sidebar .nav-treeview > .nav-item > .nav-link {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+    margin-left: 12px !important; /* Memberikan efek berjenjang */
+}
+
+/* Tombol Logout Merah */
+.custom-sidebar .btn-logout {
+    background-color: rgba(220, 53, 69, 0.8) !important;
+    border-radius: 10px !important;
+    margin-top: 15px !important;
+}
+.custom-sidebar .btn-logout:hover {
+    background-color: #c82333 !important;
+}
+
+/* MENGATASI TRANSISI SIDEBAR MENGECIL & MEMBESAR */
+body.sidebar-collapse .custom-sidebar:not(:hover) .nav-pills .nav-link {
+    margin: 10px auto !important;
+    padding: 0 !important;
+    width: 2.8rem !important;
+    height: 2.8rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+body.sidebar-collapse .custom-sidebar:not(:hover) .nav-treeview > .nav-item > .nav-link {
+    margin: 10px auto !important;
+    padding: 0 !important;
+    justify-content: center !important;
+}
+body.sidebar-collapse .custom-sidebar:not(:hover) .nav-icon {
+    margin: 0 !important;
+    width: auto !important;
+    font-size: 1.2rem !important;
+}
+body.sidebar-collapse .custom-sidebar:not(:hover) .nav-header {
+    display: none !important; 
+}

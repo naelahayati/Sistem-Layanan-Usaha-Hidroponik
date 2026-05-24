@@ -550,3 +550,17 @@
         -webkit-overflow-scrolling: touch;
     }
 }
+
+/* Small-box icon hover (from blade) */
+.small-box .icon {
+    top: 0;
+    right: 20px;
+    z-index: 0;
+    font-size: 60px;
+    color: rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s linear;
+}
+
+.small-box:hover .icon {
+    transform: scale(1.1);
+}

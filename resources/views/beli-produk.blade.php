@@ -2,29 +2,28 @@
 
 @section('konten')
 <link rel="stylesheet" href="/css/stylebeli-produk.css">
-<div class="page-wrapper">
+<div class="page-wrapper beli-produk-page">
     <!-- Header Tanaman Hidroponik -->
-    <header class="product-header">
+    <header class="product-header page-header-sub">
         <h1>BELI PRODUK</h1>
     </header>
 
     <!-- Floating Search & Nav Bar dengan Tombol Kembali -->
     <nav class="action-bar">
-        <a class="btn-back" href="{{ route('nazfram.produk') }}" title="Kembali">
-            <i class="fas fa-chevron-left"></i>Kembali
+        <a class="btn-back" href="{{ route('nazfram.produk') }}" title="Kembali" aria-label="Kembali">
+            <i class="fas fa-chevron-left" aria-hidden="true"></i>
         </a>
         <div class="search-input">
             <input id="searchProduk" type="text" placeholder="Cari sayur dan buah segar..." autocomplete="off">
             <i class="fas fa-search" style="color: #ccc; font-size: 1.1rem;"></i>
         </div>
-        <a class="btn-cart" href="{{ route('nazfram.keranjang') }}" title="Lihat Keranjang">
+        <a class="btn-cart" href="{{ route('nazfram.keranjang') }}" title="Keranjang" aria-label="Keranjang">
             <div class="cart-icon-wrapper">
-                <i class="fas fa-shopping-basket"></i>
+                <i class="fas fa-shopping-basket" aria-hidden="true"></i>
                 <span id="cartBadge" class="cart-badge" style="{{ ($cartCount ?? 0) > 0 ? '' : 'display:none;' }}">
                     {{ $cartCount ?? 0 }}
                 </span>
             </div>
-            <span class="btn-cart-text">KERANJANG</span>
         </a>
     </nav>
 
@@ -68,14 +67,12 @@
                     <div class="item-price">Rp {{ number_format($p->price, 0, ',', '.') }}</div>
                 </div>
 
-                <!-- Kontrol Kuantitas Interaktif (Start from 0) -->
                 <div class="qty-control">
                     <button type="button" class="btn-qty btn-minus" onclick="changeQty(this, -1)" disabled>-</button>
-                    <span class="qty-display">0</span> <span style="font-size:0.8rem; color:#666;">kg</span>
+                    <span class="qty-display">0</span> <span class="qty-unit">kg</span>
                     <button type="button" class="btn-qty btn-plus" onclick="changeQty(this, 1)" {{ $p->stock <= 0 ? 'disabled' : '' }}>+</button>
                 </div>
 
-                <!-- Tombol ADD (Disabled if qty 0) -->
                 <button class="btn-add" type="submit" disabled>
                     {{ $p->stock <= 0 ? 'Habis' : 'ADD' }}
                 </button>

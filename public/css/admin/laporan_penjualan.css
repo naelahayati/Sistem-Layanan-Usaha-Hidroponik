@@ -1,0 +1,14 @@
+﻿.font-weight-600 { font-weight: 600; }
+    .table-hover tbody tr:hover { background-color: rgba(78, 115, 223, 0.03); }
+    .uppercase { text-transform: uppercase; letter-spacing: 1px; font-size: 0.7rem; }
+    
+    @media print {
+        .content-header, .main-sidebar, .main-header, .main-footer, .d-print-none { display: none !important; }
+        .content-wrapper { margin-left: 0 !important; background: #fff !important; }
+        .card { box-shadow: none !important; border: none !important; }
+        .table { border: 1px solid #e3e6f0; }
+        .table thead th { background-color: #f8f9fc !important; color: #333 !important; border-bottom: 2px solid #e3e6f0 !important; }
+        .table td, .table th { border: 1px solid #e3e6f0 !important; padding: 12px !important; }
+        .d-print-table-row { display: table-row !important; }
+        .d-none.d-print-table-row { display: table-row !important; }
+    }

@@ -5,7 +5,7 @@
 
 
 <main class="kunjungan-page">
-    <header class="kunjungan-banner">
+    <header class="kunjungan-banner page-header-main">
         <h1>KUNJUNGAN</h1>
         <a href="{{ route('reservasi.riwayat') }}" class="hero-riwayat-link">Cek Riwayat Reservasi <i class="fas fa-arrow-right"></i></a>
     </header>

@@ -1,6 +1,7 @@
-@extends('master')
+﻿@extends('master')
 
 @section('konten')
+<link rel="stylesheet" href="{{ asset('css/pengguna/reservasi_kunjungan.css') }}">
 <!-- FullCalendar Dependencies -->
 <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
@@ -8,51 +9,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
 {{-- Menggunakan CSS pelatihan untuk menyamakan tampilan form --}}
 <link rel="stylesheet" href="{{ asset('css/stylekunjungan.css') }}?v={{ time() }}">
-
-<style>
-    /* Mengembalikan Banner Kunjungan */
-    .kunjungan-header-form {
-        position: relative;
-        width: 100%;
-        height: 300px;
-        background-image:
-            linear-gradient(to bottom, rgba(255, 255, 255, 0) 65%, rgba(255, 255, 255, 1) 100%),
-            linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)),
-            url("{{ asset('image/kunjungan.webp') }}") !important;
-        background-size: cover !important;
-        background-position: center 40% !important;
-        background-repeat: no-repeat;
-        display: flex;
-        padding-top: 80px;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-    }
-    .kunjungan-header-form h1 {
-        font-family: "Playfair Display", serif;
-        font-size: 4.2rem;
-        color: #ffffff;
-        letter-spacing: 12px;
-        text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    }
-
-    /* Tetapkan hari Sabtu dan Minggu berwarna merah */
-    #calendar-reservasi .fc-day-sun,
-    #calendar-reservasi .fc-day-sat {
-        background-color: #fff1f1 !important;
-    }
-    #calendar-reservasi .fc-day-sun .fc-daygrid-day-number,
-    #calendar-reservasi .fc-day-sat .fc-daygrid-day-number {
-        color: #d9534f !important;
-        font-weight: 700 !important;
-    }
-
-    /* Warna hijau saat tanggal dipilih (diklik) dihapus agar mengikuti default soft FullCalendar seperti di Magang */
-</style>
-
-<div class="reservasi-page-wrapper">
-    <header class="kunjungan-header-form">
+<div class="reservasi-page-wrapper kunjungan-page">
+    <header class="kunjungan-header-form page-header-sub">
         <h1>RESERVASI</h1>
     </header>
 
@@ -130,7 +88,7 @@
 
                 <div class="form-actions-modern" style="margin-top: 30px;">
                     <div style="margin-top: 40px;">
-                        <button type="submit" id="btn-submit-reservasi" class="btn-Daftar" style="width: 100%; justify-content: center; font-size: 1.2rem; padding: 18px;">
+                        <button type="submit" id="btn-submit-reservasi" class="btn-Daftar btn-daftar-form-full">
                             Daftar
                         </button>
                     </div>
@@ -156,44 +114,48 @@
 
         // Inisialisasi Kalender
         if (calendarEl) {
+            function isKunjunganDateAllowed(start) {
+                const day = start.day();
+                if (day === 0 || day === 6) return false;
+                const minDate = moment().add(3, 'days').startOf('day');
+                if (start.isBefore(minDate)) return false;
+                const dateStr = start.format('YYYY-MM-DD');
+                const overlapping = calendar.getEvents().some(event => {
+                    if (event.display === 'background') {
+                        const evStart = moment(event.start).format('YYYY-MM-DD');
+                        const evEnd = event.end ? moment(event.end).format('YYYY-MM-DD') : moment(event.start).add(1, 'days').format('YYYY-MM-DD');
+                        return moment(dateStr).isSameOrAfter(evStart) && moment(dateStr).isBefore(evEnd);
+                    }
+                    return false;
+                });
+                return !overlapping;
+            }
+
             calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
                 locale: 'id',
                 firstDay: 0,
                 selectable: true,
                 unselectAuto: false,
+                selectLongPressDelay: 0,
+                longPressDelay: 0,
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
                     right: ''
                 },
-                events: "{{ route('nazfram.pelatihan.events') }}?type=kunjungan", // Mengambil hari libur dan status sold out kunjungan
+                events: "{{ route('nazfram.pelatihan.events') }}?type=kunjungan",
                 selectAllow: function(selectInfo) {
-                    const start = moment(selectInfo.start);
-                    const day = start.day();
-
-                    // 1. Hari Sabtu dan Minggu dilarang (Libur)
-                    if (day === 0 || day === 6) return false;
-
-                    // 2. Hari lampau dan minimal H+3 dilarang
-                    const minDate = moment().add(3, 'days').startOf('day');
-                    if (start.isBefore(minDate)) return false;
-
-                    // 3. Cek apakah bertabrakan dengan hari libur (event background "TUTUP")
-                    const dateStr = start.format('YYYY-MM-DD');
-                    const overlapping = calendar.getEvents().some(event => {
-                        if (event.display === 'background') {
-                            const evStart = moment(event.start).format('YYYY-MM-DD');
-                            const evEnd = event.end ? moment(event.end).format('YYYY-MM-DD') : moment(event.start).add(1, 'days').format('YYYY-MM-DD');
-                            return moment(dateStr).isSameOrAfter(evStart) && moment(dateStr).isBefore(evEnd);
-                        }
-                        return false;
-                    });
-
-                    return !overlapping;
+                    return isKunjunganDateAllowed(moment(selectInfo.start));
                 },
                 select: function(info) {
                     inputTanggal.value = info.startStr;
+                    hitungTotal();
+                },
+                dateClick: function(info) {
+                    const start = moment(info.date);
+                    if (!isKunjunganDateAllowed(start)) return;
+                    inputTanggal.value = info.dateStr;
                     hitungTotal();
                 }
             });
@@ -245,3 +207,5 @@
     });
 </script>
 @endsection
+
+

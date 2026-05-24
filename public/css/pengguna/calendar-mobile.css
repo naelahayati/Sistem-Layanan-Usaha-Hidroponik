@@ -1,0 +1,61 @@
+/**
+ * FullCalendar — perbaikan tap/klik di HP & tablet
+ */
+#calendar-reservasi,
+#calendar-pendaftaran {
+    position: relative;
+    z-index: 2;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+#calendar-reservasi .fc-daygrid-day,
+#calendar-pendaftaran .fc-daygrid-day {
+    cursor: pointer;
+}
+
+#calendar-reservasi .fc-daygrid-day-frame,
+#calendar-pendaftaran .fc-daygrid-day-frame {
+    min-height: 2.75rem;
+    pointer-events: auto !important;
+    touch-action: manipulation;
+}
+
+#calendar-reservasi .fc-bg-event,
+#calendar-pendaftaran .fc-bg-event {
+    pointer-events: none !important;
+}
+
+#calendar-reservasi .fc-daygrid-day-number,
+#calendar-pendaftaran .fc-daygrid-day-number {
+    pointer-events: none;
+}
+
+#calendar-reservasi .fc-button,
+#calendar-pendaftaran .fc-button {
+    touch-action: manipulation;
+}
+
+@media (max-width: 991.98px) {
+    #calendar-reservasi,
+    #calendar-pendaftaran {
+        padding: 8px !important;
+    }
+
+    #calendar-reservasi .fc-toolbar-title,
+    #calendar-pendaftaran .fc-toolbar-title {
+        font-size: 0.95rem !important;
+    }
+
+    #calendar-reservasi .fc-button,
+    #calendar-pendaftaran .fc-button {
+        padding: 4px 8px !important;
+        font-size: 0.75rem !important;
+    }
+
+    #calendar-reservasi .fc-daygrid-day-number,
+    #calendar-pendaftaran .fc-daygrid-day-number {
+        font-size: 0.8rem !important;
+        padding: 4px !important;
+    }
+}

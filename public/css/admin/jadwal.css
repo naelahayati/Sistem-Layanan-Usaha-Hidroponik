@@ -1,0 +1,122 @@
+:root {
+        --pkl-blue: #0056b3;
+        --umum-blue: #4db8ff;
+        --kunjungan-green: #218838;
+        --libur-red: #c82333;
+        --bg-glass: rgba(255, 255, 255, 0.98);
+    }
+    
+    #calendar {
+        background: #fff;
+        padding: 15px;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        border: 1px solid #edf2f7;
+        width: 100%;
+    }
+
+    /* Minimalist Events: Small Pills/Dots */
+    .fc-event {
+        cursor: pointer;
+        border: none !important;
+        border-radius: 10px !important; /* Rounded pills */
+        height: 6px !important;
+        margin: 2px auto !important; /* Center horizontally */
+        width: 80% !important; /* Not full width */
+        position: relative;
+        display: block !important;
+    }
+    .fc-event-title-container, .fc-event-title, .fc-event-time {
+        display: none !important; /* Hide text */
+    }
+
+    .fc-daygrid-day-number {
+        font-weight: 500;
+        color: #4a5568;
+        font-size: 0.9rem;
+    }
+    .fc-col-header-cell-cushion {
+        color: #718096;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        padding: 10px 0 !important;
+    }
+    
+    .fc-day-sat, .fc-day-sun {
+        background-color: #fff1f1 !important;
+    }
+    .fc-day-sat .fc-daygrid-day-number, .fc-day-sun .fc-daygrid-day-number, .fc-day-libur-marker .fc-daygrid-day-number {
+        color: #d9534f !important;
+        font-weight: 700;
+    }
+
+    /* Holiday Marker (Hidden as JS handles the cell color & click) */
+    .event-libur-bg {
+        display: none !important;
+    }
+    
+    /* Ensure the date number is visible */
+    .fc-daygrid-day-top {
+        position: relative;
+        z-index: 5 !important;
+    }
+
+    .event-magang-pkl { background-color: var(--pkl-blue) !important; position: relative; z-index: 10; }
+    .event-magang-umum { background-color: var(--umum-blue) !important; position: relative; z-index: 10; }
+    .event-kunjungan { background-color: var(--kunjungan-green) !important; position: relative; z-index: 10; }
+
+    .card-premium {
+        border-radius: 16px;
+        border: 1px solid #edf2f7;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+    }
+    
+    .custom-box {
+        border-radius: 8px !important;
+        border: 1px solid #e2e8f0 !important;
+        padding: 8px 12px !important;
+        font-size: 0.9rem;
+    }
+
+    .fc-day-today {
+        background-color: #ebf8ff !important;
+        border: 2px solid #3182ce !important;
+        z-index: 1;
+    }
+    .fc-day-today .fc-daygrid-day-number {
+        color: #2c5282 !important;
+        background: #bee3f8;
+        border-radius: 4px;
+        padding: 2px 8px !important;
+        margin: 4px;
+        font-weight: 800;
+    }
+
+    .legend-dot {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-right: 5px;
+    }
+
+@media (max-width: 991.98px) {
+    #calendar {
+        padding: 10px;
+        border-radius: 12px;
+    }
+
+    .fc-toolbar-title {
+        font-size: clamp(0.85rem, 3vw, 1rem) !important;
+    }
+
+    .fc-button {
+        font-size: clamp(0.7rem, 2.5vw, 0.85rem) !important;
+        padding: 2px 6px !important;
+    }
+
+    .custom-box {
+        font-size: clamp(0.8rem, 2.8vw, 0.9rem) !important;
+    }
+}

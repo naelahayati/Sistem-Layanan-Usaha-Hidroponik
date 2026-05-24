@@ -5,9 +5,9 @@
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
-<main class="produk-page">
+<main class="produk-page keranjang-page">
     <!-- Header -->
-    <header class="product-header">
+    <header class="product-header page-header-sub">
         <h1>KERANJANG SAYA</h1>
     </header>
 
@@ -30,7 +30,7 @@
                 <i class="fas fa-history" style="color: #ffc107; font-size: 1.5rem; margin-right: 15px;"></i>
                 <div>
                     <strong style="display: block; color: #856404; font-size: 0.95rem;">Info Masa Simpan Keranjang</strong>
-                    <span style="color: #856404; font-size: 0.85rem;">Produk di keranjang akan otomatis dikembalikan ke stok utama jika tidak di-checkout dalam <strong>24 jam</strong>.</span>
+                    <span class="cart-warning-text" style="color: #856404; font-size: 0.85rem;">Produk di keranjang akan otomatis dikembalikan ke stok utama jika tidak di-checkout dalam <strong>24 jam</strong>.</span>
                 </div>
             </div>
 

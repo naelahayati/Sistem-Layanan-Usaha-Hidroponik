@@ -423,11 +423,10 @@ body {
     }
 }
 
-/* MOBILE */
+/* MOBILE — hero HP: user-pages-mobile.css (tanpa overlay gelap) */
 @media (max-width: 768px) {
-    .hero-section {
-        height: 450px !important;
-        background-position: 70% center !important;
+    .hero-section.page-header-main {
+        background-position: center center !important;
     }
     
     .hero-subtitle {
@@ -534,7 +533,7 @@ body {
 /* MOBILE KECIL */
 @media (max-width: 480px) {
     .hero-section {
-        height: 380px !important;
+        /* height: user-pages-mobile.css */
     }
     
     .hero-title,

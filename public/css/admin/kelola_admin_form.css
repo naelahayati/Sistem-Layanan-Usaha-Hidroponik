@@ -1,0 +1,62 @@
+/* Form tambah/edit admin — responsif mobile/tablet */
+
+@media (max-width: 991.98px) {
+    .page-admin-form .card-header h5 {
+        font-size: 0.95rem;
+    }
+
+    .page-admin-form .card-header p {
+        font-size: 0.75rem;
+    }
+
+    .page-admin-form label.small,
+    .page-admin-form .font-weight-bold.text-muted {
+        font-size: 0.7rem !important;
+    }
+
+    .page-admin-form .form-control {
+        height: 38px !important;
+        font-size: 0.8rem !important;
+        border-radius: 8px !important;
+        padding-left: 0.75rem !important;
+    }
+
+    .page-admin-form textarea.form-control {
+        height: auto !important;
+        min-height: 80px;
+    }
+
+    .page-admin-form .btn {
+        font-size: 0.8rem !important;
+        padding: 0.35rem 0.85rem !important;
+        border-radius: 8px !important;
+        height: auto !important;
+        min-height: 36px;
+    }
+
+    .page-admin-form .btn.px-5 {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    .page-admin-form .d-flex.justify-content-end {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .page-admin-form .d-flex.justify-content-end .btn {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .page-admin-form #emailDisplay .d-flex {
+        flex-direction: column;
+        align-items: stretch !important;
+    }
+
+    .page-admin-form #emailDisplay .btn {
+        margin-top: 0.5rem;
+        margin-left: 0 !important;
+        white-space: normal;
+    }
+}

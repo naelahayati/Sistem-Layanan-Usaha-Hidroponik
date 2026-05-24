@@ -1,54 +1,11 @@
 @extends('admin.Theme.defualt')
 
+
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/admin/magang_manajemen.css') }}">
+@endpush
+
 @section('content')
-<style>
-    .status-badge {
-        padding: 5px 12px;
-        border-radius: 50px;
-        font-size: 0.85rem;
-        font-weight: bold;
-        display: inline-block;
-    }
-    .status-aktif { background: #cce5ff; color: #004085; }
-    .status-selesai { background: #d4edda; color: #155724; }
-    
-    .table thead th {
-        border-top: none;
-        text-transform: uppercase;
-        font-size: 0.8rem;
-        letter-spacing: 0.5px;
-        color: #666;
-    }
-    .nav-tabs-custom {
-        border-bottom: 2px solid #eee;
-        margin-bottom: 20px;
-    }
-    .nav-tabs-custom .nav-link {
-        border: none;
-        color: #000000 !important;
-        font-weight: 700;
-        padding: 10px 20px;
-        position: relative;
-        transition: 0.3s;
-    }
-    .nav-tabs-custom .nav-link.active {
-        color: #007bff !important;
-        background: transparent;
-    }
-    .nav-tabs-custom .nav-link.active::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 3px;
-        background: #007bff;
-        border-radius: 3px 3px 0 0;
-    }
-    .nav-tabs-custom .nav-link:hover:not(.active) {
-        color: #007bff;
-    }
-</style>
 
 <div class="content-header">
     <div class="container-fluid">
@@ -72,12 +29,32 @@
     </div>
 </div>
 
-<section class="content">
+<section class="content page-manajemen">
     <div class="container-fluid">
         
-        <!-- Filter Status Tabs and Search -->
-        <div class="d-flex flex-wrap justify-content-between align-items-center mb-0">
-            <ul class="nav nav-tabs nav-tabs-custom mb-0 border-0 flex-grow-1">
+        <!-- Search di Atas Filter -->
+        <div class="mb-3 w-100">
+            <form action="{{ route('admin.magang-manajemen') }}" method="GET">
+                @if($statusFilter)
+                    <input type="hidden" name="status" value="{{ $statusFilter }}">
+                @endif
+                @if($subMagangFilter)
+                    <input type="hidden" name="sub_magang" value="{{ $subMagangFilter }}">
+                @endif
+                <div class="input-group shadow-sm" style="border-radius: 20px;">
+                    <input type="text" name="search" class="form-control border-0" placeholder="Cari ID / Nama / Paket..." value="{{ request('search') }}" style="border-radius: 20px 0 0 20px; background: #fff; padding-left: 20px;">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary border-0" type="submit" style="border-radius: 0 20px 20px 0; padding: 0 20px;">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Filter Status Tabs -->
+        <div class="d-flex flex-wrap mb-0">
+            <ul class="nav nav-tabs nav-tabs-custom mb-0 border-0 w-100">
                 <li class="nav-item">
                     <a class="nav-link {{ !$statusFilter ? 'active' : '' }}" href="{{ route('admin.magang-manajemen', array_merge(request()->query(), ['status' => ''])) }}">Semua Status</a>
                 </li>
@@ -94,24 +71,12 @@
                 <li class="nav-item">
                     <a class="nav-link {{ $statusFilter == 'Dibatalkan' ? 'active' : '' }}" href="{{ route('admin.magang-manajemen', array_merge(request()->query(), ['status' => 'Dibatalkan'])) }}">Dibatalkan</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ $statusFilter == 'offline' ? 'active' : '' }}" href="{{ route('admin.magang-manajemen', array_merge(request()->query(), ['status' => 'offline'])) }}">Transaksi Offline</a>
+                </li>
             </ul>
             
-            <form action="{{ route('admin.magang-manajemen') }}" method="GET" class="d-flex mt-2 mt-md-0" style="min-width: 250px;">
-                @if($statusFilter)
-                    <input type="hidden" name="status" value="{{ $statusFilter }}">
-                @endif
-                @if($subMagangFilter)
-                    <input type="hidden" name="sub_magang" value="{{ $subMagangFilter }}">
-                @endif
-                <div class="input-group shadow-sm" style="border-radius: 20px;">
-                    <input type="text" name="search" class="form-control border-0" placeholder="Cari ID / Nama / Paket..." value="{{ request('search') }}" style="border-radius: 20px 0 0 20px; background: #f8f9fa; padding-left: 20px;">
-                    <div class="input-group-append">
-                        <button class="btn btn-primary border-0" type="submit" style="border-radius: 0 20px 20px 0; padding: 0 20px;">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                </div>
-            </form>
+            
         </div>
 
         <!-- Filter Sub Magang (PKL / Umum) -->

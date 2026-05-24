@@ -1,8 +1,14 @@
 @extends('admin.Theme.defualt')
 
+
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/admin/laporan_penjualan.css') }}">
+@endpush
+
 @section('title', 'Laporan Pendapatan')
 
 @section('content')
+
 <div class="content-header">
     <div class="container-fluid">
         <div class="row align-items-center">
@@ -19,7 +25,7 @@
     </div>
 </div>
 
-<section class="content">
+<section class="content page-laporan">
     <div class="container-fluid">
         
         <!-- Filter Card (Hides on Print) -->
@@ -42,6 +48,14 @@
                                 <option value="Produk" {{ $kategoriFilter == 'Produk' ? 'selected' : '' }}>Penjualan Produk</option>
                                 <option value="Kunjungan" {{ $kategoriFilter == 'Kunjungan' ? 'selected' : '' }}>Kunjungan</option>
                                 <option value="Magang" {{ $kategoriFilter == 'Magang' ? 'selected' : '' }}>Magang / PKL</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="small font-weight-bold text-muted uppercase">Metode Pembayaran</label>
+                            <select name="metode_bayar" class="form-control border-0 bg-light px-3" style="border-radius: 10px; height: 45px;" onchange="this.form.submit()">
+                                <option value="Semua" {{ $metodeBayarFilter == 'Semua' ? 'selected' : '' }}>Semua Metode</option>
+                                <option value="Tunai" {{ $metodeBayarFilter == 'Tunai' ? 'selected' : '' }}>Tunai (Cash)</option>
+                                <option value="QRIS" {{ $metodeBayarFilter == 'QRIS' ? 'selected' : '' }}>QR (QRIS)</option>
                             </select>
                         </div>
 
@@ -137,44 +151,7 @@
         
     </div>
 </section>
-
-<style>
-    .font-weight-600 { font-weight: 600; }
-    .table-hover tbody tr:hover { background-color: rgba(78, 115, 223, 0.03); }
-    .uppercase { text-transform: uppercase; letter-spacing: 1px; font-size: 0.7rem; }
-    
-    @media print {
-        .content-header, .main-sidebar, .main-header, .main-footer, .d-print-none { display: none !important; }
-        .content-wrapper { margin-left: 0 !important; background: #fff !important; }
-        .card { box-shadow: none !important; border: none !important; }
-        .table { border: 1px solid #e3e6f0; }
-        .table thead th { background-color: #f8f9fc !important; color: #333 !important; border-bottom: 2px solid #e3e6f0 !important; }
-        .table td, .table th { border: 1px solid #e3e6f0 !important; padding: 12px !important; }
-        .d-print-table-row { display: table-row !important; }
-        .d-none.d-print-table-row { display: table-row !important; }
-    }
-</style>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const startDateInput = document.getElementById("start_date");
-        const endDateInput = document.getElementById("end_date");
-
-        startDateInput.addEventListener("change", function() {
-            if (this.value) {
-                let startDate = new Date(this.value);
-                startDate.setDate(startDate.getDate() + 30);
-                let year = startDate.getFullYear();
-                let month = String(startDate.getMonth() + 1).padStart(2, '0');
-                let day = String(startDate.getDate()).padStart(2, '0');
-                endDateInput.value = `${year}-${month}-${day}`;
-                this.form.submit();
-            }
-        });
-
-        endDateInput.addEventListener("change", function() {
-            if (this.value) { this.form.submit(); }
-        });
-    });
-</script>
+@push('scripts')
+<script src="{{ asset('js/admin/laporan_penjualan.js') }}"></script>
+@endpush
 @endsection

@@ -1,6 +1,12 @@
-@extends('admin.Theme.defualt')
+﻿@extends('admin.Theme.defualt')
+
+
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/admin/dashboard.css') }}">
+@endpush
 
 @section('content')
+
 <!-- Meta refresh setiap 300 detik (5 menit) untuk efek realtime -->
 <meta http-equiv="refresh" content="300">
 
@@ -195,18 +201,4 @@
         </div>
     </div>
 </section>
-
-<style>
-    .small-box .icon {
-        top: 0;
-        right: 20px;
-        z-index: 0;
-        font-size: 60px;
-        color: rgba(0,0,0,0.1);
-        transition: transform 0.3s linear;
-    }
-    .small-box:hover .icon {
-        transform: scale(1.1);
-    }
-</style>
 @endsection

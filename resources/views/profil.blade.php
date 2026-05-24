@@ -1,56 +1,11 @@
-@extends('master')
+﻿@extends('master')
 
 @section('konten')
+<link rel="stylesheet" href="{{ asset('css/pengguna/profil_page.css') }}">
 <link rel="stylesheet" href="/css/styleprofil.css">
-
-<style>
-    /* Reset untuk halaman profil - hilangkan efek sidebar */
-    .main-content-profil {
-        width: 100%;
-        max-width: 100%;
-        overflow-x: hidden;
-        position: relative;
-        z-index: 1;
-    }
-    
-    /* Pastikan konten tidak ketimpa sidebar */
-    .wrapper .content-wrapper {
-        padding: 0 !important;
-        margin: 0 !important;
-    }
-    
-    /* Perbaiki banner agar tidak ketutupan */
-    .header-banner {
-        margin-top: 0;
-        padding-top: 0;
-    }
-    
-    /* Tambahkan background putih agar konten jelas */
-    .history-section,
-    .visi-misi-minimal,
-    .struktur-minimal {
-        background-color: transparent;
-    }
-    
-    /* Perbaiki slider container */
-    .history-slider-container {
-        background: white;
-        width: 100%;
-    }
-    
-    /* Pastikan carousel tidak overflow */
-    .carousel-horizontal {
-        width: 100%;
-    }
-    
-    .carousel-item {
-        flex-shrink: 0;
-    }
-</style>
-
 <main class="main-content-profil">
     {{-- Banner --}}
-    <header class="header-banner">
+    <header class="header-banner page-header-main">
         <h1 class="header-title-large">PROFIL</h1>
     </header>
 
@@ -283,3 +238,5 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 @endsection
+
+

@@ -1,8 +1,11 @@
 @extends('admin.Theme.defualt')
 
-@section('content')
 
+@push('styles')
 <link rel="stylesheet" href="{{ asset('css/admin/daftar_user.css') }}">
+@endpush
+
+@section('content')
 
 <div class="content-header">
     <div class="container-fluid">
@@ -20,17 +23,33 @@
     </div>
 </div>
 
-<section class="content">
+<section class="content page-manajemen">
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Data Pengguna Terdaftar</h3>
-                        <div class="card-tools">
-                            <div class="input-group input-group-sm" style="width: 150px;">
-                                <input type="text" id="searchUser" class="form-control float-right" placeholder="Cari User...">
+                    <div class="card-header border-0 d-flex flex-column align-items-end">
+                        <h3 class="card-title w-100 mb-3">Data Pengguna Terdaftar</h3>
+                        
+                        <!-- Pencarian di atas Filter -->
+                        <div class="w-100 mb-2">
+                            <div class="input-group">
+                                <input type="text" id="searchUser" class="form-control" placeholder="Cari User...">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                </div>
                             </div>
+                        </div>
+                        
+                        <!-- Filter: Online / Offline saja -->
+                        <div class="w-100">
+                            <form action="{{ route('admin.daftar-user') }}" method="GET" class="d-flex align-items-center flex-wrap daftar-user-filter-form">
+                                <label class="mr-2 mb-0 font-weight-normal text-muted">Filter:</label>
+                                <select name="filter" class="form-control form-control-sm w-auto" onchange="this.form.submit()">
+                                    <option value="online" {{ $filter === 'online' ? 'selected' : '' }}>Pengguna Online</option>
+                                    <option value="offline" {{ $filter === 'offline' ? 'selected' : '' }}>Pengguna Offline</option>
+                                </select>
+                            </form>
                         </div>
                     </div>
                     <div class="card-body table-responsive p-0">
@@ -39,10 +58,13 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Nama</th>
-                                    <th>Username</th>
-                                    <th>Email</th>
-                                    <th>Status</th>
-                                    <th class="text-center">Aksi</th>
+                                    @if($filter !== 'offline')
+                                        <th>Username</th>
+                                        <th>Email</th>
+                                        <th class="text-center">Aksi</th>
+                                    @else
+                                        <th>No HP</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -50,30 +72,29 @@
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
                                         <td>{{ $user->name }}</td>
-                                        <td>{{ $user->username }}</td>
-                                        <td>{{ $user->email }}</td>
-                                        <td>
-                                            <span class="badge {{ $user->status === 'active' ? 'badge-success' : 'badge-danger' }}">
-                                                {{ ucfirst($user->status) }}
-                                            </span>
-                                        </td>
-                                        <td class="text-center">
-                                            <button class="btn btn-info btn-sm btn-detail-user" 
-                                                data-name="{{ $user->name }}"
-                                                data-username="{{ $user->username }}"
-                                                data-email="{{ $user->email }}"
-                                                data-nohp="{{ $user->nohp }}"
-                                                data-alamat="{{ $user->alamat }}"
-                                                data-lat="{{ $user->latitude }}"
-                                                data-lng="{{ $user->longitude }}"
-                                                data-status="{{ ucfirst($user->status) }}">
-                                                <i class="fas fa-id-card mr-1"></i> Detail
-                                            </button>
-                                        </td>
+                                        @if($filter !== 'offline')
+                                            <td>{{ $user->username }}</td>
+                                            <td>{{ $user->email }}</td>
+                                            <td class="text-center">
+                                                <button class="btn btn-info btn-sm btn-detail-user" 
+                                                    data-name="{{ $user->name }}"
+                                                    data-username="{{ $user->username }}"
+                                                    data-email="{{ $user->email }}"
+                                                    data-nohp="{{ $user->nohp }}"
+                                                    data-alamat="{{ $user->alamat }}"
+                                                    data-lat="{{ $user->latitude }}"
+                                                    data-lng="{{ $user->longitude }}"
+                                                    data-status="{{ ucfirst($user->status) }}">
+                                                    <i class="fas fa-id-card mr-1"></i> Detail
+                                                </button>
+                                            </td>
+                                        @else
+                                            <td>{{ $user->nohp ?? '-' }}</td>
+                                        @endif
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="text-center">Tidak ada data user</td>
+                                        <td colspan="{{ $filter !== 'offline' ? 5 : 3 }}" class="text-center">Tidak ada data user</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -105,13 +126,9 @@
                 </div>
 
                 <div class="row mb-3">
-                    <div class="col-6">
+                    <div class="col-12">
                         <small class="text-muted text-uppercase d-block mb-1">Email</small>
                         <span id="user-det-email" class="font-weight-bold"></span>
-                    </div>
-                    <div class="col-6">
-                        <small class="text-muted text-uppercase d-block mb-1">Status</small>
-                        <span id="user-det-status" class="badge"></span>
                     </div>
                 </div>
 

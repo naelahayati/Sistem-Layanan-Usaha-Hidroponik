@@ -1,0 +1,324 @@
+/**
+ * Modal detail manajemen & daftar user — HP/tablet
+ * (Modal berada di luar .page-manajemen, jadi pakai ID modal langsung)
+ */
+
+#modalDetail,
+#modalDetailUser,
+#modalDetailKunjungan,
+#modalDetailMagang {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+}
+
+@media (max-width: 991.98px) {
+    #modalDetail .modal-dialog,
+    #modalDetailUser .modal-dialog,
+    #modalDetailKunjungan .modal-dialog,
+    #modalDetailMagang .modal-dialog,
+    #modalDetail .modal-dialog.modal-lg,
+    #modalDetailKunjungan .modal-dialog.modal-lg,
+    #modalDetailMagang .modal-dialog.modal-lg,
+    #modalDetailKunjungan .modal-dialog.modal-dialog-centered,
+    #modalDetailMagang .modal-dialog.modal-dialog-centered {
+        max-width: 272px !important;
+        width: calc(100% - 1.5rem) !important;
+        margin: 2.5rem auto 0.75rem !important;
+    }
+
+    #modalDetail .modal-content,
+    #modalDetailUser .modal-content,
+    #modalDetailKunjungan .modal-content,
+    #modalDetailMagang .modal-content {
+        border-radius: 10px !important;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12) !important;
+    }
+
+    /* Header — lebih ramping */
+    #modalDetail .modal-header,
+    #modalDetailUser .modal-header,
+    #modalDetailKunjungan .modal-header,
+    #modalDetailMagang .modal-header {
+        padding: 0.4rem 0.55rem !important;
+        min-height: 0 !important;
+        border-radius: 10px 10px 0 0 !important;
+    }
+
+    #modalDetail .modal-title,
+    #modalDetailUser .modal-title,
+    #modalDetailKunjungan .modal-title,
+    #modalDetailMagang .modal-title {
+        font-size: 0.68rem !important;
+        line-height: 1.25 !important;
+        font-weight: 600 !important;
+    }
+
+    #modalDetail .modal-title i,
+    #modalDetailUser .modal-title i,
+    #modalDetailKunjungan .modal-title i,
+    #modalDetailMagang .modal-title i {
+        font-size: 0.65rem !important;
+        margin-right: 0.25rem !important;
+    }
+
+    #modalDetail .modal-header .close,
+    #modalDetailUser .modal-header .close,
+    #modalDetailKunjungan .modal-header .close,
+    #modalDetailMagang .modal-header .close {
+        padding: 0.15rem 0.35rem !important;
+        margin: -0.15rem -0.15rem -0.15rem auto !important;
+        font-size: 1.1rem !important;
+        line-height: 1 !important;
+        opacity: 0.85;
+    }
+
+    /* Body */
+    #modalDetail .modal-body,
+    #modalDetailUser .modal-body,
+    #modalDetailKunjungan .modal-body,
+    #modalDetailMagang .modal-body {
+        padding: 0.45rem 0.55rem !important;
+        font-size: 0.68rem !important;
+        max-height: min(58vh, 380px) !important;
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+    }
+
+    #modalDetail .modal-body h4,
+    #modalDetailUser .modal-body h4 {
+        font-size: 0.8rem !important;
+    }
+
+    #modalDetail .modal-body h5,
+    #modalDetailKunjungan .modal-body h5,
+    #modalDetailMagang .modal-body h5 {
+        font-size: 0.75rem !important;
+    }
+
+    #modalDetail .modal-body h6,
+    #modalDetailKunjungan .modal-body h6,
+    #modalDetailMagang .modal-body h6 {
+        font-size: 0.62rem !important;
+        margin-bottom: 0.35rem !important;
+    }
+
+    #modalDetail .modal-body .row,
+    #modalDetailKunjungan .modal-body .row,
+    #modalDetailMagang .modal-body .row {
+        margin-left: -0.25rem;
+        margin-right: -0.25rem;
+    }
+
+    #modalDetail .modal-body .row > [class*="col-"],
+    #modalDetailKunjungan .modal-body .row > [class*="col-"],
+    #modalDetailMagang .modal-body .row > [class*="col-"] {
+        padding-left: 0.25rem;
+        padding-right: 0.25rem;
+    }
+
+    #modalDetail .modal-body .mb-3,
+    #modalDetailKunjungan .modal-body .mb-3,
+    #modalDetailMagang .modal-body .mb-3,
+    #modalDetailUser .modal-body .mb-3 {
+        margin-bottom: 0.45rem !important;
+    }
+
+    #modalDetail .modal-body .mt-3,
+    #modalDetailKunjungan .modal-body .mt-4 {
+        margin-top: 0.45rem !important;
+    }
+
+    /* Tabel dalam modal */
+    #modalDetail .modal-body table,
+    #modalDetailKunjungan .modal-body table,
+    #modalDetailMagang .modal-body table {
+        font-size: 0.62rem !important;
+    }
+
+    #modalDetail .modal-body table td,
+    #modalDetail .modal-body table th,
+    #modalDetailKunjungan .modal-body table td,
+    #modalDetailKunjungan .modal-body table th,
+    #modalDetailMagang .modal-body table td,
+    #modalDetailMagang .modal-body table th {
+        padding: 0.2rem 0.15rem !important;
+        font-size: 0.62rem !important;
+    }
+
+    #modalDetail .modal-body tfoot th,
+    #modalDetail .modal-body tfoot td {
+        font-size: 0.62rem !important;
+    }
+
+    #modalDetail .modal-body tfoot th[style*="1rem"],
+    #modalDetail .modal-body tfoot th[id="det-grand-total"],
+    #modalDetail #det-grand-total {
+        font-size: 0.7rem !important;
+    }
+
+    /* Textbox & select — lebih kecil, bentuk tetap */
+    #modalDetail .modal-body .form-control,
+    #modalDetailKunjungan .modal-body .form-control,
+    #modalDetailMagang .modal-body .form-control,
+    #modalDetail .modal-body select.form-control,
+    #modalDetailKunjungan .modal-body select.form-control,
+    #modalDetailMagang .modal-body select.form-control,
+    #modalDetailKunjungan .modal-body select.form-control-lg,
+    #modalDetailMagang .modal-body select.form-control-lg {
+        height: 28px !important;
+        min-height: 28px !important;
+        font-size: 0.68rem !important;
+        padding: 0.2rem 0.4rem !important;
+        border-radius: 6px !important;
+    }
+
+    #modalDetail .modal-body label,
+    #modalDetailKunjungan .modal-body label,
+    #modalDetailMagang .modal-body label {
+        font-size: 0.58rem !important;
+        margin-bottom: 0.15rem !important;
+    }
+
+    #modalDetail .modal-body .input-group,
+    #modalDetailKunjungan .modal-body .input-group,
+    #modalDetailMagang .modal-body .input-group {
+        max-width: 100%;
+    }
+
+    /* Tombol dalam modal */
+    #modalDetail .modal-body .btn,
+    #modalDetailUser .modal-body .btn,
+    #modalDetailKunjungan .modal-body .btn,
+    #modalDetailMagang .modal-body .btn,
+    #modalDetail .modal-body .btn-xs,
+    #modalDetailUser .modal-body .btn-xs {
+        font-size: 0.62rem !important;
+        padding: 0.15rem 0.35rem !important;
+        line-height: 1.3 !important;
+        border-radius: 6px !important;
+    }
+
+    #modalDetail .modal-body .btn-sm,
+    #modalDetailKunjungan .modal-body .btn-sm {
+        font-size: 0.62rem !important;
+        padding: 0.2rem 0.4rem !important;
+    }
+
+    #modalDetail #btn-update-status,
+    #modalDetailKunjungan .modal-body button[type="submit"],
+    #modalDetailMagang .modal-body button[type="submit"],
+    #modalDetailKunjungan .modal-body .btn-lg,
+    #modalDetailMagang .modal-body .btn-lg {
+        height: 28px !important;
+        min-height: 28px !important;
+        font-size: 0.65rem !important;
+        padding: 0.2rem 0.45rem !important;
+        border-radius: 6px !important;
+        box-shadow: none !important;
+    }
+
+    #modalDetail .modal-body .btn-block,
+    #modalDetailKunjungan .modal-body .btn-block,
+    #modalDetailMagang .modal-body .btn-block {
+        width: 100%;
+    }
+
+    #modalDetail .modal-body .input-group .form-control {
+        border-radius: 6px 0 0 6px !important;
+    }
+
+    #modalDetail .modal-body .input-group-append .btn {
+        border-radius: 0 6px 6px 0 !important;
+        height: 28px !important;
+    }
+
+    /* Badge & kotak info */
+    #modalDetail .modal-body .badge,
+    #modalDetailKunjungan .modal-body .badge,
+    #modalDetailMagang .modal-body .badge {
+        font-size: 0.58rem !important;
+        padding: 0.15rem 0.3rem !important;
+    }
+
+    #modalDetail .modal-body .bg-light,
+    #modalDetailKunjungan .modal-body .p-3.rounded-lg,
+    #modalDetail #det-alamat {
+        padding: 0.35rem !important;
+        font-size: 0.65rem !important;
+        min-height: 0 !important;
+    }
+
+    #modalDetailKunjungan .modal-body .p-3.rounded-lg,
+    #modalDetailMagang .modal-body .p-3 {
+        padding: 0.4rem !important;
+        margin-bottom: 0.4rem !important;
+    }
+
+    /* Daftar user modal */
+    #modalDetailUser .modal-body .text-center.mb-4 {
+        margin-bottom: 0.45rem !important;
+    }
+
+    #modalDetailUser .modal-body .rounded-circle {
+        padding: 0.5rem !important;
+        margin-bottom: 0.35rem !important;
+    }
+
+    #modalDetailUser .modal-body .fa-3x {
+        font-size: 1.25rem !important;
+    }
+
+    #modalDetailUser .modal-body small {
+        font-size: 0.58rem !important;
+    }
+
+    #modalDetailUser #user-det-alamat {
+        font-size: 0.65rem !important;
+        padding: 0.35rem !important;
+    }
+
+    #modalDetailUser #user-map-container {
+        height: 80px !important;
+    }
+
+    #modalDetailUser .d-flex.align-items-center {
+        flex-wrap: wrap;
+        gap: 0.25rem;
+    }
+
+    #modalDetail .col-md-6.border-right,
+    #modalDetailKunjungan .col-md-7.border-right {
+        border-right: none !important;
+    }
+}
+
+/* HP kecil */
+@media (max-width: 575.98px) {
+    #modalDetail .modal-dialog,
+    #modalDetailUser .modal-dialog,
+    #modalDetailKunjungan .modal-dialog,
+    #modalDetailMagang .modal-dialog,
+    #modalDetail .modal-dialog.modal-lg,
+    #modalDetailKunjungan .modal-dialog.modal-lg,
+    #modalDetailMagang .modal-dialog.modal-lg {
+        max-width: 252px !important;
+        width: calc(100% - 1.25rem) !important;
+        margin: 2.75rem auto 0.5rem !important;
+    }
+
+    #modalDetail .modal-title,
+    #modalDetailUser .modal-title,
+    #modalDetailKunjungan .modal-title,
+    #modalDetailMagang .modal-title {
+        font-size: 0.64rem !important;
+    }
+
+    #modalDetail .modal-body,
+    #modalDetailUser .modal-body,
+    #modalDetailKunjungan .modal-body,
+    #modalDetailMagang .modal-body {
+        max-height: min(55vh, 340px) !important;
+        font-size: 0.64rem !important;
+        padding: 0.4rem 0.5rem !important;
+    }
+}

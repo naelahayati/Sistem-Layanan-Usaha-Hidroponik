@@ -6,7 +6,7 @@
 
 <main class="produk-page">
     <!-- Hero Header -->
-    <header class="produk-hero">
+    <header class="produk-hero page-header-sub">
         <div class="hero-content">
             <h1>RIWAYAT</h1>
         </div>

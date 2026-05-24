@@ -1,5 +1,9 @@
 @extends('admin.Theme.defualt')
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/admin/settings.css') }}">
+@endpush
+
 @section('content')
 <div class="content-header">
     <div class="container-fluid">
@@ -18,7 +22,7 @@
     </div>
 </div>
 
-<section class="content">
+<section class="content page-settings">
     <div class="container-fluid">
         <div class="row">
             {{-- Form WhatsApp --}}

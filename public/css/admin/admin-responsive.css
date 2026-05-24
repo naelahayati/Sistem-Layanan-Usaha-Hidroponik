@@ -1,0 +1,405 @@
+/**
+ * Admin responsive utilities — hanya berlaku di layar kecil (<= 991.98px).
+ * Desktop (>= 992px) tidak diubah.
+ */
+
+@media (max-width: 991.98px) {
+    html,
+    body.hold-transition {
+        overflow-x: hidden !important;
+        max-width: 100vw;
+    }
+
+    .wrapper {
+        overflow-x: hidden;
+        max-width: 100%;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Header tetap di atas saat scroll */
+    .main-header {
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 1030 !important;
+        flex-shrink: 0;
+    }
+
+    /* Sidebar overlay — tanpa geser konten (cegah horizontal scroll) */
+    .sidebar-open .content-wrapper,
+    .sidebar-open .main-header,
+    .sidebar-open .main-footer {
+        transform: none !important;
+        margin-left: 0 !important;
+    }
+
+    /* Overlay gelap di belakang sidebar (di atas konten) */
+    body.sidebar-open::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        z-index: 1035;
+        pointer-events: auto;
+    }
+
+    .main-sidebar {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        height: 100vh !important;
+        z-index: 1040 !important;
+    }
+
+    /* Konten utama */
+    .content-wrapper {
+        overflow-x: hidden;
+        flex: 1 0 auto;
+        width: 100%;
+        max-width: 100vw;
+        min-height: 0;
+    }
+
+    .content-wrapper > .content,
+    .content-wrapper .container-fluid {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    /* Footer mengikuti alur dokumen (bisa di-scroll) */
+    .layout-fixed .main-footer,
+    .main-footer {
+        position: relative !important;
+        margin-left: 0 !important;
+        flex-shrink: 0;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* Content header & breadcrumb */
+    .content-header h1 {
+        font-size: clamp(1.1rem, 4vw, 1.5rem);
+    }
+
+    .breadcrumb {
+        font-size: clamp(0.7rem, 2.5vw, 0.875rem);
+        flex-wrap: wrap;
+    }
+
+    /* Card & tombol menyesuaikan */
+    .card {
+        max-width: 100%;
+    }
+
+    .card-header {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .card-tools {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .btn,
+    .content-wrapper .btn-primary,
+    .btn-tambah {
+        font-size: clamp(0.75rem, 2.5vw, 0.875rem);
+        padding: 0.35rem 0.75rem;
+    }
+
+    .btn-sm {
+        font-size: clamp(0.7rem, 2.2vw, 0.8rem);
+        padding: 0.25rem 0.5rem;
+    }
+
+    /* Tabel: scroll horizontal hanya di dalam wrapper */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        max-width: 100%;
+    }
+
+    .table {
+        font-size: clamp(0.7rem, 2.5vw, 0.85rem);
+    }
+
+    /* Textbox: bentuk tetap, ukuran mengecil proporsional */
+    .form-control,
+    .custom-select,
+    select.form-control,
+    textarea.form-control,
+    .form-control-custom,
+    .custom-box,
+    .input-nama-direct {
+        font-size: clamp(0.8rem, 2.8vw, 0.95rem) !important;
+        max-width: 100%;
+    }
+
+    .input-group {
+        max-width: 100%;
+        flex-wrap: nowrap;
+    }
+
+    .input-group .form-control {
+        min-width: 0;
+    }
+
+    /* Nav tabs wrap */
+    .nav-tabs-custom {
+        flex-wrap: wrap;
+    }
+
+    .nav-tabs-custom .nav-link {
+        font-size: clamp(0.7rem, 2.5vw, 0.875rem);
+        padding: 8px 12px;
+        white-space: nowrap;
+    }
+
+    .nav-pills-custom .nav-link {
+        font-size: clamp(0.75rem, 2.5vw, 0.9rem);
+        padding: 8px 12px;
+    }
+
+    /* Row/col overflow */
+    .row {
+        margin-left: -7.5px;
+        margin-right: -7.5px;
+        max-width: calc(100% + 15px);
+    }
+
+    [class*="col-"] {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .content-header .row {
+        flex-direction: column;
+    }
+
+    .content-header .breadcrumb {
+        float: none !important;
+        margin-top: 0.5rem;
+    }
+}
+
+/* Kelola Admin — perbaikan layout responsif */
+@media (max-width: 991.98px) {
+    .page-kelola-admin .card-body {
+        padding: 0 !important;
+        overflow-x: hidden;
+    }
+
+    .page-kelola-admin #adminTable {
+        margin-bottom: 0;
+    }
+
+    .page-kelola-admin .btn-tambah-admin {
+        width: 100%;
+        text-align: center;
+    }
+
+    /* ===== Halaman manajemen (transaksi, kunjungan, magang) ===== */
+    .page-manajemen .table thead th {
+        font-size: clamp(0.62rem, 2.2vw, 0.75rem) !important;
+        padding: 0.5rem 0.35rem !important;
+        white-space: nowrap;
+    }
+
+    .page-manajemen .table tbody td {
+        font-size: clamp(0.68rem, 2.4vw, 0.8rem) !important;
+        padding: 0.5rem 0.35rem !important;
+        vertical-align: middle;
+    }
+
+    .page-manajemen .table tbody td small {
+        font-size: clamp(0.6rem, 2vw, 0.7rem) !important;
+    }
+
+    .page-manajemen .table .text-primary.font-weight-bold,
+    .page-manajemen .table tbody strong {
+        font-size: clamp(0.68rem, 2.3vw, 0.8rem) !important;
+    }
+
+    .page-manajemen .table .text-success.font-weight-bold {
+        font-size: clamp(0.7rem, 2.4vw, 0.85rem) !important;
+    }
+
+    .page-manajemen .status-badge {
+        font-size: clamp(0.58rem, 2vw, 0.72rem) !important;
+        padding: 3px 6px !important;
+    }
+
+    .page-manajemen .table td .badge {
+        font-size: clamp(0.58rem, 2vw, 0.72rem) !important;
+        padding: 0.25rem 0.4rem !important;
+    }
+
+    /* Keterangan waktu */
+    .page-manajemen .table td .badge .fa-clock,
+    .page-manajemen .table td .badge i {
+        font-size: 0.65rem !important;
+        margin-right: 0.15rem !important;
+    }
+
+    /* Tombol detail — ikon saja */
+    .page-manajemen .btn-detail,
+    .page-manajemen .btn-detail-kunjungan,
+    .page-manajemen .btn-detail-magang,
+    .page-manajemen .btn-detail-user {
+        font-size: 0 !important;
+        line-height: 1 !important;
+        padding: 0.35rem 0.5rem !important;
+        min-width: 2rem;
+        border-radius: 8px !important;
+    }
+
+    .page-manajemen .btn-detail i,
+    .page-manajemen .btn-detail-kunjungan i,
+    .page-manajemen .btn-detail-magang i,
+    .page-manajemen .btn-detail-user i {
+        font-size: 0.8rem !important;
+        margin: 0 !important;
+    }
+
+    /* Filter & pencarian */
+    .page-manajemen .input-group .form-control,
+    .page-manajemen .mb-3.w-100 .form-control {
+        font-size: clamp(0.75rem, 2.6vw, 0.85rem) !important;
+        height: auto !important;
+        min-height: 36px;
+        padding-top: 0.35rem !important;
+        padding-bottom: 0.35rem !important;
+    }
+
+    .page-manajemen .nav-tabs-custom .nav-link {
+        font-size: clamp(0.65rem, 2.2vw, 0.78rem) !important;
+        padding: 6px 8px !important;
+    }
+
+    /* Tombol aksi — ikon saja, berjajar horizontal */
+    .btn-action-group,
+    .page-kelola-admin .btn-action-group,
+    .page-manajemen .table td .d-flex {
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 0.35rem !important;
+    }
+
+    .page-kelola-admin .btn-action-group .btn,
+    .page-kelola-admin #adminTable .btn-action-group .btn {
+        display: inline-flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        white-space: nowrap !important;
+        padding: 0.35rem 0.45rem !important;
+        min-width: 1.85rem;
+    }
+
+    .page-kelola-admin .btn-action-group .btn .btn-label,
+    .page-kelola-admin #adminTable .btn-action-group .btn .btn-label {
+        display: none !important;
+    }
+
+    .page-kelola-admin .btn-action-group .btn i,
+    .page-kelola-admin #adminTable .btn-action-group .btn i {
+        font-size: 0.75rem !important;
+        margin: 0 !important;
+    }
+
+    /* Kartu aksi di kelola paket (edit/hapus) */
+    #productContainer .position-absolute .btn,
+    #kunjunganContainer .position-absolute .btn,
+    #magangContainer .position-absolute .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* ===== Laporan ===== */
+    .page-laporan .card-body label,
+    .page-laporan .card-body label.small {
+        font-size: 0.68rem !important;
+    }
+
+    .page-laporan .card-body .form-control,
+    .page-laporan .card-body select.form-control {
+        height: 36px !important;
+        font-size: 0.78rem !important;
+        padding: 0.25rem 0.6rem !important;
+    }
+
+    .page-laporan .card-body .btn-primary {
+        padding: 0.35rem 0.75rem !important;
+        font-size: 0.8rem !important;
+    }
+
+    .page-laporan .btn-success.px-4 {
+        font-size: 0.8rem !important;
+        padding: 0.4rem 0.85rem !important;
+    }
+
+    .page-laporan .table thead th {
+        font-size: clamp(0.62rem, 2.2vw, 0.72rem) !important;
+        padding: 0.45rem 0.3rem !important;
+    }
+
+    .page-laporan .table tbody td {
+        font-size: clamp(0.68rem, 2.3vw, 0.78rem) !important;
+        padding: 0.45rem 0.3rem !important;
+    }
+
+    .page-laporan .table tbody td .font-weight-600 {
+        font-size: clamp(0.68rem, 2.3vw, 0.8rem) !important;
+    }
+
+    .page-laporan .table tbody td[style*="font-size: 1rem"] {
+        font-size: clamp(0.72rem, 2.5vw, 0.85rem) !important;
+    }
+
+    .page-laporan .table tfoot th,
+    .page-laporan .table tbody tr th {
+        font-size: clamp(0.7rem, 2.4vw, 0.85rem) !important;
+        padding: 0.5rem 0.35rem !important;
+    }
+
+    .page-laporan .table tfoot th[style*="1.4rem"],
+    .page-laporan .table tbody tr th[style*="1.4rem"] {
+        font-size: clamp(0.85rem, 3vw, 1rem) !important;
+    }
+
+}
+
+/* Sidebar mobile — sedikit lebih lebar agar teks tidak terpotong */
+@media (max-width: 991.98px) {
+    .main-sidebar,
+    .sidebar-mini.sidebar-collapse .main-sidebar:hover {
+        width: 258px !important;
+    }
+
+    .main-sidebar .brand-text {
+        font-size: 0.92rem !important;
+        max-width: 100%;
+        overflow: visible;
+        text-overflow: clip;
+    }
+
+    .main-sidebar .nav-sidebar .nav-link p {
+        font-size: 0.82rem !important;
+        white-space: normal !important;
+        line-height: 1.25;
+    }
+
+    .main-sidebar .nav-treeview .nav-link {
+        font-size: 0.78rem !important;
+        padding: 4px 10px 4px 28px !important;
+    }
+
+    .main-sidebar .user-panel .info a {
+        font-size: 0.8rem !important;
+    }
+}

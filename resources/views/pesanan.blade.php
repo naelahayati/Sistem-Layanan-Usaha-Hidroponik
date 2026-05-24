@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="/css/stylepesanan.css">
 
 <div class="pesanan-page">
-    <header class="product-header">
+    <header class="product-header page-header-sub">
         <h1>CHECKOUT</h1>
     </header>
 

@@ -50,6 +50,8 @@ Route::middleware(['auth', 'cek_pengguna'])->group(function () {
     Route::post('/pelatihan/checkout/proses/{id}', [Nazframcontroller::class, 'processCheckoutMagang'])->name('nazfram.checkout_magang.proses');
     Route::post('/pelatihan/pembayaran/konfirmasi/{id}', [Nazframcontroller::class, 'konfirmasiPembayaranMagang'])->name('nazfram.pembayaran_magang.konfirmasi');
     Route::post('/pelatihan/pembayaran/batal/{id}', [Nazframcontroller::class, 'batalMagang'])->name('nazfram.pembayaran_magang.batal');
+    Route::post('/pelatihan/pembayaran/expire/{id}', [Nazframcontroller::class, 'expireMagangPayment'])->name('nazfram.pembayaran_magang.expire');
+    Route::get('/pelatihan/pembayaran/status/{id}', [Nazframcontroller::class, 'magangPaymentStatus'])->name('nazfram.pembayaran_magang.status');
     Route::get('/pelatihan/events', [Nazframcontroller::class, 'getPublicEvents'])->name('nazfram.pelatihan.events');
     Route::get('/riwayat-pendaftaran-magang', [Nazframcontroller::class, 'riwayatMagang'])->name('magang.riwayat');
 
@@ -99,6 +101,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get("/admin/transaksi", [AdminController::class, "transaksiAdmin"])->name("admin.transaksi");
     Route::get("/admin/transaksi/get/{id}", [AdminController::class, "getDetailTransaksi"])->name("admin.transaksi.get");
     Route::post("/admin/transaksi/update-status/{id}", [AdminController::class, "updateStatusTransaksi"])->name("admin.transaksi.update-status");
+
+    // --- TRANSAKSI OFFLINE (ADMIN) ---
+    Route::get("/admin/transaksi-offline", [AdminController::class, "transaksiOffline"])->name("admin.transaksi-offline");
+    Route::post("/admin/transaksi-offline/produk", [AdminController::class, "storeTransaksiOfflineProduk"])->name("admin.transaksi-offline.produk");
+    Route::post("/admin/transaksi-offline/kunjungan", [AdminController::class, "storeTransaksiOfflineKunjungan"])->name("admin.transaksi-offline.kunjungan");
+        Route::get("/admin/transaksi-offline/users", [AdminController::class, "searchUsersOfflineTransaksi"])->name("admin.transaksi-offline.users");
+Route::post("/admin/transaksi-offline/magang", [AdminController::class, "storeTransaksiOfflineMagang"])->name("admin.transaksi-offline.magang");
 
     // --- KELOLA PRODUK (ADMIN) ---
     Route::get("/admin/produk", [AdminController::class, "produkAdmin"])->name("admin.produk-admin");

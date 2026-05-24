@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="{{ asset('css/stylepelatihan.css?v=1.3') }}">
 
     <main class="pelatihan-page">
-        <header class="pelatihan-banner">
+        <header class="pelatihan-banner page-header-main">
             <h1>MAGANG</h1>
             <a href="{{ route('magang.riwayat') }}" class="hero-riwayat-link">Cek Riwayat Pendaftaran <i class="fas fa-arrow-right"></i></a>
         </header>

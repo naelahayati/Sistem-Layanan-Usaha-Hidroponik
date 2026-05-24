@@ -5,129 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Naz Hidrofarm</title>
     <link rel="stylesheet" href="{{ asset('css/stylemaster.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pengguna/master-layout.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pengguna/pengguna-responsive.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pengguna/user-pages-mobile.css') }}?v=5">
+    <link rel="stylesheet" href="{{ asset('css/pengguna/calendar-mobile.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            margin: 0;
-        }
-
-        .active-kuning {
-        color: #ffc107 !important; /* Warna kuning agar tetap menyala */
-        font-weight: bold !important;
-        }
-
-        /* Navbar Transparan */
-        .site-header {
-            width: 100%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(27, 58, 26, 0.05);
-        }
-
-        main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            padding-top: 0; /* biarkan section sendiri mengatur offset supaya navbar overlay otomatis */
-        }
-
-        .auth-layout {
-            justify-content: center;
-            align-items: center;
-            background-color: #f4f7f4;
-            min-height: 100vh;
-        }
-
-        .navbar-brand-image { width: 40px; height: auto; }
-
-        /* --- PREMIUM GLASSMORPHISM DROPDOWN --- */
-        .user-dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: 100%;
-            background: #ffffff;
-            min-width: 200px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
-            border-radius: 18px;
-            z-index: 9999;
-            overflow: hidden;
-            border: 1px solid #eee;
-            animation: dropdownFadeIn 0.25s ease;
-            margin-top: 8px;
-        }
-
-        @keyframes dropdownFadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .dropdown-content.show {
-            display: block;
-        }
-
-        /* JEMBATAN TRANSPARAN */
-        .dropdown-content::before {
-            content: "";
-            position: absolute;
-            top: -10px;
-            left: 0;
-            width: 100%;
-            height: 100px;
-            background: transparent;
-            z-index: -1;
-        }
-
-        .logout-link, .dropdown-item-link {
-            width: 100%;
-            padding: 12px 20px;
-            border: none;
-            background: transparent;
-            color: #1b3a1a;
-            text-align: left;
-            cursor: pointer;
-            font-family: 'Outfit', 'Inter', sans-serif;
-            font-weight: 400;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 14px;
-            transition: all 0.2s ease;
-            text-decoration: none;
-        }
-
-        .logout-link i, .dropdown-item-link i {
-            color: #1b3a1a;
-            font-size: 14px;
-            /* Jangan tentukan font-weight agar menggunakan default Font Awesome Solid (900) */
-        }
-
-        .logout-link:hover, .dropdown-item-link:hover {
-            background-color: rgba(128, 128, 0, 0.1);
-            color: #1b3a1a;
-            padding-left: 24px;
-        }
-
-        .logout-link:hover i, .dropdown-item-link:hover i {
-            opacity: 1;
-            color: #2d5a27;
-        }
-
-        .user-dropdown form { margin: 0; }
-    </style>
+    @stack('styles')
 
 </head>
 <body>

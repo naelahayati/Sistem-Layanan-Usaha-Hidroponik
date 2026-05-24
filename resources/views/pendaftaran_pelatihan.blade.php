@@ -9,8 +9,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
     <link rel="stylesheet" href="{{ asset('css/stylepelatihan.css') }}?v={{ time() }}">
     <!-- Konten Form Pendaftaran -->
-    <div class="pendaftaran-page-wrapper">
-        <header class="pelatihan-header-form">
+    <div class="pendaftaran-page-wrapper pelatihan-page">
+        <header class="pelatihan-header-form page-header-sub">
             <h1>PENDAFTARAN</h1>
         </header>
 
@@ -201,6 +201,8 @@
                     firstDay: 0,
                     selectable: true,
                     unselectAuto: false,
+                    selectLongPressDelay: 0,
+                    longPressDelay: 0,
                     headerToolbar: {
                         left: 'prev,next today',
                         center: 'title',
@@ -215,6 +217,16 @@
                     },
                     select: function (info) {
                         inputTanggal.value = info.startStr;
+                        if (typeof hitungTotal === 'function') hitungTotal();
+                    },
+                    dateClick: function (info) {
+                        const start = moment(info.date);
+                        const day = start.day();
+                        if (day === 0 || day === 6) return;
+                        const minDate = moment().add(3, 'days').startOf('day');
+                        if (start.isBefore(minDate)) return;
+                        inputTanggal.value = info.dateStr;
+                        if (typeof hitungTotal === 'function') hitungTotal();
                     }
                 });
                 calendar.render();

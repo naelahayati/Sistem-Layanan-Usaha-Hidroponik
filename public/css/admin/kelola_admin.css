@@ -246,7 +246,112 @@
     color: #333;
 }
 
+/* Page-specific (from blade) */
+.password-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.password-masked {
+    font-family: monospace;
+    letter-spacing: 2px;
+}
+
+.page-kelola-admin .card-header .btn-tambah-admin {
+    border-radius: 10px;
+    background: #eef2ff;
+    color: #4f46e5;
+    border: 1px solid #c7d2fe;
+    font-weight: bold;
+}
+
+.page-kelola-admin #adminTable thead tr {
+    background-color: #f8f9fc;
+}
+
+.page-kelola-admin #adminTable tbody tr {
+    transition: background 0.2s;
+}
+
+.page-kelola-admin .admin-username-cell {
+    letter-spacing: 0.5px;
+}
+
+.page-kelola-admin #adminTable .btn-edit-admin {
+    border-radius: 10px;
+    background: #fff4e5;
+    color: #d97706;
+    border: 1px solid #fbbf24;
+    font-weight: 600;
+}
+
+.page-kelola-admin #adminTable .btn-hapus-admin {
+    border-radius: 10px;
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+    font-weight: 600;
+}
+
+/* Tombol aksi desktop — ikon & teks berdampingan horizontal */
+.page-kelola-admin .btn-action-group {
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+}
+
+.page-kelola-admin .btn-action-group .btn {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.page-kelola-admin .btn-action-group .btn i {
+    display: inline-block;
+    margin-right: 0.35rem;
+    margin-left: 0;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.page-kelola-admin .btn-action-group .btn-edit-admin {
+    margin-right: 0 !important;
+}
+
 /* Responsive Design */
+@media (max-width: 991.98px) {
+    .page-kelola-admin .content-header h1 {
+        font-size: clamp(1.1rem, 4vw, 1.75rem);
+    }
+
+    .page-kelola-admin .card-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .page-kelola-admin .card-tools {
+        width: 100%;
+    }
+
+    .page-kelola-admin .table-responsive {
+        max-height: none;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .page-kelola-admin #adminTable .btn-action-group .btn {
+        white-space: nowrap;
+    }
+}
+
 @media (max-width: 768px) {
     .content-header h1 {
         font-size: 20px;
@@ -267,7 +372,7 @@
     }
 
     .table-responsive {
-        max-height: auto;
+        max-height: none;
     }
 
     .table thead {

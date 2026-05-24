@@ -1,15 +1,12 @@
 @extends('admin.Theme.defualt')
 
-@section('content')
 
-<style>
-    .product-img {
-        width: 100px;
-        height: auto;
-        border-radius: 8px;
-        object-fit: cover;
-    }
-</style>
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/admin/produk.css') }}">
+<link rel="stylesheet" href="{{ asset('css/admin/kelola-paket.css') }}">
+@endpush
+
+@section('content')
 
 <div class="content-header">
     <div class="container-fluid">

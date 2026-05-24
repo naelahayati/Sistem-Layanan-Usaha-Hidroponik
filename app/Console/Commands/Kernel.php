@@ -11,6 +11,7 @@ class Kernel extends ConsoleKernel
     {
         // Cron QRIS expired
         $schedule->command('orders:check-expired')->everyMinute();
+        $schedule->command('magang:expire-payments')->everyMinute();
     }
 
     protected function commands()

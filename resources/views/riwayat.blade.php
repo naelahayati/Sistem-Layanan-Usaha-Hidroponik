@@ -1,84 +1,11 @@
-@extends('master')
+﻿@extends('master')
 
 @section('konten')
-
+<link rel="stylesheet" href="{{ asset('css/pengguna/riwayat_page.css') }}">
 <link rel="stylesheet" href="/css/styleriwayat.css">
-
-<style>
-    /* Styling Pagination Laravel agar rapi */
-    .pagination-wrapper {
-        margin: 50px 0 20px 0;
-        display: flex;
-        justify-content: center;
-        width: 100%;
-        clear: both;
-        position: relative;
-    }
-
-    .pagination-wrapper .pagination {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-        padding: 0;
-        list-style: none;
-    }
-
-    /* Sembunyikan angka halaman, kecuali tombol View All dan navigasi utama */
-    .pagination-wrapper .page-item:not(:first-child):not(:last-child):not(.view-all-item) { display: none; }
-
-    .pagination-wrapper .page-link {
-        color: #1b3a1a;
-        padding: 10px 25px;
-        border-radius: 50px;
-        border: 1px solid #1b3a1a;
-        background: #fff;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        text-decoration: none;
-    }
-
-    .pagination-wrapper .page-link:hover {
-        background-color: #1b3a1a;
-        color: #fff;
-    }
-
-    .pagination-wrapper .page-item.disabled .page-link {
-        color: #ccc;
-        border-color: #eee;
-        pointer-events: none;
-    }
-
-    .pagination-wrapper .page-item.active .page-link {
-        background-color: #1b3a1a;
-        color: #fff;
-    }
-
-    /* Button View All di Tengah Pagination */
-    .btn-view-all {
-        color: #1b3a1a !important;
-        background: rgba(27, 58, 26, 0.05) !important;
-        border: 1px solid rgba(27, 58, 26, 0.1) !important;
-        font-weight: 700 !important;
-        text-transform: uppercase;
-        font-size: 12px !important;
-        letter-spacing: 1px;
-        padding: 10px 20px !important;
-    }
-
-    .btn-view-all:hover {
-        background: #1b3a1a !important;
-        color: #fff !important;
-    }
-
-    /* Jarak antar elemen pagination */
-    .pagination-wrapper .pagination {
-        gap: 10px;
-    }
-</style>
-
 <main class="produk-page">
     <!-- Hero Header -->
-    <header class="produk-hero">
+    <header class="produk-hero page-header-sub">
         <div class="hero-content">
             <h1>RIWAYAT KUNJUNGAN</h1>
         </div>
@@ -281,3 +208,5 @@
 </script>
 
 @endsection
+
+

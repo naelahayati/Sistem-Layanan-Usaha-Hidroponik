@@ -1,111 +1,11 @@
-@extends('master')
+﻿@extends('master')
 
 @section('konten')
-
+<link rel="stylesheet" href="{{ asset('css/pengguna/riwayat_pendaftaran.css') }}">
 <link rel="stylesheet" href="/css/styleriwayat.css">
-
-<style>
-    /* Styling Pagination Laravel agar rapi */
-    .pagination-wrapper {
-        margin: 50px 0 20px 0;
-        display: flex;
-        justify-content: center;
-        width: 100%;
-        clear: both;
-        position: relative;
-    }
-
-    .pagination-wrapper .pagination {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-        padding: 0;
-        list-style: none;
-    }
-
-    /* Sembunyikan angka halaman, kecuali tombol View All dan navigasi utama */
-    .pagination-wrapper .page-item:not(:first-child):not(:last-child):not(.view-all-item) { display: none; }
-
-    .pagination-wrapper .page-link {
-        color: #1b3a1a;
-        padding: 10px 25px;
-        border-radius: 50px;
-        border: 1px solid #1b3a1a;
-        background: #fff;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        text-decoration: none;
-    }
-
-    .pagination-wrapper .page-link:hover {
-        background-color: #1b3a1a;
-        color: #fff;
-    }
-
-    .pagination-wrapper .page-item.disabled .page-link {
-        color: #ccc;
-        border-color: #eee;
-        pointer-events: none;
-    }
-
-    .pagination-wrapper .page-item.active .page-link {
-        background-color: #1b3a1a;
-        color: #fff;
-    }
-
-    /* Button View All di Tengah Pagination */
-    .btn-view-all {
-        color: #1b3a1a !important;
-        background: rgba(27, 58, 26, 0.05) !important;
-        border: 1px solid rgba(27, 58, 26, 0.1) !important;
-        font-weight: 700 !important;
-        text-transform: uppercase;
-        font-size: 12px !important;
-        letter-spacing: 1px;
-        padding: 10px 20px !important;
-    }
-
-    .btn-view-all:hover {
-        background: #1b3a1a !important;
-        color: #fff !important;
-    }
-
-    /* Jarak antar elemen pagination */
-    .pagination-wrapper .pagination {
-        gap: 10px;
-    }
-
-    /* Styling Button WA */
-    .btn-wa {
-        background: #25d366;
-        color: white !important;
-        padding: 10px 18px;
-        border-radius: 12px;
-        text-decoration: none;
-        font-size: 0.88rem;
-        font-weight: 700;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        transition: all 0.3s ease;
-        border: none;
-        box-shadow: 0 4px 15px rgba(37, 211, 102, 0.2);
-    }
-
-    .btn-wa:hover {
-        background: #128c7e;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(18, 140, 126, 0.3);
-    }
-
-    .btn-wa i {
-        font-size: 1.1rem;
-    }
-</style>
-
 <main class="produk-page">
     <!-- Hero Header -->
-    <header class="produk-hero">
+    <header class="produk-hero page-header-sub">
         <div class="hero-content">
             <h1>RIWAYAT PENDAFTARAN</h1>
         </div>
@@ -179,15 +79,18 @@
                     <div class="order-actions" style="gap: 12px;">
                         {{-- Tombol Bayar: Hanya muncul jika status Terkonfirmasi (belum pilih metode) 
                              ATAU status Menunggu Pembayaran tapi metodenya QRIS (perlu bayar online) --}}
-                        @if((($item->status_pembayaran == 'Terkonfirmasi' && $item->metode_pembayaran != 'tunai') || ($item->status_pembayaran == 'Menunggu Pembayaran' && $item->metode_pembayaran == 'qris')) && $item->total_harga > 0)
-                            @php
-                                // Jika sudah pilih QRIS sebelumnya, langsung ke halaman QR
-                                // Jika belum (masih konfirmasi_wa atau tunai tapi mau bayar lagi), ke checkout
-                                $targetRoute = ($item->metode_pembayaran == 'qris') 
-                                    ? route('nazfram.pembayaran_magang', $item->id_pendaftaran) 
-                                    : route('nazfram.checkout_magang', $item->id_pendaftaran);
-                            @endphp
-                            <a href="{{ $targetRoute }}" class="btn-bayar">
+                        @php
+                            $canBayarTerkonfirmasi = $item->status_pembayaran == 'Terkonfirmasi' && $item->total_harga > 0;
+                            $canBayarQris = $item->status_pembayaran == 'Menunggu Pembayaran'
+                                && $item->metode_pembayaran == 'qris'
+                                && $item->expires_at
+                                && \Carbon\Carbon::parse($item->expires_at)->isFuture();
+                            $targetRoute = $canBayarQris
+                                ? route('nazfram.pembayaran_magang', $item->id_pendaftaran)
+                                : route('nazfram.checkout_magang', $item->id_pendaftaran);
+                        @endphp
+                        @if($canBayarTerkonfirmasi || $canBayarQris)
+                            <a href="{{ $targetRoute }}" class="btn-bayar" data-id="{{ $item->id_pendaftaran }}">
                                 <i class="fas fa-wallet"></i> Bayar
                             </a>
                         @endif
@@ -366,6 +269,37 @@
         }
     });
     @endif
+
+    // Perbarui status pembayaran tanpa refresh halaman (polling ringan)
+    document.querySelectorAll('.btn-bayar[data-id]').forEach(function(btn) {
+        const id = btn.getAttribute('data-id');
+        const card = btn.closest('.order-card');
+        const badge = card ? card.querySelector('.order-status-badge') : null;
+
+        setInterval(function() {
+            fetch("{{ url('pelatihan/pembayaran/status') }}/" + id, {
+                headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (!data.success) return;
+                if (badge && data.status) {
+                    badge.textContent = data.status;
+                    if (data.status === 'Expired' || data.status === 'Dibatalkan') {
+                        badge.classList.remove('status-pending');
+                        badge.classList.add('status-cancelled');
+                        btn.remove();
+                    }
+                }
+                if (!data.can_pay && data.status === 'Menunggu Pembayaran' && btn) {
+                    btn.remove();
+                }
+            })
+            .catch(() => {});
+        }, 15000);
+    });
 </script>
 
 @endsection
+
+

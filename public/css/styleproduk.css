@@ -218,22 +218,9 @@ body {
         gap: 25px;
     }
 
+    /* Layout HP produk: user-pages-mobile.css (row, foto di dalam card) */
     .produk-item {
-        flex-direction: column;
-        text-align: center;
-        padding: 25px 20px;
-    }
-
-    .produk-photo-box {
-        flex-basis: auto;
-        width: 140px;
-        height: 140px;
-        margin-bottom: 15px;
-    }
-
-    .produk-desc-box {
-        text-align: center;
-        padding-left: 0;
+        padding: clamp(12px, 3vw, 20px);
     }
 
     .produk-desc-box h2 {

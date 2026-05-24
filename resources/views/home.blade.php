@@ -5,7 +5,7 @@
 
 <main class="main-content">
     {{-- Hero Section (REVERTED TO ORIGINAL) --}}
-    <section class="hero-section">
+    <section class="hero-section page-header-main">
         <div class="hero-content">
             <h2 class="hero-subtitle">Welcome to the farm</h2>
             <h1 class="hero-title cd-headline rotate-1 letters">

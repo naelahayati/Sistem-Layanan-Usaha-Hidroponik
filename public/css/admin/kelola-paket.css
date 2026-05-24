@@ -1,0 +1,164 @@
+/**
+ * Kelola Produk / Kunjungan / Magang — grid kartu & modal detail
+ * Hanya aktif di tablet & mobile (<= 991.98px)
+ */
+
+@media (max-width: 991.98px) {
+    #productContainer,
+    #kunjunganContainer,
+    #magangContainer {
+        margin-left: -4px;
+        margin-right: -4px;
+    }
+
+    #productContainer > [class*="col-"],
+    #kunjunganContainer > [class*="col-"],
+    #magangContainer > [class*="col-"] {
+        flex: 0 0 50%;
+        max-width: 50%;
+        padding-left: 4px;
+        padding-right: 4px;
+        margin-bottom: 0.65rem !important;
+    }
+
+    #productContainer .card,
+    #kunjunganContainer .card,
+    #magangContainer .card {
+        border-radius: 8px !important;
+        min-height: 0 !important;
+    }
+
+    /* Kartu "Tambah" */
+    #productContainer > [class*="col-"] > a .card,
+    #kunjunganContainer > [class*="col-"] > a .card,
+    #magangContainer > [class*="col-"] > a .card {
+        min-height: 130px !important;
+    }
+
+    #productContainer > [class*="col-"] > a .fa-3x,
+    #kunjunganContainer > [class*="col-"] > a .fa-3x,
+    #magangContainer > [class*="col-"] > a .fa-3x {
+        font-size: 1.5rem !important;
+    }
+
+    #productContainer > [class*="col-"] > a h6,
+    #kunjunganContainer > [class*="col-"] > a h6,
+    #magangContainer > [class*="col-"] > a h6 {
+        font-size: 0.7rem !important;
+        margin-top: 0.35rem !important;
+    }
+
+    /* Kartu paket */
+    #productContainer .card-img-top,
+    #kunjunganContainer .card-img-top,
+    #magangContainer .card-img-top,
+    #productContainer .card-img-top + .bg-light,
+    #kunjunganContainer .card-img-top + .bg-light,
+    #magangContainer .card-img-top + .bg-light,
+    #productContainer div.card-img-top.bg-light,
+    #kunjunganContainer div.card-img-top.bg-light,
+    #magangContainer div.card-img-top.bg-light {
+        height: 95px !important;
+        min-height: 95px !important;
+    }
+
+    #productContainer .card-body,
+    #kunjunganContainer .card-body,
+    #magangContainer .card-body {
+        padding: 0.4rem 0.5rem 1.75rem !important;
+    }
+
+    #productContainer .card-title,
+    #kunjunganContainer .card-title,
+    #magangContainer .card-title {
+        font-size: 0.72rem !important;
+        margin-bottom: 0 !important;
+    }
+
+    #productContainer .position-absolute .btn,
+    #kunjunganContainer .position-absolute .btn,
+    #magangContainer .position-absolute .btn {
+        padding: 0.15rem 0.35rem !important;
+        font-size: 0.7rem !important;
+    }
+
+    #productContainer .position-absolute,
+    #kunjunganContainer .position-absolute,
+    #magangContainer .position-absolute {
+        bottom: 4px !important;
+        right: 4px !important;
+    }
+
+    /* Modal detail paket — tidak memenuhi layar */
+    #viewProductModal .modal-dialog,
+    #viewKunjunganModal .modal-dialog,
+    #viewMagangModal .modal-dialog {
+        max-width: min(320px, 86vw);
+        margin: 2rem auto 1rem;
+    }
+
+    #viewProductModal .modal-content,
+    #viewKunjunganModal .modal-content,
+    #viewMagangModal .modal-content {
+        border-radius: 12px !important;
+    }
+
+    #viewProductModal .modal-body,
+    #viewKunjunganModal .modal-body,
+    #viewMagangModal .modal-body {
+        padding: 0.75rem 1rem 1rem !important;
+        max-height: calc(100vh - 4rem);
+        overflow-y: auto;
+    }
+
+    #viewProductModal .modal-header,
+    #viewKunjunganModal .modal-header,
+    #viewMagangModal .modal-header {
+        padding: 0.75rem 1rem 0 !important;
+    }
+
+    #viewProductModal #viewImage,
+    #viewKunjunganModal #viewImage,
+    #viewMagangModal #viewImage {
+        max-height: 140px !important;
+    }
+
+    #viewProductModal #viewNoImage,
+    #viewKunjunganModal #viewNoImage,
+    #viewMagangModal #viewNoImage {
+        width: 120px !important;
+        height: 120px !important;
+    }
+
+    #viewProductModal #viewName,
+    #viewKunjunganModal #viewName,
+    #viewMagangModal #viewName {
+        font-size: 1rem !important;
+    }
+
+    #viewProductModal .bg-light.rounded,
+    #viewKunjunganModal .bg-light.rounded,
+    #viewMagangModal .bg-light.rounded {
+        padding: 0.4rem 0.5rem !important;
+        font-size: 0.8rem;
+    }
+
+    #viewProductModal .bg-light.rounded h5,
+    #viewKunjunganModal .bg-light.rounded h5,
+    #viewMagangModal .bg-light.rounded h5,
+    #viewKunjunganModal .col-6 h5 {
+        font-size: 0.85rem !important;
+    }
+
+    #viewProductModal .text-muted,
+    #viewKunjunganModal .text-muted,
+    #viewMagangModal .text-muted {
+        font-size: 0.75rem !important;
+    }
+
+    #viewProductModal #viewDescription,
+    #viewKunjunganModal #viewDescription,
+    #viewMagangModal #viewDescription {
+        font-size: 0.8rem !important;
+    }
+}

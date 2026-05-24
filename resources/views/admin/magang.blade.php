@@ -1,15 +1,12 @@
 @extends('admin.Theme.defualt')
 
-@section('content')
 
-<style>
-    .magang-img {
-        width: 100px;
-        height: auto;
-        border-radius: 8px;
-        object-fit: contain;
-    }
-</style>
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/admin/magang.css') }}">
+<link rel="stylesheet" href="{{ asset('css/admin/kelola-paket.css') }}">
+@endpush
+
+@section('content')
 
 <div class="content-header">
     <div class="container-fluid">

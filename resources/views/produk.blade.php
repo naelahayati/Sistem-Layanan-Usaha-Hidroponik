@@ -6,7 +6,7 @@
 
     <main class="produk-page">
         <!-- Hero Section dengan Foto Hidroponik & Gradasi Mewah -->
-        <header class="produk-hero">
+        <header class="produk-hero page-header-main">
             <div class="hero-content">
                 <h1>PRODUK</h1>
                 @if(auth()->check() && auth()->user()->role === 'admin')

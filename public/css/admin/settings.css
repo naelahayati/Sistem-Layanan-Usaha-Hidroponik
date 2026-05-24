@@ -1,0 +1,53 @@
+/* Pengaturan Website — responsif mobile/tablet */
+
+@media (max-width: 991.98px) {
+    .page-settings .card-header h5 {
+        font-size: 0.95rem;
+    }
+
+    .page-settings .card-header p {
+        font-size: 0.75rem;
+    }
+
+    .page-settings .form-group label,
+    .page-settings label.small {
+        font-size: 0.7rem !important;
+    }
+
+    .page-settings .form-control {
+        height: 38px !important;
+        font-size: 0.8rem !important;
+        padding-left: 0.75rem !important;
+    }
+
+    .page-settings input[type="file"].form-control {
+        height: auto !important;
+        padding: 0.4rem !important;
+        font-size: 0.75rem !important;
+    }
+
+    .page-settings .input-group-text {
+        padding: 0.35rem 0.5rem;
+    }
+
+    .page-settings .btn[type="submit"],
+    .page-settings button[type="submit"] {
+        height: 38px !important;
+        font-size: 0.8rem !important;
+        padding: 0.35rem 0.75rem !important;
+        border-radius: 10px !important;
+    }
+
+    .page-settings .btn[type="submit"] i,
+    .page-settings button[type="submit"] i {
+        font-size: 0.75rem;
+    }
+
+    .page-settings .text-muted.small {
+        font-size: 0.7rem !important;
+    }
+
+    .page-settings .img-thumbnail {
+        max-width: 110px !important;
+    }
+}
