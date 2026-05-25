@@ -14,13 +14,12 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create admin user
-        User::firstOrCreate(
+        User::updateOrCreate(
             ['username' => 'admin'],
             [
-                'name' => 'Admin User',
+                'name' => 'Admin',
                 'email' => 'admin@nazfram.local',
-                'password' => Hash::make('admin123'),
+                'password' => Hash::make('Admin14#'),
                 'role' => 'admin',
                 'status' => 'active',
                 'alamat' => 'Admin',

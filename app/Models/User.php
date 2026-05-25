@@ -26,6 +26,7 @@ class User extends Authenticatable
     'nohp',
     'umur',
     'role',
+    'status',
     'latitude',
     'longitude',
 ];
