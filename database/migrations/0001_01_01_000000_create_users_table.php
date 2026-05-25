@@ -16,9 +16,14 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
             $table->enum('role', ['admin', 'user']);
             $table->enum('status', ['verify', 'active', 'banned', 'user'])->default('user');
-            $table->string('password');
+            $table->text('alamat')->nullable();
+            $table->decimal('latitude', 10, 8)->nullable();
+            $table->decimal('longitude', 11, 8)->nullable();
+            $table->string('nohp', 20)->nullable();
+            $table->integer('umur')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

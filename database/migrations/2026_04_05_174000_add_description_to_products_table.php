@@ -7,15 +7,19 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::table("products", function (Blueprint $table) {
-            $table->text("description")->nullable()->after("stock");
-        });
+        if (! Schema::hasColumn('products', 'description')) {
+            Schema::table('products', function (Blueprint $table) {
+                $table->text('description')->nullable()->after('stock');
+            });
+        }
     }
 
     public function down(): void
     {
-        Schema::table("products", function (Blueprint $table) {
-            $table->dropColumn("description");
-        });
+        if (Schema::hasColumn('products', 'description')) {
+            Schema::table('products', function (Blueprint $table) {
+                $table->dropColumn('description');
+            });
+        }
     }
 };

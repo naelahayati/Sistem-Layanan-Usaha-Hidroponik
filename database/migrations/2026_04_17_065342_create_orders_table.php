@@ -20,8 +20,13 @@ return new class extends Migration
             $table->string("metode_pembayaran");
             $table->string("metode_pengiriman");
             $table->text("alamat");
-            $table->float("jarak")->nullable();
+            $table->double("jarak")->nullable();
             $table->string("status")->default("Menunggu Pembayaran");
+            $table->string("midtrans_order_id")->nullable();
+            $table->string("qr_url")->nullable();
+            $table->string("bukti_pembayaran")->nullable();
+            $table->boolean("is_offline")->default(false);
+            $table->timestamp("expires_at")->nullable();
             $table->timestamps();
 
             $table->foreign("user_id")->references("id")->on("users")->onDelete("cascade");

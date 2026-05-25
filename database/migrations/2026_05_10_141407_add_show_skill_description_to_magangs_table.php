@@ -6,20 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::table('magangs', function (Blueprint $table) {
-            $table->boolean('show_skill_description')->default(false)->after('is_wa_confirmation');
-        });
+        if (! Schema::hasColumn('magangs', 'show_skill_description')) {
+            Schema::table('magangs', function (Blueprint $table) {
+                $table->boolean('show_skill_description')->default(false)->after('is_wa_confirmation');
+            });
+        }
     }
 
     public function down(): void
     {
-        Schema::table('magangs', function (Blueprint $table) {
-            $table->dropColumn('show_skill_description');
-        });
+        if (Schema::hasColumn('magangs', 'show_skill_description')) {
+            Schema::table('magangs', function (Blueprint $table) {
+                $table->dropColumn('show_skill_description');
+            });
+        }
     }
 };

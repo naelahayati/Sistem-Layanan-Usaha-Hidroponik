@@ -6,20 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::table('magangs', function (Blueprint $table) {
-            $table->boolean('is_wa_confirmation')->default(false)->after('image');
-        });
+        if (! Schema::hasColumn('magangs', 'is_wa_confirmation')) {
+            Schema::table('magangs', function (Blueprint $table) {
+                $table->boolean('is_wa_confirmation')->default(false)->after('image');
+            });
+        }
     }
 
     public function down(): void
     {
-        Schema::table('magangs', function (Blueprint $table) {
-            $table->dropColumn('is_wa_confirmation');
-        });
+        if (Schema::hasColumn('magangs', 'is_wa_confirmation')) {
+            Schema::table('magangs', function (Blueprint $table) {
+                $table->dropColumn('is_wa_confirmation');
+            });
+        }
     }
 };

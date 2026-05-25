@@ -6,23 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::table('pendaftaran_magang', function (Blueprint $table) {
-            $table->integer('durasi_magang')->default(1)->after('tanggal_magang');
-        });
+        if (Schema::hasTable('pendaftaran_magang') && ! Schema::hasColumn('pendaftaran_magang', 'durasi_magang')) {
+            Schema::table('pendaftaran_magang', function (Blueprint $table) {
+                $table->integer('durasi_magang')->default(1)->after('tanggal_magang');
+            });
+        }
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::table('pendaftaran_magang', function (Blueprint $table) {
-            $table->dropColumn('durasi_magang');
-        });
+        if (Schema::hasColumn('pendaftaran_magang', 'durasi_magang')) {
+            Schema::table('pendaftaran_magang', function (Blueprint $table) {
+                $table->dropColumn('durasi_magang');
+            });
+        }
     }
 };

@@ -17,6 +17,8 @@ return new class extends Migration
             $table->decimal('price', 10, 2);
             $table->text('description');
             $table->string('image')->nullable();
+            $table->boolean('is_wa_confirmation')->default(false);
+            $table->boolean('show_skill_description')->default(false);
             $table->timestamps();
         });
     }

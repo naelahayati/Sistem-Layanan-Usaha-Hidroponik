@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->decimal('price', 10, 2);
             $table->integer('max_people');
+            $table->integer('min_people')->default(1);
             $table->text('description');
             $table->string('image')->nullable();
             $table->timestamps();

@@ -12,8 +12,21 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->decimal('latitude', 10, 8)->nullable()->after('alamat');
-            $table->decimal('longitude', 11, 8)->nullable()->after('latitude');
+            if (! Schema::hasColumn('users', 'alamat')) {
+                $table->text('alamat')->nullable()->after('status');
+            }
+            if (! Schema::hasColumn('users', 'latitude')) {
+                $table->decimal('latitude', 10, 8)->nullable()->after('alamat');
+            }
+            if (! Schema::hasColumn('users', 'longitude')) {
+                $table->decimal('longitude', 11, 8)->nullable()->after('latitude');
+            }
+            if (! Schema::hasColumn('users', 'nohp')) {
+                $table->string('nohp', 20)->nullable()->after('longitude');
+            }
+            if (! Schema::hasColumn('users', 'umur')) {
+                $table->integer('umur')->nullable()->after('nohp');
+            }
         });
     }
 
@@ -23,7 +36,14 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['latitude', 'longitude']);
+            $columns = array_filter(
+                ['alamat', 'latitude', 'longitude', 'nohp', 'umur'],
+                fn (string $column) => Schema::hasColumn('users', $column)
+            );
+
+            if ($columns !== []) {
+                $table->dropColumn($columns);
+            }
         });
     }
 };

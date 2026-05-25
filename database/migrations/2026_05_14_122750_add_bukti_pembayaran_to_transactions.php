@@ -6,39 +6,45 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::table('orders', function (Blueprint $table) {
-            $table->string('bukti_pembayaran')->nullable()->after('qr_url');
-        });
+        if (Schema::hasTable('orders') && ! Schema::hasColumn('orders', 'bukti_pembayaran')) {
+            Schema::table('orders', function (Blueprint $table) {
+                $table->string('bukti_pembayaran')->nullable()->after('qr_url');
+            });
+        }
 
-        Schema::table('reservasi_kunjungan', function (Blueprint $table) {
-            $table->string('bukti_pembayaran')->nullable();
-        });
+        if (Schema::hasTable('reservasi_kunjungan') && ! Schema::hasColumn('reservasi_kunjungan', 'bukti_pembayaran')) {
+            Schema::table('reservasi_kunjungan', function (Blueprint $table) {
+                $table->string('bukti_pembayaran', 255)->nullable();
+            });
+        }
 
-        Schema::table('pendaftaran_magang', function (Blueprint $table) {
-            $table->string('bukti_pembayaran')->nullable();
-        });
+        if (Schema::hasTable('pendaftaran_magang') && ! Schema::hasColumn('pendaftaran_magang', 'bukti_pembayaran')) {
+            Schema::table('pendaftaran_magang', function (Blueprint $table) {
+                $table->string('bukti_pembayaran', 255)->nullable();
+            });
+        }
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::table('orders', function (Blueprint $table) {
-            $table->dropColumn('bukti_pembayaran');
-        });
+        if (Schema::hasColumn('orders', 'bukti_pembayaran')) {
+            Schema::table('orders', function (Blueprint $table) {
+                $table->dropColumn('bukti_pembayaran');
+            });
+        }
 
-        Schema::table('reservasi_kunjungan', function (Blueprint $table) {
-            $table->dropColumn('bukti_pembayaran');
-        });
+        if (Schema::hasColumn('reservasi_kunjungan', 'bukti_pembayaran')) {
+            Schema::table('reservasi_kunjungan', function (Blueprint $table) {
+                $table->dropColumn('bukti_pembayaran');
+            });
+        }
 
-        Schema::table('pendaftaran_magang', function (Blueprint $table) {
-            $table->dropColumn('bukti_pembayaran');
-        });
+        if (Schema::hasColumn('pendaftaran_magang', 'bukti_pembayaran')) {
+            Schema::table('pendaftaran_magang', function (Blueprint $table) {
+                $table->dropColumn('bukti_pembayaran');
+            });
+        }
     }
 };

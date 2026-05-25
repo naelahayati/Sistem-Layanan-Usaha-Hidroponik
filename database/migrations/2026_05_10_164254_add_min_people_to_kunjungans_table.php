@@ -6,23 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::table('kunjungans', function (Blueprint $table) {
-            $table->integer('min_people')->default(1)->after('max_people');
-        });
+        if (! Schema::hasColumn('kunjungans', 'min_people')) {
+            Schema::table('kunjungans', function (Blueprint $table) {
+                $table->integer('min_people')->default(1)->after('max_people');
+            });
+        }
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::table('kunjungans', function (Blueprint $table) {
-            $table->dropColumn('min_people');
-        });
+        if (Schema::hasColumn('kunjungans', 'min_people')) {
+            Schema::table('kunjungans', function (Blueprint $table) {
+                $table->dropColumn('min_people');
+            });
+        }
     }
 };
