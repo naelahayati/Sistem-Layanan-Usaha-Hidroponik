@@ -10,7 +10,7 @@
         <!-- Logo & Header Section -->
         <div class="registration-header-modern">
             <div class="logo-container-modern">
-                <img src="{{ asset('image/logo.png') }}" alt="Logo" class="img-logo-reg-modern">
+                <img src="{{ asset('storage/image/logo.png') }}" alt="Logo" class="img-logo-reg-modern">
             </div>
             <div class="header-titles">
                 <h1 class="reg-title">Pendaftaran Akun</h1>

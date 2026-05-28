@@ -13,7 +13,7 @@
     <section class="history-section">
         <div class="history-header-flex">
             <div class="minimal-logo-container">
-                <img src="{{ asset('image/logo2.png') }}" alt="Logo Naz Hidrofarm">
+                <img src="{{ asset('storage/image/logo2.png') }}" alt="Logo Naz Hidrofarm">
             </div>
             <div class="history-title-container">
                 <h2>Sejarah Naz Hidrofarm</h2>
@@ -77,28 +77,28 @@
                 <button type="button" class="carousel-control prev"><i class="fas fa-chevron-left"></i></button>
                 <div class="carousel-horizontal">
                     <div class="carousel-item">
-                        <img src="{{ asset('image/home.webp') }}" alt="Sayuran Segar">
+                        <img src="{{ asset('storage/image/home.webp') }}" alt="Sayuran Segar">
                         <div class="caption">
                             <h4>Sayuran Premium</h4>
                             <p>Kualitas nutrisi terbaik dari sistem hidroponik modern.</p>
                         </div>
                     </div>
                     <div class="carousel-item">
-                        <img src="{{ asset('image/4.png') }}" alt="Melon Hidroponik">
+                        <img src="{{ asset('storage/image/4.png') }}" alt="Melon Hidroponik">
                         <div class="caption">
                             <h4>Melon Eksklusif</h4>
                             <p>Budidaya buah melon dengan rasa dan kesegaran yang terjaga.</p>
                         </div>
                     </div>
                     <div class="carousel-item">
-                        <img src="{{ asset('image/magang.jpeg') }}" alt="Edukasi">
+                        <img src="{{ asset('storage/image/magang.jpeg') }}" alt="Edukasi">
                         <div class="caption">
                             <h4>Pusat Edukasi</h4>
                             <p>Tempat pembelajaran praktis bagi generasi muda.</p>
                         </div>
                     </div>
                     <div class="carousel-item">
-                        <img src="{{ asset('image/kunjungan.webp') }}" alt="P4S Nazfram">
+                        <img src="{{ asset('storage/image/kunjungan.webp') }}" alt="P4S Nazfram">
                         <div class="caption">
                             <h4>Pemberdayaan Sosial</h4>
                             <p>Berkontribusi dalam kemajuan ekonomi kreatif perdesaan.</p>
