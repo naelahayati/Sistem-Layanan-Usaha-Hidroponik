@@ -47,7 +47,18 @@
                             style="color: #555; font-size: 0.85rem; background: #fff8e1; padding: 10px 15px; border-left: 4px solid #ffc107; border-radius: 4px; margin-bottom: 15px; line-height: 1.6;">
                             Jadwal hanya dapat dipilih minimal H+3 dari tanggal pemesanan.
                         </p>
-                        <div id="calendar-pendaftaran"></div>
+
+                        {{-- Tombol trigger khusus mobile --}}
+                        <button type="button" class="cal-trigger-btn-pelatihan" id="btn-open-cal-pelatihan">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span id="cal-trigger-label-pelatihan">Ketuk untuk pilih tanggal</span>
+                        </button>
+
+                        {{-- Kalender desktop --}}
+                        <div class="cal-desktop-pelatihan">
+                            <div id="calendar-pendaftaran"></div>
+                        </div>
+
                         <!-- Input hidden untuk mengirim data ke controller -->
                         <input type="hidden" name="tanggal_magang" id="tanggal_magang_input"
                             value="{{ old('tanggal_magang') }}" required>
@@ -191,18 +202,60 @@
         </div>
     </div>
 
+    {{-- Modal Kalender Mobile --}}
+    <div class="cal-modal-overlay-pelatihan" id="cal-modal-overlay-pelatihan">
+        <div class="cal-modal-box-pelatihan">
+            <div class="cal-modal-header-pelatihan">
+                <span><i class="fas fa-calendar-alt" style="margin-right:6px;color:#1b3a1a;"></i> Pilih Tanggal Mulai Magang</span>
+                <button type="button" class="cal-modal-close-pelatihan" id="btn-close-cal-pelatihan">&times;</button>
+            </div>
+            <div id="calendar-pendaftaran-modal"></div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const hargaDasar = {{ $magang->price }};
             const inputPeserta = document.getElementById('jumlah_peserta');
             const textTotal = document.getElementById('total_bayar_text');
             const inputHiddenTotal = document.getElementById('total_harga_input');
-            const calendarEl = document.getElementById('calendar-pendaftaran');
             const inputTanggal = document.getElementById('tanggal_magang_input');
+            const triggerBtn   = document.getElementById('btn-open-cal-pelatihan');
+            const triggerLabel = document.getElementById('cal-trigger-label-pelatihan');
+            const overlay      = document.getElementById('cal-modal-overlay-pelatihan');
+            const btnClose     = document.getElementById('btn-close-cal-pelatihan');
 
-            // Inisialisasi Kalender
-            if (calendarEl) {
-                const calendar = new FullCalendar.Calendar(calendarEl, {
+            // ── Validasi tanggal ─────────────────────────────────────
+            // Blokir: Sabtu/Minggu, sebelum H+3, dan hari libur dari admin (background events)
+            function isDateAllowed(calInstance, start) {
+                const day = start.day();
+                if (day === 0 || day === 6) return false;
+                const minDate = moment().add(3, 'days').startOf('day');
+                if (moment(start).isBefore(minDate)) return false;
+                if (!calInstance) return true;
+                const dateStr = start.format('YYYY-MM-DD');
+                return !calInstance.getEvents().some(event => {
+                    if (event.display !== 'background') return false;
+                    const evStart = moment(event.start).format('YYYY-MM-DD');
+                    const evEnd   = event.end
+                        ? moment(event.end).format('YYYY-MM-DD')
+                        : moment(event.start).add(1, 'days').format('YYYY-MM-DD');
+                    return moment(dateStr).isSameOrAfter(evStart) && moment(dateStr).isBefore(evEnd);
+                });
+            }
+
+            // ── Setelah tanggal dipilih ──────────────────────────────
+            function onDatePicked(dateStr) {
+                inputTanggal.value = dateStr;
+                const formatted = moment(dateStr).locale('id').format('dddd, D MMMM YYYY');
+                if (triggerLabel) triggerLabel.textContent = formatted;
+                if (typeof hitungTotal === 'function') hitungTotal();
+                tutupModal();
+            }
+
+            // ── Konfigurasi kalender ─────────────────────────────────
+            function buatKalender(elId, ref) {
+                const cal = new FullCalendar.Calendar(document.getElementById(elId), {
                     initialView: 'dayGridMonth',
                     locale: 'id',
                     firstDay: 0,
@@ -210,37 +263,51 @@
                     unselectAuto: false,
                     selectLongPressDelay: 0,
                     longPressDelay: 0,
-                    headerToolbar: {
-                        left: 'prev,next today',
-                        center: 'title',
-                        right: ''
-                    },
+                    headerToolbar: { left: 'prev,next today', center: 'title', right: '' },
+                    buttonText: { today: 'Hari ini' },
                     events: "{{ route('nazfram.pelatihan.events') }}?type=magang",
-                    selectAllow: function (selectInfo) {
-                        const day = moment(selectInfo.start).day();
-                        if (day === 0 || day === 6) return false;
-                        const minDate = moment().add(3, 'days').startOf('day');
-                        return moment(selectInfo.start).isSameOrAfter(minDate);
-                    },
-                    select: function (info) {
-                        inputTanggal.value = info.startStr;
-                        if (typeof hitungTotal === 'function') hitungTotal();
-                    },
-                    dateClick: function (info) {
-                        const start = moment(info.date);
-                        const day = start.day();
-                        if (day === 0 || day === 6) return;
-                        const minDate = moment().add(3, 'days').startOf('day');
-                        if (start.isBefore(minDate)) return;
-                        inputTanggal.value = info.dateStr;
-                        if (typeof hitungTotal === 'function') hitungTotal();
+                    selectAllow: info => isDateAllowed(ref.cal, moment(info.start)),
+                    select:    info => onDatePicked(info.startStr),
+                    dateClick: info => {
+                        if (isDateAllowed(ref.cal, moment(info.date))) onDatePicked(info.dateStr);
                     }
                 });
-                calendar.render();
+                ref.cal = cal;
+                return cal;
+            }
+
+            // ── Kalender Desktop ─────────────────────────────────────
+            const desktopRef = { cal: null };
+            const calDesktopEl = document.getElementById('calendar-pendaftaran');
+            if (calDesktopEl) {
+                buatKalender('calendar-pendaftaran', desktopRef).render();
+            }
+
+            // ── Kalender Modal (mobile, lazy init) ──────────────────
+            const modalRef = { cal: null };
+            function bukaModal() {
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                if (!modalRef.cal) {
+                    buatKalender('calendar-pendaftaran-modal', modalRef).render();
+                }
+            }
+            function tutupModal() {
+                if (overlay) overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            if (triggerBtn) triggerBtn.addEventListener('click', bukaModal);
+            if (btnClose)   btnClose.addEventListener('click', tutupModal);
+            if (overlay)    overlay.addEventListener('click', e => { if (e.target === overlay) tutupModal(); });
+
+            // Restore label jika ada old value
+            if (inputTanggal && inputTanggal.value && triggerLabel) {
+                triggerLabel.textContent = moment(inputTanggal.value).locale('id').format('dddd, D MMMM YYYY');
             }
 
             window.hitungTotal = function() {
-                let jumlah = parseInt(inputPeserta.value) || 0;
+                let jumlah = parseInt(inputPeserta ? inputPeserta.value : 0) || 0;
                 let total = jumlah * hargaDasar;
 
                 if (textTotal) {

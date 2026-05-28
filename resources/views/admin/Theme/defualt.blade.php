@@ -33,6 +33,10 @@
             top: 0 !important;
             right: 0 !important;
             left: 0 !important;
+            z-index: 1040 !important;
+        }
+
+        .main-sidebar {
             z-index: 1050 !important;
         }
 
