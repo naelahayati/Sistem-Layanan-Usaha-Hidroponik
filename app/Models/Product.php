@@ -35,8 +35,11 @@ class Product extends Model
 
             // Menggunakan Storage::url() lebih baik karena otomatis menyesuaikan
             // apakah disimpan di local storage atau cloud (S3/Cloudinary)
-            if (Storage::exists($this->image)) {
-                return Storage::url($this->image);
+            // if (Storage::exists($this->image)) {
+            //     return Storage::url($this->image);
+            // 
+            if (Storage::disk('s3')->exists($this->image)) {
+                return Storage::disk('s3')->url($this->image);
             }
 
             // Jika file tidak ditemukan secara fisik, berikan placeholder
