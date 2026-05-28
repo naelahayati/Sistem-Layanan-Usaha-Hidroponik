@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class Product extends Model
 {
@@ -24,28 +23,24 @@ class Product extends Model
     protected function imageUrl(): Attribute
     {
         return Attribute::get(function () {
+            // Jika kolom image kosong
             if (!$this->image) {
-                return asset('image/produk.webp');
+                return asset('image/5.png'); // Sesuaikan dengan placeholder yang Anda miliki
             }
 
+            // Cek apakah path di database sudah memiliki prefix 'http' (misal image hasil seeder/external)
             if (str_starts_with($this->image, 'http')) {
                 return $this->image;
             }
 
-            $path = ltrim($this->image, '/');
-            $normalizedPath = Str::startsWith($path, 'storage/')
-                ? Str::after($path, 'storage/')
-                : $path;
-
-            if (Str::startsWith($path, 'image/')) {
-                return asset($path);
+            // Menggunakan Storage::url() lebih baik karena otomatis menyesuaikan
+            // apakah disimpan di local storage atau cloud (S3/Cloudinary)
+            if (Storage::exists($this->image)) {
+                return Storage::url($this->image);
             }
 
-            if (Storage::disk('public')->exists($normalizedPath)) {
-                return asset('storage/' . $normalizedPath);
-            }
-
-            return asset('image/produk.webp');
+            // Jika file tidak ditemukan secara fisik, berikan placeholder
+            return asset('image/5.png');
         });
     }
 }

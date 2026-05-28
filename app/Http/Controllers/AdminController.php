@@ -148,13 +148,13 @@ class AdminController extends Controller
                     // 1. Pencarian ID (Hapus prefiks ORD- atau # jika ada, lalu ambil angka)
                     $cleanSearch = str_replace(['#', 'ORD-', 'ord-'], '', $search);
                     $numericSearch = preg_replace('/[^0-9]/', '', $cleanSearch);
-                    
+
                     $q->where('id', 'LIKE', "%{$search}%")
                       ->orWhere('status', 'LIKE', "%{$search}%")
                       ->orWhereHas('user', function ($qu) use ($search) {
                           $qu->where('name', 'LIKE', "%{$search}%");
                       });
-                    
+
                     if ($numericSearch !== '') {
                         $q->orWhere('id', (int)$numericSearch);
                     }
@@ -593,7 +593,9 @@ class AdminController extends Controller
         ]);
 
         if ($request->hasFile("image")) {
-            $validated["image"] = $request->file("image")->store("products", "public");
+            // Hapus parameter "public" agar Laravel menggunakan disk default
+            // yang diatur di .env (FILESYSTEM_DISK)
+            $validated["image"] = $request->file("image")->store("products");
         }
 
         Product::create($validated);
@@ -649,7 +651,7 @@ class AdminController extends Controller
             if ($product->image) {
                 Storage::disk("public")->delete($product->image);
             }
-            $imagePath = $request->file("image")->store("products", "public");
+            $imagePath = $request->file("image")->store("products");
             $validated["image"] = $imagePath;
         }
 
@@ -1110,7 +1112,7 @@ class AdminController extends Controller
             // Cek apakah tanggal yang dipilih adalah tanggal lampau
             $today = Carbon::today();
             $start = Carbon::parse($request->start_date)->startOfDay();
-            
+
             if ($start->lt($today)) {
                 return response()->json(["success" => false, "message" => "Tidak dapat mengatur libur pada tanggal yang sudah berlalu"], 422);
             }
@@ -1133,17 +1135,17 @@ class AdminController extends Controller
 
             if ($overlapJadwal->isNotEmpty() || $overlappingVisits->isNotEmpty()) {
                 $visitDetails = "";
-                
+
                 foreach ($overlapJadwal as $j) {
                     $visitDetails .= "- Jadwal: {$j->title} (" . Carbon::parse($j->start_date)->format('d-m-Y') . ")\n";
                 }
-                
+
                 foreach ($overlappingVisits as $visit) {
                     $visitDetails .= "- Reservasi: {$visit->user_name} ({$visit->paket_name}) pada " . Carbon::parse($visit->tanggal_reservasi)->format('d-m-Y') . "\n";
                 }
-                
+
                 return response()->json([
-                    "success" => false, 
+                    "success" => false,
                     "message" => "Tidak dapat mengatur libur karena terdapat kunjungan pada tanggal tersebut:\n\n" . $visitDetails . "\nJika ingin meliburkan tanggal ini, silakan batalkan kunjungan tersebut dan beri tahu yang melakukan kunjungan."
                 ], 422);
             }
@@ -1210,7 +1212,7 @@ class AdminController extends Controller
             // Cek apakah tanggal yang dipilih adalah tanggal lampau
             $today = Carbon::today();
             $start = Carbon::parse($request->start_date)->startOfDay();
-            
+
             if ($start->lt($today)) {
                 return response()->json(["success" => false, "message" => "Tidak dapat mengatur libur pada tanggal yang sudah berlalu"], 422);
             }
@@ -1234,17 +1236,17 @@ class AdminController extends Controller
 
             if ($overlapJadwal->isNotEmpty() || $overlappingVisits->isNotEmpty()) {
                 $visitDetails = "";
-                
+
                 foreach ($overlapJadwal as $j) {
                     $visitDetails .= "- Jadwal: {$j->title} (" . Carbon::parse($j->start_date)->format('d-m-Y') . ")\n";
                 }
-                
+
                 foreach ($overlappingVisits as $visit) {
                     $visitDetails .= "- Reservasi: {$visit->user_name} ({$visit->paket_name}) pada " . Carbon::parse($visit->tanggal_reservasi)->format('d-m-Y') . "\n";
                 }
-                
+
                 return response()->json([
-                    "success" => false, 
+                    "success" => false,
                     "message" => "Tidak dapat mengatur libur karena terdapat kunjungan pada tanggal tersebut:\n\n" . $visitDetails . "\nJika ingin meliburkan tanggal ini, silakan batalkan kunjungan tersebut dan beri tahu yang melakukan kunjungan."
                 ], 422);
             }
@@ -1462,7 +1464,7 @@ class AdminController extends Controller
 
         foreach ($allKunjungans as $k) {
             $isPast = Carbon::parse($k->tanggal_reservasi)->startOfDay() < Carbon::today();
-            
+
             // Jika kunjungan sudah lewat dan statusnya 'Diterima', ubah otomatis ke 'Selesai'
             if ($isPast && $k->status_pembayaran == 'Diterima') {
                 $k->status_pembayaran = 'Selesai';
@@ -1645,7 +1647,7 @@ class AdminController extends Controller
                 } else {
                     $statusMatch = (!$statusFilter || $statusFilter == 'Semua' || $m->status_magang_filter == $statusFilter);
                 }
-                
+
                 if (!$statusFilter || $statusFilter == 'Semua') {
                     $statusMatch = $statusMatch && ($m->is_offline == 0);
                 }
@@ -1680,7 +1682,7 @@ class AdminController extends Controller
             }
         }
 
-        // Urutkan: 
+        // Urutkan:
         // Jika filter "Semua" (statusFilter kosong), urutkan berdasarkan pendaftaran terbaru (created_at DESC)
         // Jika filter tertentu, urutkan berdasarkan sisa hari terkecil
         if (!$statusFilter || $statusFilter == 'Semua') {
@@ -1845,11 +1847,11 @@ class AdminController extends Controller
                 $product = Product::findOrFail($item['product_id']);
                 if ($product->stock < $item['quantity']) {
                     return response()->json([
-                        "success" => false, 
+                        "success" => false,
                         "message" => "Stok produk '" . $product->name . "' tidak mencukupi. Stok saat ini: " . $product->stock . " kg"
                     ], 400);
                 }
-                
+
                 $subtotal = $product->price * $item['quantity'];
                 $totalQty += $item['quantity'];
                 $grandTotal += $subtotal;
