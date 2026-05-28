@@ -23,7 +23,7 @@
         <nav class="navbar">
             <div class="nav-container">
                 <div class="logo">
-                    <img src="/image/logo.png" alt="Naz Hidrofarm" class="navbar-brand-image">
+                    <img src="{{ asset('image/logo.png') }}" alt="Naz Hidrofarm" class="navbar-brand-image">
                     <span class="navbar-brand-text">
                         Naz
                         <small>Hidrofarm</small>
@@ -157,7 +157,7 @@
     </footer>
      @endif
 
-    <script src="/js/scriptmaster.js"></script>
+    <script src="{{ asset('js/scriptmaster.js') }}"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

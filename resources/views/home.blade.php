@@ -1,7 +1,7 @@
 @extends('master')
 
 @section('konten')
-<link rel="stylesheet" href="/css/stylehome.css">
+<link rel="stylesheet" href="{{ asset('css/stylehome.css') }}">
 
 <main class="main-content">
     {{-- Hero Section (REVERTED TO ORIGINAL) --}}
@@ -41,13 +41,13 @@
         {{-- Dynamic Photo Collage (Using ORIGINAL images only) --}}
         <div class="photo-collage">
             <div class="collage-item item-vertical">
-                <img src="/image/hoem34.jpeg" alt="Proses Hidroponik">
+                <img src="{{ asset('image/hoem34.jpeg') }}" alt="Proses Hidroponik">
             </div>
             <div class="collage-item item-horizontal">
-                <img src="/image/home56.jpeg" alt="Hasil Panen">
+                <img src="{{ asset('image/home56.jpeg') }}" alt="Hasil Panen">
             </div>
             <div class="collage-item item-small">
-                <img src="/image/4.png" alt="Detail Tanaman">
+                <img src="{{ asset('image/4.png') }}" alt="Detail Tanaman">
             </div>
         </div>
     </section>
@@ -58,7 +58,7 @@
 
         <div class="product-gallery">
             <div class="product-square-card">
-                <img src="/image/4.png" alt="Melon">
+                <img src="{{ asset('image/4.png') }}" alt="Melon">
                 <div class="product-info-overlay">
                     <div class="product-icon"><i class="fas fa-leaf"></i></div>
                     <h4>Melon Premium</h4>
@@ -66,7 +66,7 @@
                 </div>
             </div>
             <div class="product-square-card">
-                <img src="/image/home.webp" alt="Sayuran">
+                <img src="{{ asset('image/home.webp') }}" alt="Sayuran">
                 <div class="product-info-overlay">
                     <div class="product-icon"><i class="fas fa-tint"></i></div>
                     <h4>Sayuran Segar</h4>
@@ -84,7 +84,7 @@
     <section class="about-asymmetric1" style="padding-top: 50px; background-color: var(--cream-warm);">
         <div class="photo-collage" style="grid-template-columns: 1fr;">
              <div class="collage-item" style="height: 400px;">
-                <img src="/image/kunjungantk.jpeg" alt="Kunjungan Edukasi">
+                <img src="{{ asset('image/kunjungantk.jpeg') }}" alt="Kunjungan Edukasi">
             </div>
         </div>
 
@@ -103,6 +103,6 @@
     </section>
 </main>
 
-<script src="/js/jquery.min.js"></script>
-<script src="/js/scripthome.js"></script>
+<script src="{{ asset('js/jquery.min.js') }}"></script>
+<script src="{{ asset('js/scripthome.js') }}"></script>
 @endsection
