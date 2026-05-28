@@ -128,7 +128,7 @@
                             @empty
                             <tr>
                                 <td colspan="6" class="text-center py-5">
-                                    <img src="{{ asset('storage/image/no-transaction.png') }}" alt="" style="width: 150px; opacity:0.5;" onerror="this.src='https://cdn-icons-png.flaticon.com/512/4076/4076432.png'">
+                                    <img src="{{ asset('image/no-transaction.png') }}" alt="" style="width: 150px; opacity:0.5;" onerror="this.src='https://cdn-icons-png.flaticon.com/512/4076/4076432.png'">
                                     <p class="text-muted mt-3">Belum ada transaksi masuk.</p>
                                 </td>
                             </tr>

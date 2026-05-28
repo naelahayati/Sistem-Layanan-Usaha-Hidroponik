@@ -92,7 +92,7 @@
                             <div class="order-items-list">
                                 @foreach($order->items as $item)
                                     <div class="item-row">
-                                        <img src="{{ $item->product->image ? asset('storage/' . $item->product->image) : asset('storage/image/5.png') }}" alt="" class="item-img">
+                                        <img src="{{ $item->product->image ? asset('storage/' . $item->product->image) : asset('image/5.png') }}" alt="" class="item-img">
                                         <div class="item-info">
                                             <div class="item-name">{{ $item->product->name }}</div>
                                             <div class="item-price">{{ $item->quantity }} kg x Rp {{ number_format($item->price, 0, ',', '.') }}</div>

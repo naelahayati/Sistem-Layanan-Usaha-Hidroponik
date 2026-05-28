@@ -7,7 +7,7 @@
         <!-- Logo Section di Atas Form -->
         <div class="card-header-modern">
             <div class="logo-wrapper-modern">
-                <img src="{{ asset('storage/image/logo.png') }}" alt="Logo" class="img-logo-modern">
+                <img src="{{ asset('image/logo.png') }}" alt="Logo" class="img-logo-modern">
             </div>
             <div class="brand-name-modern">
                 <h2 class="brand-naz">Naz</h2>
@@ -893,7 +893,7 @@
 
         <!-- Logo di Setiap Modal -->
         <div class="modal-header-modern-inner">
-            <img src="{{ asset('storage/image/logo.png') }}" alt="Logo" class="modal-logo-small">
+            <img src="{{ asset('image/logo.png') }}" alt="Logo" class="modal-logo-small">
         </div>
 
         <!-- Step 1: Input Email -->

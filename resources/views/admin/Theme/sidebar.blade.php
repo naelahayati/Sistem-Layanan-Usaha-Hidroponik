@@ -2,7 +2,7 @@
 <aside class="main-sidebar sidebar-dark-primary custom-sidebar elevation-3">
     <!-- Brand Logo -->
     <a href="{{ route('admin.dashboard') }}" class="brand-link">
-        <img src="{{ asset('storage/image/logo2.png') }}" alt="Naz Hidrofarm Logo" class="brand-image" style="opacity: 1; box-shadow: none;">
+        <img src="{{ asset('image/logo2.png') }}" alt="Naz Hidrofarm Logo" class="brand-image" style="opacity: 1; box-shadow: none;">
         <span class="brand-text font-weight-bold">Naz Hidrofarm</span>
     </a>
 
