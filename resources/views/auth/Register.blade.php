@@ -60,7 +60,7 @@
 
                     <div class="input-modern-group">
                         <label>Nomor HP (WhatsApp)</label>
-                        <input type="text" name="nohp" value="{{ old('nohp') }}" placeholder="08XXXXXXXXXX" required class="@error('nohp') is-invalid @enderror">
+                        <input type="text" name="nohp" value="{{ old('nohp') }}" placeholder="08XXXXXXXXXX" required inputmode="numeric" pattern="[0-9]*" class="@error('nohp') is-invalid @enderror" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                         @error('nohp')
                             <small class="error-text"><i class="fas fa-exclamation-circle"></i> {{ $message }}</small>
                         @enderror

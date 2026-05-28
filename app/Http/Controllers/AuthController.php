@@ -6,25 +6,25 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 class AuthController extends Controller
 {
-    // Menampilkan halaman login
+    const MAX_ATTEMPTS  = 5;
+    const LOCKOUT_HOURS = 24;
+
     public function login()
     {
         return view('auth.login');
     }
 
-    // Menampilkan halaman register
     public function register()
     {
         return view('auth.Register');
     }
 
-    // Proses Registrasi
     public function doregister(Request $request)
     {
-        // 1. Validasi data dengan pesan kustom Bahasa Indonesia
         $request->validate([
             'name'     => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users,username',
@@ -40,13 +40,12 @@ class AuthController extends Controller
                     if (!preg_match('/[!@#$%^&*]/', $value)) { $fail('Password harus mengandung simbol (!@#$%^&*).'); }
                 }
             ],
-            'alamat'   => 'required|string',
-            'nohp'     => 'required|string|max:20',
-            'umur'     => 'required|numeric|min:15',
-            'latitude' => 'nullable|numeric',
-            'longitude'=> 'nullable|numeric',
+            'alamat'    => 'required|string',
+            'nohp'      => 'required|numeric',
+            'umur'      => 'required|numeric|min:15',
+            'latitude'  => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
         ], [
-            // Pesan Error Bahasa Indonesia
             'name.required'     => 'Nama lengkap wajib diisi.',
             'username.required' => 'Username wajib diisi.',
             'username.unique'   => 'Username sudah digunakan, silakan cari yang lain.',
@@ -57,53 +56,72 @@ class AuthController extends Controller
             'password.min'      => 'Password minimal harus 7 karakter.',
             'alamat.required'   => 'Alamat wajib diisi.',
             'nohp.required'     => 'Nomor HP wajib diisi.',
+            'nohp.numeric'      => 'Nomor HP hanya boleh berisi angka.',
             'umur.required'     => 'Umur wajib diisi.',
             'umur.numeric'      => 'Umur harus berupa angka.',
             'umur.min'          => 'Umur pendaftar minimal harus 15 tahun.',
         ]);
 
-        // 2. Simpan ke database nazfram (tabel users)
         User::create([
-            'name'     => $request->name,
-            'username' => $request->username,
-            'email'    => $request->email,
-            'password' => Hash::make($request->password),
-            'alamat'   => $request->alamat,
-            'nohp'     => $request->nohp,
-            'umur'     => $request->umur,
-            'latitude' => $request->latitude,
-            'longitude'=> $request->longitude,
-            'role'     => 'user',   // Default role
-            'status'   => 'active', // Default status
+            'name'      => $request->name,
+            'username'  => $request->username,
+            'email'     => $request->email,
+            'password'  => Hash::make($request->password),
+            'alamat'    => $request->alamat,
+            'nohp'      => $request->nohp,
+            'umur'      => $request->umur,
+            'latitude'  => $request->latitude,
+            'longitude' => $request->longitude,
+            'role'      => 'user',
+            'status'    => 'active',
         ]);
 
-        // 3. Redirect ke login dengan pesan sukses
         return redirect('/login')->with('success', 'Pendaftaran berhasil! Silakan login.');
     }
 
-    // Proses Login
     public function dologin(Request $request)
     {
-        // Validasi login
         $credentials = $request->validate([
-            'username' => ['required'], // Field ini bisa berisi username atau email
+            'username' => ['required'],
             'password' => ['required'],
         ], [
             'username.required' => 'Username atau Email tidak boleh kosong.',
             'password.required' => 'Password tidak boleh kosong.',
         ]);
 
-        // Coba cari user berdasarkan username atau email
         $user = User::where('username', $credentials['username'])
                     ->orWhere('email', $credentials['username'])
                     ->first();
 
-        if ($user && Hash::check($credentials['password'], $user->password)) {
-            // Login berhasil
+        // User tidak ditemukan di sistem
+        if (!$user) {
+            return back()->withErrors([
+                'username' => 'Username/Email atau password salah.',
+            ])->onlyInput('username');
+        }
+
+        // Cek akun sedang terkunci
+        if ($user->locked_until && Carbon::now()->lt($user->locked_until)) {
+            $jamBisa     = $user->locked_until->format('H:i');
+            $tanggalBisa = $user->locked_until->translatedFormat('d F Y');
+
+            return back()->withErrors([
+                'lockout' => "Terlalu banyak percobaan login gagal. Kamu bisa login kembali pada pukul {$jamBisa} tanggal {$tanggalBisa}.",
+            ])->onlyInput('username');
+        }
+
+        // Reset otomatis kalau lockout sudah lewat
+        if ($user->locked_until && Carbon::now()->gte($user->locked_until)) {
+            $user->update(['login_attempts' => 0, 'locked_until' => null]);
+        }
+
+        // Login berhasil
+        if (Hash::check($credentials['password'], $user->password)) {
+            $user->update(['login_attempts' => 0, 'locked_until' => null]);
+
             Auth::login($user, $request->has('remember'));
             $request->session()->regenerate();
 
-            // Set session is_admin jika user adalah admin
             if ($user->role === 'admin') {
                 $request->session()->put('is_admin', true);
                 return redirect()->route('admin.dashboard');
@@ -112,20 +130,54 @@ class AuthController extends Controller
             return redirect()->intended('/');
         }
 
-        // Jika gagal login
+        // Login gagal - tambah percobaan
+        $attempts      = $user->login_attempts + 1;
+        $sisaPercobaan = self::MAX_ATTEMPTS - $attempts;
+
+        if ($attempts >= self::MAX_ATTEMPTS) {
+            $lockedUntil = Carbon::now()->addHours(self::LOCKOUT_HOURS);
+            $user->update([
+                'login_attempts' => $attempts,
+                'locked_until'   => $lockedUntil,
+            ]);
+
+            $jamBisa     = $lockedUntil->format('H:i');
+            $tanggalBisa = $lockedUntil->translatedFormat('d F Y');
+
+            return back()->withErrors([
+                'lockout' => "Terlalu banyak percobaan login gagal. Kamu bisa login kembali pada pukul {$jamBisa} tanggal {$tanggalBisa}.",
+            ])->onlyInput('username');
+        }
+
+        $user->update(['login_attempts' => $attempts]);
+
+        if ($sisaPercobaan === 1) {
+            return back()->withErrors([
+                'username' => 'Password salah. Sisa percobaan: 1 kali lagi! Jika lupa password, gunakan fitur "Lupa Password?" sebelum akun kamu tidak bisa login selama 24 jam.',
+            ])->onlyInput('username');
+        }
+
         return back()->withErrors([
-            'username' => 'Username/Email atau password salah.',
+            'username' => "Username/Email atau password salah. Sisa percobaan: {$sisaPercobaan} kali.",
         ])->onlyInput('username');
     }
 
-    // Proses Logout
-public function logout(Request $request)
-{
-    Auth::logout();
-    $request->session()->invalidate();
-    $request->session()->regenerateToken();
-    $request->session()->forget('is_admin');
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        $request->session()->forget('is_admin');
 
-    return redirect('/')->with('success', 'Anda telah berhasil logout.');
-}
+        return redirect('/')->with('success', 'Anda telah berhasil logout.');
+    }
+
+    // Untuk admin buka kunci akun manual
+    public function unlockAccount(Request $request, $userId)
+    {
+        $user = User::findOrFail($userId);
+        $user->update(['login_attempts' => 0, 'locked_until' => null]);
+
+        return back()->with('success', "Akun {$user->username} berhasil dibuka kembali.");
+    }
 }

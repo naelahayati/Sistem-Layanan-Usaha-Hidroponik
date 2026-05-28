@@ -148,11 +148,18 @@
 
                     {{-- 2. Skenario BERBAYAR + KONFIRMASI WA --}}
                     @if(!$isFree && $needsConfirm)
+                    @php
+                        $adminPhone = preg_replace('/[^0-9]/', '', \App\Models\Setting::get('whatsapp_admin', '6282240867746'));
+                        if (str_starts_with($adminPhone, '0')) $adminPhone = '62' . substr($adminPhone, 1);
+                        $pesanWA = "Assalamu'alaikum Warahmatullahi Wabarakatuh,\n\nHalo Admin Naz Hidrofarm,\n\nSaya ingin mendaftar program magang:\n\nNama    : " . auth()->user()->name . "\nProgram : " . $magang->name . "\n\nMohon kiranya pendaftaran saya dapat segera diproses.\n\nTerima kasih.";
+                        $waLink = "https://wa.me/" . $adminPhone . "?text=" . urlencode($pesanWA);
+                    @endphp
                     <div id="section-konfirmasi-admin" style="margin-top: 15px;">
                         <div class="alert alert-warning" style="border-radius: 10px; padding: 12px 15px; background: #fffde7; color: #856404; border: 1px solid #ffeeba; font-size: 0.9rem;">
-                            <i class="fas fa-clock mr-2"></i> Pembayaran dapat dilakukan setelah Admin mengonfirmasi pendaftaran Anda.
+                            <i class="fab fa-whatsapp mr-2"></i> Setelah klik <strong>Daftar Sekarang</strong>, Anda akan langsung diarahkan ke WhatsApp Admin untuk konfirmasi pendaftaran.
                         </div>
                         <input type="hidden" name="metode_pembayaran" value="tunai">
+                        <input type="hidden" name="wa_link" value="{{ $waLink }}">
                     </div>
                     @endif
 

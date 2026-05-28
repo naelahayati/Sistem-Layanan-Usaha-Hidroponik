@@ -27,6 +27,30 @@
 
     @stack('styles')
 
+    <style>
+        .main-header.navbar {
+            position: fixed !important;
+            top: 0 !important;
+            right: 0 !important;
+            left: 0 !important;
+            z-index: 1050 !important;
+        }
+
+        .content-wrapper {
+            margin-top: 57px !important;
+        }
+
+        @media (max-width: 768px) {
+            .main-footer {
+                font-size: 11px;
+                padding: 8px 16px;
+            }
+            .main-footer a {
+                font-size: 11px;
+            }
+        }
+    </style>
+
 </head>
 
 <body class="hold-transition sidebar-mini sidebar-collapse layout-fixed">

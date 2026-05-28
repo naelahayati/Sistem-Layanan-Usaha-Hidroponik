@@ -44,7 +44,7 @@
             <div class="col-md-3 col-sm-4 col-6 mb-4">
                 <div class="card h-100 position-relative shadow-sm viewProductCard" style="cursor:pointer; border-radius: 10px; overflow: hidden;" data-product="{{ json_encode($product) }}">
                     @if($product->image)
-                    <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top" alt="{{ $product->name }}" style="height: 180px; width: 100%; object-fit: contain;">
+                    <img src="{{ $product->image_url }}" class="card-img-top" alt="{{ $product->name }}" style="height: 180px; width: 100%; object-fit: contain;">
                     @else
                     <div class="card-img-top d-flex justify-content-center align-items-center bg-light" style="height: 180px;">
                         <span class="text-muted"><i class="fas fa-image fa-2x"></i></span>

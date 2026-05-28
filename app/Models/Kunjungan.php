@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class Kunjungan extends Model
 {
@@ -29,16 +30,28 @@ class Kunjungan extends Model
     protected function imageUrl(): Attribute
     {
         return Attribute::get(function () {
-            if (!$this->image) return asset('image/5.png');
-
-            if (str_starts_with($this->image, 'http')) return $this->image;
-
-            $path = ltrim($this->image, '/');
-            if (Storage::disk('public')->exists($path)) {
-                return asset('storage/' . $path);
+            if (!$this->image) {
+                return asset('image/kunjungantk.jpeg');
             }
 
-            return asset('image/5.png');
+            if (str_starts_with($this->image, 'http')) {
+                return $this->image;
+            }
+
+            $path = ltrim($this->image, '/');
+            $normalizedPath = Str::startsWith($path, 'storage/')
+                ? Str::after($path, 'storage/')
+                : $path;
+
+            if (Str::startsWith($path, 'image/')) {
+                return asset($path);
+            }
+
+            if (Storage::disk('public')->exists($normalizedPath)) {
+                return asset('storage/' . $normalizedPath);
+            }
+
+            return asset('image/kunjungantk.jpeg');
         });
     }
 }

@@ -52,7 +52,7 @@
                                 <label for="image">{{ isset($magang) ? 'Ganti Gambar Cover (Kosong jika tidak ganti)' : 'Gambar Cover Magang' }}</label>
                                 @if(isset($magang) && $magang->image)
                                     <div class="mb-2">
-                                        <img src="{{ asset('storage/' . $magang->image) }}" class="rounded shadow-sm" style="width: 100px; height: auto; object-fit: cover;">
+                                        <img src="{{ $magang->image_url }}" class="rounded shadow-sm" style="width: 100px; height: auto; object-fit: cover;">
                                     </div>
                                 @endif
                                 <input type="file" class="form-control-file" id="image" name="image" accept="image/*">

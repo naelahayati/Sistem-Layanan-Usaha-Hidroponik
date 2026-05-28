@@ -111,7 +111,7 @@
                                 <label for="image">{{ isset($product) ? 'Ganti Gambar Produk (Kosong jika tidak ganti)' : 'Gambar Produk' }}</label>
                                 @if(isset($product) && $product->image)
                                     <div class="mb-2">
-                                        <img src="{{ asset('storage/' . $product->image) }}" class="rounded shadow-sm" style="width: 150px; height: auto; object-fit: cover;">
+                                        <img src="{{ $product->image_url }}" class="rounded shadow-sm" style="width: 150px; height: auto; object-fit: cover;">
                                     </div>
                                 @endif
                                 <input type="file" class="form-control-file" id="image" name="image" accept="image/*">

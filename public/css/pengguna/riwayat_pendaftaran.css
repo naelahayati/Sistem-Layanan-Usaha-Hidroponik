@@ -94,3 +94,31 @@
     .btn-wa i {
         font-size: 1.1rem;
     }
+
+    @media (max-width: 768px) {
+        .btn-wa {
+            padding: 6px 10px;
+            font-size: 0.68rem;
+            border-radius: 8px;
+            gap: 4px;
+            font-weight: 700;
+        }
+
+        .btn-wa i {
+            font-size: 0.78rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .btn-wa {
+            padding: 4px 7px;
+            font-size: 0.56rem;
+            border-radius: 6px;
+            gap: 3px;
+        }
+
+        .btn-wa i {
+            font-size: 0.66rem;
+        }
+    }
+    

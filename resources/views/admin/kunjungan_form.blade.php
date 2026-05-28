@@ -66,7 +66,7 @@
                                 <label for="image">{{ isset($kunjungan) ? 'Ganti Gambar Kunjungan (Kosong jika tidak ganti)' : 'Gambar Kunjungan' }}</label>
                                 @if(isset($kunjungan) && $kunjungan->image)
                                     <div class="mb-2">
-                                        <img src="{{ asset('storage/' . $kunjungan->image) }}" class="rounded shadow-sm" style="width: 150px; height: auto; object-fit: cover;">
+                                        <img src="{{ $kunjungan->image_url }}" class="rounded shadow-sm" style="width: 150px; height: auto; object-fit: cover;">
                                     </div>
                                 @endif
                                 <input type="file" class="form-control-file" id="image" name="image" accept="image/*">

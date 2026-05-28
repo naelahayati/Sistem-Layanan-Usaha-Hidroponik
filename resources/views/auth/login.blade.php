@@ -19,9 +19,17 @@
             <h3 class="form-title">Selamat Datang</h3>
             <p class="form-subtitle">Silakan masuk ke akun Anda</p>
 
-            @if ($errors->any())
+            @if ($errors->has('lockout'))
+                <div class="error-lockout-box">
+                    <div class="lockout-icon"><i class="fas fa-lock"></i></div>
+                    <div class="lockout-text">
+                        <strong>Terlalu Banyak Percobaan Login</strong>
+                        <p>{{ $errors->first('lockout') }}</p>
+                    </div>
+                </div>
+            @elseif ($errors->any())
                 <div class="error-simple-text">
-                    Username/Email atau Password salah!
+                    {{ $errors->first('username') }}
                 </div>
             @endif
 
@@ -844,6 +852,37 @@
         font-size: 18px !important;
         letter-spacing: 4px !important;
     }
+}
+
+.error-lockout-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: #fff8e1;
+    border: 1px solid #ffe082;
+    border-left: 4px solid #f59e0b;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    text-align: left;
+}
+.lockout-icon {
+    font-size: 22px;
+    color: #f59e0b;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+.lockout-text strong {
+    display: block;
+    font-size: 13.5px;
+    color: #92400e;
+    margin-bottom: 4px;
+}
+.lockout-text p {
+    margin: 0;
+    font-size: 12.5px;
+    color: #78350f;
+    line-height: 1.5;
 }
 </style>
 

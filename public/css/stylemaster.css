@@ -248,6 +248,12 @@ body {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
+.maps-iframe {
+    display: block;
+    width: 100%;
+    height: 120px;
+}
+
 .maps-btn-minimal {
     display: block;
     text-align: center;
@@ -373,12 +379,12 @@ body {
     .footer-modern {
         padding: 50px 20px 30px;
     }
-    
+
     .footer-modern .footer-container {
         grid-template-columns: 1fr 1fr;
         gap: 30px;
     }
-    
+
     .footer-section.social {
         grid-column: 1 / -1;
         display: flex;
@@ -386,54 +392,54 @@ body {
         align-items: center;
         text-align: center;
     }
-    
+
     /* Ukuran font footer tablet */
     .footer-title {
         font-size: clamp(1rem, 2vw, 1.1rem);
         margin-bottom: 16px;
     }
-    
+
     .contact-label {
         font-size: clamp(0.85rem, 1.8vw, 0.95rem);
     }
-    
+
     .contact-detail {
         font-size: clamp(0.8rem, 1.5vw, 0.9rem);
     }
-    
+
     .maps-btn-minimal {
         font-size: clamp(0.7rem, 1.3vw, 0.8rem);
     }
-    
+
     .footer-bottom-minimal {
         font-size: clamp(0.7rem, 1.3vw, 0.8rem);
         margin-top: 40px;
     }
-    
+
     .social-links-minimal a {
         width: clamp(34px, 4vw, 38px);
         height: clamp(34px, 4vw, 38px);
         font-size: clamp(14px, 2vw, 16px);
     }
-    
+
     .contact-group {
         gap: 16px;
     }
-    
+
     .contact-label,
     .social-links-minimal {
         justify-content: center;
     }
-    
+
     .contact-detail {
         text-align: center;
     }
-    
+
     .maps-wrapper {
         max-width: 400px;
         margin: 0 auto;
     }
-    
+
     .maps-wrapper iframe {
         width: 100%;
     }
@@ -525,85 +531,86 @@ body {
     .footer-modern {
         padding: 40px 16px 25px;
     }
-    
+
     .footer-modern .footer-container {
         grid-template-columns: 1fr;
         gap: 32px;
     }
-    
+
     /* Semua section footer center di mobile */
     .footer-section {
         text-align: center;
     }
-    
+
     .footer-section.social {
         display: flex;
         flex-direction: column;
         align-items: center;
     }
-    
+
     /* Ukuran font mobile - lebih kecil dan proporsional */
     .footer-title {
         font-size: clamp(0.9rem, 4vw, 1rem);
         margin-bottom: 14px;
     }
-    
+
     .contact-label {
         font-size: clamp(0.8rem, 3.5vw, 0.85rem);
         justify-content: center;
     }
-    
+
     .contact-detail {
         font-size: clamp(0.75rem, 3vw, 0.8rem);
         margin: 0 auto 12px;
         text-align: center;
         line-height: 1.5;
     }
-    
+
     .maps-btn-minimal {
         font-size: clamp(0.7rem, 2.8vw, 0.75rem);
         padding-top: 8px;
     }
-    
+
     .footer-bottom-minimal {
         font-size: clamp(0.65rem, 2.5vw, 0.7rem);
         margin-top: 30px;
         padding-top: 16px;
     }
-    
+
     /* Ikon sosial media */
     .social-links-minimal {
         justify-content: center;
         gap: 10px;
     }
-    
+
     .social-links-minimal a {
         width: clamp(32px, 8vw, 36px);
         height: clamp(32px, 8vw, 36px);
         font-size: clamp(13px, 3vw, 14px);
     }
-    
+
     /* Maps wrapper */
     .maps-wrapper {
         width: 100%;
         max-width: 100%;
+        padding: 6px;
     }
-    
-    .maps-wrapper iframe {
-        width: 100%;
-        height: 140px;
+
+    .maps-iframe {
+        height: 90px !important;
+        border-radius: 10px !important;
     }
-    
+
     /* Contact group */
     .contact-group {
         gap: 20px;
         align-items: center;
     }
-    
+
     .contact-item {
         width: 100%;
     }
-    
+
     /* Spacing antar elemen */
     .contact-label i {
         width: 18px;
@@ -628,40 +635,40 @@ body {
         font-size: 9px;
         padding: 5px 10px;
     }
-    
+
     /* Footer untuk layar sangat kecil */
     .footer-modern {
         padding: 30px 12px 20px;
     }
-    
+
     .footer-modern .footer-container {
         gap: 25px;
     }
-    
+
     .footer-title {
         font-size: 0.85rem;
         margin-bottom: 12px;
     }
-    
+
     .contact-label {
         font-size: 0.75rem;
         gap: 6px;
     }
-    
+
     .contact-detail {
         font-size: 0.7rem;
     }
-    
+
     .social-links-minimal a {
         width: 28px;
         height: 28px;
         font-size: 12px;
     }
-    
-    .maps-wrapper iframe {
-        height: 120px;
+
+    .maps-iframe {
+        height: 80px !important;
     }
-    
+
     .footer-bottom-minimal {
         font-size: 0.6rem;
         margin-top: 25px;

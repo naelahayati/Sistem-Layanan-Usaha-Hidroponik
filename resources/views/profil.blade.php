@@ -77,14 +77,14 @@
                 <button type="button" class="carousel-control prev"><i class="fas fa-chevron-left"></i></button>
                 <div class="carousel-horizontal">
                     <div class="carousel-item">
-                        <img src="{{ asset('image/aesthetic-greens.png') }}" alt="Sayuran Segar">
+                        <img src="{{ asset('image/home.webp') }}" alt="Sayuran Segar">
                         <div class="caption">
                             <h4>Sayuran Premium</h4>
                             <p>Kualitas nutrisi terbaik dari sistem hidroponik modern.</p>
                         </div>
                     </div>
                     <div class="carousel-item">
-                        <img src="{{ asset('image/aesthetic-melon.png') }}" alt="Melon Hidroponik">
+                        <img src="{{ asset('image/4.png') }}" alt="Melon Hidroponik">
                         <div class="caption">
                             <h4>Melon Eksklusif</h4>
                             <p>Budidaya buah melon dengan rasa dan kesegaran yang terjaga.</p>
@@ -116,7 +116,7 @@
             <div class="visi-box">
                 <h3>Visi</h3>
                 <p>
-                    Menjadi pusat pelatihan pertanian swadaya terdepan yang mewujudkan usaha pertanian unggul 
+                    Menjadi pusat pelatihan pertanian swadaya terdepan yang mewujudkan usaha pertanian unggul
                     bersama masyarakat melalui pemberdayaan sosial, ekonomi, dan ekologi yang berkelanjutan.
                 </p>
             </div>
@@ -206,13 +206,13 @@ document.addEventListener('DOMContentLoaded', function() {
         if (slideInterval) clearInterval(slideInterval);
         slideInterval = setInterval(nextSlide, 5000);
     }
-    
+
     function stopAutoSlide() {
         if (slideInterval) clearInterval(slideInterval);
     }
 
     startAutoSlide();
-    
+
     const sliderContainer = document.querySelector('.history-slider-container');
     if (sliderContainer) {
         sliderContainer.addEventListener('mouseenter', stopAutoSlide);

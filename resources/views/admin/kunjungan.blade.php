@@ -44,7 +44,7 @@
             <div class="col-md-3 col-sm-4 col-6 mb-4">
                 <div class="card h-100 position-relative shadow-sm viewKunjunganCard" style="cursor:pointer; border-radius: 10px; overflow: hidden;" data-kunjungan="{{ json_encode($kunjungan) }}">
                     @if($kunjungan->image)
-                    <img src="{{ asset('storage/' . $kunjungan->image) }}" class="card-img-top" alt="{{ $kunjungan->name }}" style="height: 180px; width: 100%; object-fit: contain;">
+                    <img src="{{ $kunjungan->image_url }}" class="card-img-top" alt="{{ $kunjungan->name }}" style="height: 180px; width: 100%; object-fit: contain;">
                     @else
                     <div class="card-img-top d-flex justify-content-center align-items-center bg-light" style="height: 180px;">
                         <span class="text-muted"><i class="fas fa-image fa-2x"></i></span>

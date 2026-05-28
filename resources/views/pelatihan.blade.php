@@ -14,7 +14,7 @@
             @forelse($magangs as $item)
                 <section class="pelatihan-item">
                     <div class="pelatihan-photo-box">
-                        <img src="{{ $item->image ? asset('storage/' . $item->image) : asset('image/magang.jpeg') }}" alt="{{ $item->name }}">
+                        <img src="{{ $item->image_url }}" alt="{{ $item->name }}">
                     </div>
                     <div class="pelatihan-desc-box">
                         <h2>Magang Class {{ $loop->iteration }}</h2>

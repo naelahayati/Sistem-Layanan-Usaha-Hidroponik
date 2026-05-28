@@ -41,10 +41,10 @@
         {{-- Dynamic Photo Collage (Using ORIGINAL images only) --}}
         <div class="photo-collage">
             <div class="collage-item item-vertical">
-                <img src="/image/2.png" alt="Proses Hidroponik">
+                <img src="/image/hoem34.jpeg" alt="Proses Hidroponik">
             </div>
             <div class="collage-item item-horizontal">
-                <img src="/image/5.png" alt="Hasil Panen">
+                <img src="/image/home56.jpeg" alt="Hasil Panen">
             </div>
             <div class="collage-item item-small">
                 <img src="/image/4.png" alt="Detail Tanaman">
@@ -66,19 +66,11 @@
                 </div>
             </div>
             <div class="product-square-card">
-                <img src="/image/5.png" alt="Sayuran">
+                <img src="/image/home.webp" alt="Sayuran">
                 <div class="product-info-overlay">
                     <div class="product-icon"><i class="fas fa-tint"></i></div>
                     <h4>Sayuran Segar</h4>
                     <p>Tanpa pestisida, bebas polusi.</p>
-                </div>
-            </div>
-            <div class="product-square-card">
-                <img src="/image/2.png" alt="Bibit">
-                <div class="product-info-overlay">
-                    <div class="product-icon"><i class="fas fa-seedling"></i></div>
-                    <h4>Bibit Unggul</h4>
-                    <p>Kualitas varietas pilihan.</p>
                 </div>
             </div>
         </div>
@@ -92,7 +84,7 @@
     <section class="about-asymmetric1" style="padding-top: 50px; background-color: var(--cream-warm);">
         <div class="photo-collage" style="grid-template-columns: 1fr;">
              <div class="collage-item" style="height: 400px;">
-                <img src="/image/5.png" alt="Kunjungan Edukasi">
+                <img src="/image/kunjungantk.jpeg" alt="Kunjungan Edukasi">
             </div>
         </div>
 

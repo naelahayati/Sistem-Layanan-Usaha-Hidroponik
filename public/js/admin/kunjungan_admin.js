@@ -84,8 +84,8 @@ function loadKunjunganData(kunjunganId) {
         document.getElementById('editDescription').value = data.description;
 
         const preview = document.getElementById('editImagePreview');
-        if (data.image) {
-            preview.src = '/storage/' + data.image;
+        if (data.image_url) {
+            preview.src = data.image_url;
             preview.classList.remove('d-none');
         } else {
             preview.classList.add('d-none');
@@ -159,8 +159,8 @@ function showKunjunganModal(kunjungan) {
     const imgEl = document.getElementById('viewImage');
     const noImgEl = document.getElementById('viewNoImage');
 
-    if (kunjungan.image) {
-        imgEl.src = '/storage/' + kunjungan.image;
+    if (kunjungan.image_url) {
+        imgEl.src = kunjungan.image_url;
         imgEl.classList.remove('d-none');
         noImgEl.classList.add('d-none');
         noImgEl.classList.remove('d-flex');

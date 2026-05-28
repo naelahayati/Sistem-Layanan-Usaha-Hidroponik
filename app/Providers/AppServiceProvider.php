@@ -3,24 +3,21 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Carbon\Carbon;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
         //
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
+        // Set bahasa Carbon ke Indonesia
+        Carbon::setLocale('id');
+
         // Otomatisasi symlink storage:link jika folder public/storage belum ada
-        // Ini memastikan gambar selalu bisa diakses publik setelah sinkronisasi DB
         try {
             if (!file_exists(public_path('storage'))) {
                 \Illuminate\Support\Facades\Artisan::call('storage:link');

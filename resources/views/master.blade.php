@@ -132,7 +132,7 @@
 
             <div class="footer-section maps">
                 <div class="maps-wrapper">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.01893076364!2d107.75533689999999!3d-6.391558599999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69417c02550531%3A0x799f0496ee0596cc!2sNAZ%20HIDROFARM!5e0!3m2!1sid!2sid!4v1776437458972!5m2!1sid!2sid" width="100%" height="120" style="border:0; border-radius: 12px;" allowfullscreen="" loading="lazy"referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.01893076364!2d107.75533689999999!3d-6.391558599999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69417c02550531%3A0x799f0496ee0596cc!2sNAZ%20HIDROFARM!5e0!3m2!1sid!2sid!4v1776437458972!5m2!1sid!2sid" width="100%" class="maps-iframe" style="border:0; border-radius: 12px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     <a href="https://maps.google.com/?cid=8763728446171223756&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQ" target="_blank" rel="noopener noreferrer" class="maps-btn-minimal">Lihat Lokasi</a>
                 </div>
             </div>

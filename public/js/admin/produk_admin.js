@@ -83,8 +83,8 @@ function loadProductData(productId) {
         document.getElementById('editDescription').value = data.description || '';
 
         const preview = document.getElementById('editImagePreview');
-        if (data.image) {
-            preview.src = '/storage/' + data.image;
+        if (data.image_url) {
+            preview.src = data.image_url;
             preview.classList.remove('d-none');
         } else {
             preview.classList.add('d-none');
@@ -158,8 +158,8 @@ function showProductModal(product) {
     const imgEl = document.getElementById('viewImage');
     const noImgEl = document.getElementById('viewNoImage');
 
-    if (product.image) {
-        imgEl.src = '/storage/' + product.image;
+    if (product.image_url) {
+        imgEl.src = product.image_url;
         imgEl.classList.remove('d-none');
         noImgEl.classList.add('d-none');
         noImgEl.classList.remove('d-flex');

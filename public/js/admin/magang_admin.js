@@ -82,8 +82,8 @@ function loadMagangData(magangId) {
         document.getElementById('editDescription').value = data.description;
 
         const preview = document.getElementById('editImagePreview');
-        if (data.image) {
-            preview.src = '/storage/' + data.image;
+        if (data.image_url) {
+            preview.src = data.image_url;
             preview.classList.remove('d-none');
         } else {
             preview.classList.add('d-none');
@@ -155,8 +155,8 @@ function showMagangModal(magang) {
     const imgEl = document.getElementById('viewImage');
     const noImgEl = document.getElementById('viewNoImage');
 
-    if (magang.image) {
-        imgEl.src = '/storage/' + magang.image;
+    if (magang.image_url) {
+        imgEl.src = magang.image_url;
         imgEl.classList.remove('d-none');
         noImgEl.classList.add('d-none');
         noImgEl.classList.remove('d-flex');

@@ -29,6 +29,8 @@ class User extends Authenticatable
     'status',
     'latitude',
     'longitude',
+    'login_attempts',
+    'locked_until',
 ];
 
     /**
@@ -51,6 +53,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'locked_until' => 'datetime',
         ];
     }
 }

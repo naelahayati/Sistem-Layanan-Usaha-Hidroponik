@@ -14,7 +14,7 @@
             @forelse($kunjungans as $item)
                 <section class="kunjungan-item">
                     <div class="kunjungan-photo-box">
-                        <img src="{{ $item->image ? asset('storage/' . $item->image) : asset('image/kunjungantk.jpeg') }}" alt="{{ $item->name }}">
+                        <img src="{{ $item->image_url }}" alt="{{ $item->name }}">
                     </div>
                     <div class="kunjungan-desc-box">
                         <h2>Kunjungan Class {{ $loop->iteration }}</h2>

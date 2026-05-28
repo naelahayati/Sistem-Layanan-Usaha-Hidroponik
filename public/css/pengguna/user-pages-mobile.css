@@ -404,10 +404,7 @@
     .keranjang-page .btn-back,
     .produk-page .btn-back,
     .action-bar-keranjang .btn-back,
-    .action-bar-riwayat .btn-back-riwayat,
-    .reservasi-page-wrapper .btn-back-modern,
-    .pelatihan-page .btn-back-modern,
-    .pendaftaran-page-wrapper .btn-back-modern {
+    .action-bar-riwayat .btn-back-riwayat {
         width: var(--user-action-btn) !important;
         height: var(--user-action-btn) !important;
         min-width: var(--user-action-btn) !important;
@@ -424,24 +421,35 @@
         display: none !important;
     }
 
-    .reservasi-page-wrapper .btn-back-modern,
-    .pelatihan-page .btn-back-modern,
-    .pendaftaran-page-wrapper .btn-back-modern {
-        font-size: 0 !important;
-        line-height: 0 !important;
-        overflow: hidden !important;
-        display: inline-flex !important;
-    }
-
     .beli-produk-page .btn-back i,
     .keranjang-page .btn-back i,
     .produk-page .btn-back i,
-    .action-bar-riwayat .btn-back-riwayat i,
-    .reservasi-page-wrapper .btn-back-modern i,
-    .pelatihan-page .btn-back-modern i,
-    .pendaftaran-page-wrapper .btn-back-modern i {
+    .action-bar-riwayat .btn-back-riwayat i {
         margin: 0 !important;
         font-size: 1rem !important;
+        line-height: 1 !important;
+    }
+
+    /* Halaman daftar kunjungan & magang: tombol kembali tetap pakai teks */
+    .reservasi-page-wrapper .btn-back-modern,
+    .pendaftaran-page-wrapper .btn-back-modern,
+    .pelatihan-page .btn-back-modern {
+        width: auto !important;
+        height: auto !important;
+        min-width: 0 !important;
+        border-radius: 999px !important;
+        padding: 6px 12px !important;
+        font-size: 0.72rem !important;
+        line-height: 1.2 !important;
+        gap: 6px !important;
+        display: inline-flex !important;
+    }
+
+    .reservasi-page-wrapper .btn-back-modern i,
+    .pendaftaran-page-wrapper .btn-back-modern i,
+    .pelatihan-page .btn-back-modern i {
+        margin: 0 !important;
+        font-size: 0.8rem !important;
         line-height: 1 !important;
     }
 

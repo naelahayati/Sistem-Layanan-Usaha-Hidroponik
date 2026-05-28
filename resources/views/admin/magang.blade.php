@@ -44,7 +44,7 @@
             <div class="col-md-3 col-sm-4 col-6 mb-4">
                 <div class="card h-100 position-relative shadow-sm viewMagangCard" style="cursor:pointer; border-radius: 10px; overflow: hidden;" data-magang="{{ json_encode($magang) }}">
                     @if($magang->image)
-                    <img src="{{ asset('storage/' . $magang->image) }}" class="card-img-top" alt="{{ $magang->name }}" style="height: 180px; width: 100%; object-fit: contain;">
+                    <img src="{{ $magang->image_url }}" class="card-img-top" alt="{{ $magang->name }}" style="height: 180px; width: 100%; object-fit: contain;">
                     @else
                     <div class="card-img-top d-flex justify-content-center align-items-center bg-light" style="height: 180px;">
                         <span class="text-muted"><i class="fas fa-image fa-2x"></i></span>
