@@ -146,7 +146,7 @@ class AdminController extends Controller
     }
 
     // MANAJEMEN PRODUK
-    public function products()
+    public function produkAdmin()
     {
         if (!$this->isAdmin()) {
             return redirect()
@@ -157,7 +157,7 @@ class AdminController extends Controller
         return view("admin.products", compact("products"));
     }
 
-    public function storeProduct(Request $request)
+    public function addProduct(Request $request)
     {
         if (!$this->isAdmin()) {
             return redirect()
@@ -187,11 +187,11 @@ class AdminController extends Controller
         Product::create($validated);
 
         return redirect()
-            ->route("admin.products")
+            ->route("admin.produk-admin")
             ->with("success", "Produk berhasil ditambahkan.");
     }
 
-    public function updateProduct(Request $request, $id)
+    public function editProduct(Request $request, $id)
     {
         if (!$this->isAdmin()) {
             return redirect()
@@ -224,11 +224,11 @@ class AdminController extends Controller
         $product->update($validated);
 
         return redirect()
-            ->route("admin.products")
+            ->route("admin.produk-admin")
             ->with("success", "Produk berhasil diperbarui.");
     }
 
-    public function destroyProduct($id)
+    public function deleteProduct($id)
     {
         if (!$this->isAdmin()) {
             return redirect()
@@ -240,12 +240,12 @@ class AdminController extends Controller
         $product->delete();
 
         return redirect()
-            ->route("admin.products")
+            ->route("admin.produk-admin")
             ->with("success", "Produk berhasil dihapus.");
     }
 
     // MANAJEMEN KUNJUNGAN Edukasi
-    public function kunjungan()
+    public function kunjunganAdmin()
     {
         if (!$this->isAdmin()) {
             return redirect()
@@ -256,7 +256,7 @@ class AdminController extends Controller
         return view("admin.kunjungan", compact("kunjunganPakets"));
     }
 
-    public function storeKunjungan(Request $request)
+    public function addKunjungan(Request $request)
     {
         if (!$this->isAdmin()) {
             return redirect()
@@ -284,11 +284,11 @@ class AdminController extends Controller
         Kunjungan::create($validated);
 
         return redirect()
-            ->route("admin.kunjungan")
+            ->route("admin.kunjungan-admin")
             ->with("success", "Paket Kunjungan berhasil ditambahkan.");
     }
 
-    public function updateKunjungan(Request $request, $id)
+    public function editKunjungan(Request $request, $id)
     {
         if (!$this->isAdmin()) {
             return redirect()
@@ -319,11 +319,11 @@ class AdminController extends Controller
         $kunjungan->update($validated);
 
         return redirect()
-            ->route("admin.kunjungan")
+            ->route("admin.kunjungan-admin")
             ->with("success", "Paket Kunjungan berhasil diperbarui.");
     }
 
-    public function destroyKunjungan($id)
+    public function deleteKunjungan($id)
     {
         if (!$this->isAdmin()) {
             return redirect()
@@ -335,12 +335,12 @@ class AdminController extends Controller
         $kunjungan->delete();
 
         return redirect()
-            ->route("admin.kunjungan")
+            ->route("admin.kunjungan-admin")
             ->with("success", "Paket Kunjungan berhasil dihapus.");
     }
 
     // MANAJEMEN MAGANG / PELATIHAN
-    public function magang()
+    public function magangAdmin()
     {
         if (!$this->isAdmin()) {
             return redirect()
@@ -351,7 +351,7 @@ class AdminController extends Controller
         return view("admin.magang", compact("magangPakets"));
     }
 
-    public function storeMagang(Request $request)
+    public function addMagang(Request $request)
     {
         if (!$this->isAdmin()) {
             return redirect()
@@ -379,11 +379,11 @@ class AdminController extends Controller
         Magang::create($validated);
 
         return redirect()
-            ->route("admin.magang")
+            ->route("admin.magang-admin")
             ->with("success", "Paket Magang berhasil ditambahkan.");
     }
 
-    public function updateMagang(Request $request, $id)
+    public function editMagang(Request $request, $id)
     {
         if (!$this->isAdmin()) {
             return redirect()
@@ -414,11 +414,11 @@ class AdminController extends Controller
         $magang->update($validated);
 
         return redirect()
-            ->route("admin.magang")
+            ->route("admin.magang-admin")
             ->with("success", "Paket Magang berhasil diperbarui.");
     }
 
-    public function destroyMagang($id)
+    public function deleteMagang($id)
     {
         if (!$this->isAdmin()) {
             return redirect()
@@ -430,7 +430,7 @@ class AdminController extends Controller
         $magang->delete();
 
         return redirect()
-            ->route("admin.magang")
+            ->route("admin.magang-admin")
             ->with("success", "Paket Magang berhasil dihapus.");
     }
 
@@ -441,20 +441,14 @@ class AdminController extends Controller
             return false;
         }
 
-        // Contoh URL: https://res.cloudinary.com/demo/image/upload/v12345678/products/abcde.jpg
-        // Kita butuh: "products/abcde" (tanpa ekstensi)
         $pathString = parse_url($url, PHP_URL_PATH);
         if (!$pathString) {
             return false;
         }
 
-        // Ambil bagian setelah /upload/vxxxxxxxxx/ atau /upload/
         if (preg_match('/\/upload\/(?:v\d+\/)?(.+)$/', $pathString, $matches)) {
             $publicIdWithExt = $matches[1];
-            // Hapus ekstensi file (.jpg, .png, dll)
             $publicId = pathinfo($publicIdWithExt, PATHINFO_FILENAME);
-            // Jika ada folder bawaan dari regex (misal: products/abcde), pathinfo hanya mengambil "abcde".
-            // Kita perlu mempertahankan nama foldernya.
             $dir = pathinfo($publicIdWithExt, PATHINFO_DIRNAME);
             if ($dir && $dir !== ".") {
                 $publicId = $dir . "/" . $publicId;
@@ -484,26 +478,24 @@ class AdminController extends Controller
                 ?? ($result?->getResponse()['secure_url'] ?? null);
 
         } catch (\Exception $e) {
-            // Melacak pesan error jika ada masalah konfigurasi di Railway
             \Illuminate\Support\Facades\Log::error('Cloudinary Upload Error: ' . $e->getMessage());
             return null;
         }
     }
 
     // MANAJEMEN JADWAL BUKA/TUTUP
-    public function jadwal()
+    public function jadwalAdmin()
     {
         if (!$this->isAdmin()) {
             return redirect()
                 ->route("login")
                 ->with("error", "Silakan login sebagai admin.");
         }
-        // Ambil jadwal seminggu penuh (Senin-Minggu) atau yang ada di DB
         $jadwals = Jadwal::orderBy("id", "asc")->get();
         return view("admin.jadwal", compact("jadwals"));
     }
 
-    public function updateJadwal(Request $request, $id)
+    public function editJadwal(Request $request, $id)
     {
         if (!$this->isAdmin()) {
             return redirect()
@@ -525,7 +517,7 @@ class AdminController extends Controller
         ]);
 
         return redirect()
-            ->route("admin.jadwal")
+            ->route("admin.jadwal-admin")
             ->with("success", "Jadwal hari " . $jadwal->hari . " berhasil diperbarui.");
     }
 
@@ -581,11 +573,7 @@ class AdminController extends Controller
             $updateData["resi"] = $request->resi;
         }
 
-        // Validasi: Jika status berubah ke Selesai atau Dikirim, pastikan stok mencukupi JIKA pengurangan belum dilakukan di awal.
-        // Berdasarkan skema umum midtrans (di PaymentController), stok biasanya berkurang saat 'settlement' (Sudah Dibayar).
-        // Jadi di sini kita update status saja secara administratif.
         if ($newStatus === "Dibatalkan Admin" && $oldStatus !== "Dibatalkan Admin" && $oldStatus !== "Dibatalkan Pengguna" && $oldStatus !== "Expired") {
-            // Jika dibatalkan oleh admin, kembalikan stok produk jika status sebelumnya sudah dibayar/proses
             if (in_array($oldStatus, ["Sudah Dibayar", "Diproses", "Dikirim"])) {
                 foreach ($order->items as $item) {
                     if ($item->product) {
@@ -603,7 +591,7 @@ class AdminController extends Controller
     }
 
     // RIWAYAT PENDAFTARAN KUNJUNGAN
-    public function pendaftaranKunjungan(Request $request)
+    public function kunjunganManajemen(Request $request)
     {
         if (!$this->isAdmin()) {
             return redirect()
@@ -649,7 +637,7 @@ class AdminController extends Controller
     }
 
     // RIWAYAT PENDAFTARAN MAGANG
-    public function pendaftaranMagang(Request $request)
+    public function magangManajemen(Request $request)
     {
         if (!$this->isAdmin()) {
             return redirect()
@@ -757,13 +745,11 @@ class AdminController extends Controller
 
         DB::beginTransaction();
         try {
-            // Buat atau gunakan user dummy khusus offline/kasir jika diperlukan, atau kosongkan id_user (pastikan nullable di DB)
-            // Di sini kita buat order dengan user_id = null atau user yang sedang login (admin) sebagai penanggung jawab.
             $order = Order::create([
-                'user_id' => Auth::id(), // Admin yang melayani
+                'user_id' => Auth::id(),
                 'order_id' => 'OFFLINE-' . strtoupper(\Illuminate\Support\Str::random(10)),
                 'total_price' => 0,
-                'status' => 'Selesai', // Langsung selesai karena pembayaran offline langsung lunas
+                'status' => 'Selesai',
                 'payment_type' => $request->metode_pembayaran,
                 'nama_penerima' => $request->nama_pembeli ?? 'Pembeli Offline',
                 'is_offline' => 1,
@@ -789,11 +775,9 @@ class AdminController extends Controller
                     'price' => $product->price,
                 ]);
 
-                // Kurangi stok
                 $product->decrement('stock', $itemData['quantity']);
             }
 
-            // Update total harga riil
             $order->update(['total_price' => $totalPrice]);
 
             DB::commit();
@@ -823,7 +807,6 @@ class AdminController extends Controller
         try {
             $paket = Kunjungan::find($request->id_kunjungan);
 
-            // Cari user berdasarkan email/wa, jika tidak ada buat akun otomatis agar relasi tetap terjaga
             $user = User::where('email', $request->email_atau_wa)->orWhere('nohp', $request->email_atau_wa)->first();
             if (!$user) {
                 $isEmail = filter_var($request->email_atau_wa, FILTER_VALIDATE_EMAIL);
@@ -845,7 +828,7 @@ class AdminController extends Controller
                 'jumlah_peserta' => $request->jumlah_peserta,
                 'tanggal_kunjungan' => $request->tanggal_kunjungan,
                 'metode_pembayaran' => $request->metode_pembayaran,
-                'status_pembayaran' => 'Diterima', // Langsung diterima
+                'status_pembayaran' => 'Diterima',
                 'total_harga' => $total_harga,
                 'is_offline' => 1,
                 'created_at' => now(),
