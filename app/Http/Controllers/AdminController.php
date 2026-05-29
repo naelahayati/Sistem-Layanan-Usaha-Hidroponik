@@ -595,7 +595,8 @@ class AdminController extends Controller
         if ($request->hasFile("image")) {
             // Hapus parameter "public" agar Laravel menggunakan disk default
             // yang diatur di .env (FILESYSTEM_DISK)
-            $validated["image"] = $request->file("image")->store("products");
+            $uploaded = cloudinary()->upload($request->file("image")->getRealPath(), ['folder' => 'products']);
+            $validated["image"] = $uploaded->getSecurePath();
         }
 
         Product::create($validated);
@@ -648,11 +649,19 @@ class AdminController extends Controller
 
         if ($request->hasFile("image")) {
             // Hapus gambar lama jika ada
-            if ($product->image) {
+            if ($product->image && str_contains($product->image, 'cloudinary')) {
+                $urlPath = parse_url($product->image, PHP_URL_PATH);
+                if ($urlPath) {
+                    $pathWithoutExtension = pathinfo($urlPath, PATHINFO_DIRNAME) . '/' . pathinfo($urlPath, PATHINFO_FILENAME);
+                    $publicId = ltrim($pathWithoutExtension, '/');
+                    $publicId = preg_replace('/^v\d+\\//', '', $publicId);
+                    \CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary::destroy($publicId);
+                }
+            } elseif ($product->image) {
                 Storage::disk("public")->delete($product->image);
             }
-            $imagePath = $request->file("image")->store("products");
-            $validated["image"] = $imagePath;
+            $uploaded = cloudinary()->upload($request->file("image")->getRealPath(), ['folder' => 'products']);
+            $validated["image"] = $uploaded->getSecurePath();
         }
 
         $product->update($validated);
@@ -675,7 +684,15 @@ class AdminController extends Controller
         $product = Product::findOrFail($id);
 
         // Hapus gambar dari storage
-        if ($product->image) {
+        if ($product->image && str_contains($product->image, 'cloudinary')) {
+            $urlPath = parse_url($product->image, PHP_URL_PATH);
+            if ($urlPath) {
+                $pathWithoutExtension = pathinfo($urlPath, PATHINFO_DIRNAME) . '/' . pathinfo($urlPath, PATHINFO_FILENAME);
+                $publicId = ltrim($pathWithoutExtension, '/');
+                $publicId = preg_replace('/^v\d+\\//', '', $publicId);
+                \CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary::destroy($publicId);
+            }
+        } elseif ($product->image) {
             Storage::disk("public")->delete($product->image);
         }
 
@@ -749,7 +766,8 @@ class AdminController extends Controller
         ]);
 
         if ($request->hasFile("image")) {
-            $validated["image"] = $request->file("image")->store("kunjungans", "public");
+            $uploaded = cloudinary()->upload($request->file("image")->getRealPath(), ['folder' => 'kunjungans']);
+            $validated["image"] = $uploaded->getSecurePath();
         }
 
         Kunjungan::create($validated);
@@ -777,11 +795,19 @@ class AdminController extends Controller
         ]);
 
         if ($request->hasFile("image")) {
-            if ($kunjungan->image) {
+            if ($kunjungan->image && str_contains($kunjungan->image, 'cloudinary')) {
+                $urlPath = parse_url($kunjungan->image, PHP_URL_PATH);
+                if ($urlPath) {
+                    $pathWithoutExtension = pathinfo($urlPath, PATHINFO_DIRNAME) . '/' . pathinfo($urlPath, PATHINFO_FILENAME);
+                    $publicId = ltrim($pathWithoutExtension, '/');
+                    $publicId = preg_replace('/^v\d+\\//', '', $publicId);
+                    \CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary::destroy($publicId);
+                }
+            } elseif ($kunjungan->image) {
                 Storage::disk("public")->delete($kunjungan->image);
             }
-            $imagePath = $request->file("image")->store("kunjungans", "public");
-            $validated["image"] = $imagePath;
+            $uploaded = cloudinary()->upload($request->file("image")->getRealPath(), ['folder' => 'kunjungans']);
+            $validated["image"] = $uploaded->getSecurePath();
         }
 
         $kunjungan->update($validated);
@@ -797,7 +823,15 @@ class AdminController extends Controller
 
         $kunjungan = Kunjungan::findOrFail($id);
 
-        if ($kunjungan->image) {
+        if ($kunjungan->image && str_contains($kunjungan->image, 'cloudinary')) {
+            $urlPath = parse_url($kunjungan->image, PHP_URL_PATH);
+            if ($urlPath) {
+                $pathWithoutExtension = pathinfo($urlPath, PATHINFO_DIRNAME) . '/' . pathinfo($urlPath, PATHINFO_FILENAME);
+                $publicId = ltrim($pathWithoutExtension, '/');
+                $publicId = preg_replace('/^v\d+\\//', '', $publicId);
+                \CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary::destroy($publicId);
+            }
+        } elseif ($kunjungan->image) {
             Storage::disk("public")->delete($kunjungan->image);
         }
 
@@ -864,7 +898,8 @@ class AdminController extends Controller
         ]);
 
         if ($request->hasFile("image")) {
-            $validated["image"] = $request->file("image")->store("magangs", "public");
+            $uploaded = cloudinary()->upload($request->file("image")->getRealPath(), ['folder' => 'magangs']);
+            $validated["image"] = $uploaded->getSecurePath();
         }
 
         Magang::create($validated);
@@ -892,10 +927,19 @@ class AdminController extends Controller
         ]);
 
         if ($request->hasFile("image")) {
-            if ($magang->image) {
+            if ($magang->image && str_contains($magang->image, 'cloudinary')) {
+                $urlPath = parse_url($magang->image, PHP_URL_PATH);
+                if ($urlPath) {
+                    $pathWithoutExtension = pathinfo($urlPath, PATHINFO_DIRNAME) . '/' . pathinfo($urlPath, PATHINFO_FILENAME);
+                    $publicId = ltrim($pathWithoutExtension, '/');
+                    $publicId = preg_replace('/^v\d+\\//', '', $publicId);
+                    \CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary::destroy($publicId);
+                }
+            } elseif ($magang->image) {
                 Storage::disk("public")->delete($magang->image);
             }
-            $validated["image"] = $request->file("image")->store("magangs", "public");
+            $uploaded = cloudinary()->upload($request->file("image")->getRealPath(), ['folder' => 'magangs']);
+            $validated["image"] = $uploaded->getSecurePath();
         }
 
         $magang->update($validated);
@@ -909,7 +953,15 @@ class AdminController extends Controller
         }
 
         $magang = Magang::findOrFail($id);
-        if ($magang->image) {
+        if ($magang->image && str_contains($magang->image, 'cloudinary')) {
+            $urlPath = parse_url($magang->image, PHP_URL_PATH);
+            if ($urlPath) {
+                $pathWithoutExtension = pathinfo($urlPath, PATHINFO_DIRNAME) . '/' . pathinfo($urlPath, PATHINFO_FILENAME);
+                $publicId = ltrim($pathWithoutExtension, '/');
+                $publicId = preg_replace('/^v\d+\\//', '', $publicId);
+                \CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary::destroy($publicId);
+            }
+        } elseif ($magang->image) {
             Storage::disk("public")->delete($magang->image);
         }
         $magang->delete();
@@ -1765,8 +1817,8 @@ class AdminController extends Controller
 
         if ($request->hasFile('qris_image')) {
             $request->validate(['qris_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240']);
-            $imagePath = $request->file('qris_image')->store('settings', 'public');
-            Setting::set('qris_image', $imagePath);
+            $uploaded = cloudinary()->upload($request->file('qris_image')->getRealPath(), ['folder' => 'settings']);
+            Setting::set('qris_image', $uploaded->getSecurePath());
         }
 
         return response()->json(["success" => true, "message" => "Pengaturan berhasil diperbarui"]);
