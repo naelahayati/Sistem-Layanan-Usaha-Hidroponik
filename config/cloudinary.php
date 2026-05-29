@@ -31,7 +31,7 @@ return [
     |
     |
     */
-    'cloud_url' => str_replace('"', '', env('CLOUDINARY_URL', 'cloudinary://'.env('CLOUDINARY_KEY').':'.env('CLOUDINARY_SECRET').'@'.env('CLOUDINARY_CLOUD_NAME'))),
+    'cloud_url' => 'cloudinary://715663534782368:pCxRIaQO09dNFpyR1T4fZjLAHMM@deqfyyc7j',
 
     /**
      * Upload Preset From Cloudinary Dashboard
