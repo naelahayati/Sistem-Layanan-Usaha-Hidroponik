@@ -15,7 +15,6 @@ use App\Models\CartItem;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
@@ -32,31 +31,6 @@ class AdminController extends Controller
     public function __construct()
     {
         // Hapus dulu middleware session manual di sini untuk testing
-    }
-
-    /**
-     * Upload gambar ke Cloudinary
-     */
-    private function uploadToCloudinary($file, string $folder): string
-    {
-        $uploadedFile = Cloudinary::uploadFile($file->getRealPath(), [
-            'folder' => $folder,
-        ]);
-        return $uploadedFile->getSecurePath();
-    }
-
-    /**
-     * Hapus gambar dari Cloudinary berdasarkan URL
-     */
-    private function deleteFromCloudinary(?string $url): void
-    {
-        if (!$url) return;
-
-        // Ambil public_id dari URL Cloudinary
-        // Format: https://res.cloudinary.com/<cloud>/image/upload/v123/<folder>/<filename>.<ext>
-        if (preg_match('/\/upload\/(?:v\d+\/)?(.+)\.[a-z]+$/i', $url, $matches)) {
-            Cloudinary::destroy($matches[1]);
-        }
     }
 
     public function admin()
@@ -619,7 +593,9 @@ class AdminController extends Controller
         ]);
 
         if ($request->hasFile("image")) {
-            $validated["image"] = $this->uploadToCloudinary($request->file("image"), "products");
+            // Hapus parameter "public" agar Laravel menggunakan disk default
+            // yang diatur di .env (FILESYSTEM_DISK)
+            $validated["image"] = $request->file("image")->store("products");
         }
 
         Product::create($validated);
@@ -673,9 +649,10 @@ class AdminController extends Controller
         if ($request->hasFile("image")) {
             // Hapus gambar lama jika ada
             if ($product->image) {
-                $this->deleteFromCloudinary($product->image);
+                Storage::disk("public")->delete($product->image);
             }
-            $validated["image"] = $this->uploadToCloudinary($request->file("image"), "products");
+            $imagePath = $request->file("image")->store("products");
+            $validated["image"] = $imagePath;
         }
 
         $product->update($validated);
@@ -697,9 +674,9 @@ class AdminController extends Controller
 
         $product = Product::findOrFail($id);
 
-        // Hapus gambar dari Cloudinary
+        // Hapus gambar dari storage
         if ($product->image) {
-            $this->deleteFromCloudinary($product->image);
+            Storage::disk("public")->delete($product->image);
         }
 
         $product->delete();
@@ -772,7 +749,7 @@ class AdminController extends Controller
         ]);
 
         if ($request->hasFile("image")) {
-            $validated["image"] = $this->uploadToCloudinary($request->file("image"), "kunjungans");
+            $validated["image"] = $request->file("image")->store("kunjungans", "public");
         }
 
         Kunjungan::create($validated);
@@ -801,9 +778,10 @@ class AdminController extends Controller
 
         if ($request->hasFile("image")) {
             if ($kunjungan->image) {
-                $this->deleteFromCloudinary($kunjungan->image);
+                Storage::disk("public")->delete($kunjungan->image);
             }
-            $validated["image"] = $this->uploadToCloudinary($request->file("image"), "kunjungans");
+            $imagePath = $request->file("image")->store("kunjungans", "public");
+            $validated["image"] = $imagePath;
         }
 
         $kunjungan->update($validated);
@@ -820,7 +798,7 @@ class AdminController extends Controller
         $kunjungan = Kunjungan::findOrFail($id);
 
         if ($kunjungan->image) {
-            $this->deleteFromCloudinary($kunjungan->image);
+            Storage::disk("public")->delete($kunjungan->image);
         }
 
         $kunjungan->delete();
@@ -886,7 +864,7 @@ class AdminController extends Controller
         ]);
 
         if ($request->hasFile("image")) {
-            $validated["image"] = $this->uploadToCloudinary($request->file("image"), "magangs");
+            $validated["image"] = $request->file("image")->store("magangs", "public");
         }
 
         Magang::create($validated);
@@ -915,9 +893,9 @@ class AdminController extends Controller
 
         if ($request->hasFile("image")) {
             if ($magang->image) {
-                $this->deleteFromCloudinary($magang->image);
+                Storage::disk("public")->delete($magang->image);
             }
-            $validated["image"] = $this->uploadToCloudinary($request->file("image"), "magangs");
+            $validated["image"] = $request->file("image")->store("magangs", "public");
         }
 
         $magang->update($validated);
@@ -932,7 +910,7 @@ class AdminController extends Controller
 
         $magang = Magang::findOrFail($id);
         if ($magang->image) {
-            $this->deleteFromCloudinary($magang->image);
+            Storage::disk("public")->delete($magang->image);
         }
         $magang->delete();
 
@@ -1787,7 +1765,7 @@ class AdminController extends Controller
 
         if ($request->hasFile('qris_image')) {
             $request->validate(['qris_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240']);
-            $imagePath = $this->uploadToCloudinary($request->file('qris_image'), 'settings');
+            $imagePath = $request->file('qris_image')->store('settings', 'public');
             Setting::set('qris_image', $imagePath);
         }
 
