@@ -648,15 +648,17 @@ class AdminController extends Controller
 
         if ($request->hasFile("image")) {
             // Hapus gambar lama dari Cloudinary (jika URL Cloudinary)
-            if ($product->image && str_contains($product->image, 'cloudinary')) {
-                $urlPath = parse_url($product->image, PHP_URL_PATH);
-                if ($urlPath) {
-                    $pathWithoutExtension = pathinfo($urlPath, PATHINFO_DIRNAME) . '/' . pathinfo($urlPath, PATHINFO_FILENAME);
-                    $publicId = ltrim($pathWithoutExtension, '/');
-                    $publicId = preg_replace('/^v\d+\//', '', $publicId);
+            if ($product->image && str_contains($product->image, 'res.cloudinary.com')) {
+            $urlPath = parse_url($product->image, PHP_URL_PATH);
+            if ($urlPath) {
+                // Ambil bagian setelah /upload/
+                if (preg_match('/\/upload\/(?:v\d+\/)?(.+)$/', $urlPath, $matches)) {
+                    $publicId = pathinfo($matches[1], PATHINFO_DIRNAME) . '/' . pathinfo($matches[1], PATHINFO_FILENAME);
+                    $publicId = ltrim($publicId, './');
                     Cloudinary::destroy($publicId);
                 }
             }
+        }
             $uploaded = Cloudinary::upload($request->file("image")->getRealPath(), ['folder' => 'products']);
             $validated["image"] = $uploaded->getSecurePath();
         }
