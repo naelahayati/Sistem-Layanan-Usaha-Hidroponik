@@ -39,10 +39,10 @@ class AdminController extends Controller
      */
     private function uploadToCloudinary($file, string $folder): string
     {
-        $result = Cloudinary::upload($file->getRealPath(), [
+        $uploadedFile = Cloudinary::uploadFile($file->getRealPath(), [
             'folder' => $folder,
         ]);
-        return $result->getSecurePath();
+        return $uploadedFile->getSecurePath();
     }
 
     /**
