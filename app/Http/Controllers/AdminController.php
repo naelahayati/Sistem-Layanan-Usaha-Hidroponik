@@ -14,6 +14,7 @@ use App\Models\OrderItem;
 use App\Models\CartItem;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Storage;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -593,9 +594,8 @@ class AdminController extends Controller
         ]);
 
         if ($request->hasFile("image")) {
-            // Hapus parameter "public" agar Laravel menggunakan disk default
-            // yang diatur di .env (FILESYSTEM_DISK)
-            $validated["image"] = $request->file("image")->store("products");
+            $uploaded = Cloudinary::upload($request->file("image")->getRealPath(), ['folder' => 'products']);
+            $validated["image"] = $uploaded->getSecurePath();
         }
 
         Product::create($validated);
@@ -647,12 +647,13 @@ class AdminController extends Controller
         $validated['stock'] = $finalStock;
 
         if ($request->hasFile("image")) {
-            // Hapus gambar lama jika ada
-            if ($product->image) {
-                Storage::disk("public")->delete($product->image);
+            // Hapus gambar lama dari Cloudinary (jika URL Cloudinary)
+            if ($product->image && str_contains($product->image, 'cloudinary')) {
+                $publicId = pathinfo(parse_url($product->image, PHP_URL_PATH), PATHINFO_FILENAME);
+                Cloudinary::destroy('products/' . $publicId);
             }
-            $imagePath = $request->file("image")->store("products");
-            $validated["image"] = $imagePath;
+            $uploaded = Cloudinary::upload($request->file("image")->getRealPath(), ['folder' => 'products']);
+            $validated["image"] = $uploaded->getSecurePath();
         }
 
         $product->update($validated);
@@ -749,7 +750,8 @@ class AdminController extends Controller
         ]);
 
         if ($request->hasFile("image")) {
-            $validated["image"] = $request->file("image")->store("kunjungans", "public");
+            $uploaded = Cloudinary::upload($request->file("image")->getRealPath(), ['folder' => 'kunjungans']);
+            $validated["image"] = $uploaded->getSecurePath();
         }
 
         Kunjungan::create($validated);
@@ -777,11 +779,8 @@ class AdminController extends Controller
         ]);
 
         if ($request->hasFile("image")) {
-            if ($kunjungan->image) {
-                Storage::disk("public")->delete($kunjungan->image);
-            }
-            $imagePath = $request->file("image")->store("kunjungans", "public");
-            $validated["image"] = $imagePath;
+            $uploaded = Cloudinary::upload($request->file("image")->getRealPath(), ['folder' => 'kunjungans']);
+            $validated["image"] = $uploaded->getSecurePath();
         }
 
         $kunjungan->update($validated);
@@ -864,7 +863,8 @@ class AdminController extends Controller
         ]);
 
         if ($request->hasFile("image")) {
-            $validated["image"] = $request->file("image")->store("magangs", "public");
+            $uploaded = Cloudinary::upload($request->file("image")->getRealPath(), ['folder' => 'magangs']);
+            $validated["image"] = $uploaded->getSecurePath();
         }
 
         Magang::create($validated);
@@ -892,10 +892,8 @@ class AdminController extends Controller
         ]);
 
         if ($request->hasFile("image")) {
-            if ($magang->image) {
-                Storage::disk("public")->delete($magang->image);
-            }
-            $validated["image"] = $request->file("image")->store("magangs", "public");
+            $uploaded = Cloudinary::upload($request->file("image")->getRealPath(), ['folder' => 'magangs']);
+            $validated["image"] = $uploaded->getSecurePath();
         }
 
         $magang->update($validated);
@@ -1765,8 +1763,8 @@ class AdminController extends Controller
 
         if ($request->hasFile('qris_image')) {
             $request->validate(['qris_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240']);
-            $imagePath = $request->file('qris_image')->store('settings', 'public');
-            Setting::set('qris_image', $imagePath);
+            $uploaded = Cloudinary::upload($request->file('qris_image')->getRealPath(), ['folder' => 'settings']);
+            Setting::set('qris_image', $uploaded->getSecurePath());
         }
 
         return response()->json(["success" => true, "message" => "Pengaturan berhasil diperbarui"]);

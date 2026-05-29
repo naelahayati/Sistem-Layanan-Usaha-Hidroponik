@@ -70,7 +70,7 @@
                             <div class="form-group mb-4">
                                 @if($qris_image)
                                     <div class="mb-3 text-center">
-                                        <img src="{{ asset('storage/' . $qris_image) }}" alt="QRIS" class="img-thumbnail" style="max-width: 150px;">
+                                        <img src="{{ $qris_image }}" alt="QRIS" class="img-thumbnail" style="max-width: 150px;">
                                     </div>
                                 @endif
                                 <label class="small font-weight-bold text-muted text-uppercase mb-2">Unggah Gambar QRIS Baru</label>

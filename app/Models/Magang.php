@@ -33,25 +33,7 @@ class Magang extends Model
             if (!$this->image) {
                 return asset('image/magang.jpeg');
             }
-
-            if (str_starts_with($this->image, 'http')) {
-                return $this->image;
-            }
-
-            $path = ltrim($this->image, '/');
-            $normalizedPath = Str::startsWith($path, 'storage/')
-                ? Str::after($path, 'storage/')
-                : $path;
-
-            if (Str::startsWith($path, 'image/')) {
-                return asset($path);
-            }
-
-            if (Storage::disk('public')->exists($normalizedPath)) {
-                return asset('storage/' . $normalizedPath);
-            }
-
-            return asset('image/magang.jpeg');
+            return $this->image;
         });
     }
 }

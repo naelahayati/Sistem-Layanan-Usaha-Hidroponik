@@ -16,10 +16,10 @@
             {{-- Kolom Kiri: QR Code --}}
             <div class="payment-left-col">
                 <div class="qr-frame">
-                    <img src="{{ $qrUrl ? asset('storage/' . $qrUrl) : '' }}" id="qris-image" alt="QRIS Code">
+                    <img src="{{ $qrUrl ? $qrUrl : '' }}" id="qris-image" alt="QRIS Code">
                 </div>
                 @if($qrUrl)
-                <a href="{{ asset('storage/' . $qrUrl) }}" download="QRIS-Nazfram.png" class="btn-download-qris">
+                <a href="{{ $qrUrl }}" download="QRIS-Nazfram.png" class="btn-download-qris">
                     <i class="fas fa-download"></i> Unduh Kode QR
                 </a>
                 @endif

@@ -19,6 +19,7 @@ use Carbon\Carbon;
 use App\Mail\SendKodeVerifikasiProfil;
 use Illuminate\Support\Facades\Auth;
 use App\Services\PendaftaranMagangService;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class Nazframcontroller extends Controller
 {
@@ -392,7 +393,8 @@ class Nazframcontroller extends Controller
 
         $path = null;
         if ($request->hasFile('bukti_pembayaran')) {
-            $path = $request->file('bukti_pembayaran')->store('bukti_pembayaran', 'public');
+            $uploaded = Cloudinary::upload($request->file('bukti_pembayaran')->getRealPath(), ['folder' => 'bukti_pembayaran']);
+            $path = $uploaded->getSecurePath();
         }
 
         DB::table('reservasi_kunjungan')
@@ -525,7 +527,8 @@ class Nazframcontroller extends Controller
 
         $path = null;
         if ($request->hasFile('bukti_pembayaran')) {
-            $path = $request->file('bukti_pembayaran')->store('bukti_pembayaran', 'public');
+            $uploaded = Cloudinary::upload($request->file('bukti_pembayaran')->getRealPath(), ['folder' => 'bukti_pembayaran']);
+            $path = $uploaded->getSecurePath();
         }
 
         DB::table('pendaftaran_magang')

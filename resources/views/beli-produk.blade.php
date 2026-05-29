@@ -52,7 +52,7 @@
                 <!-- Foto Produk (Kiri) -->
                 <div class="photo-cell">
                     @if($p->image)
-                        <img src="{{ asset('storage/' . $p->image) }}" alt="{{ $p->name }}">
+                        <img src="{{ $p->image_url }}" alt="{{ $p->name }}">
                     @else
                         <div class="d-flex justify-content-center align-items-center h-100 opacity-25">
                             <i class="fas fa-leaf fa-2x"></i>
