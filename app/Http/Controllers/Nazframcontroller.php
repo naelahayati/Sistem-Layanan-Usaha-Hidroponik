@@ -393,7 +393,7 @@ class Nazframcontroller extends Controller
 
         $path = null;
         if ($request->hasFile('bukti_pembayaran')) {
-            $uploaded = Cloudinary::upload($request->file('bukti_pembayaran')->getRealPath(), ['folder' => 'bukti_pembayaran']);
+            $uploaded = cloudinary()->upload($request->file('bukti_pembayaran')->getRealPath(), ['folder' => 'bukti_pembayaran']);
             $path = $uploaded->getSecurePath();
         }
 
@@ -527,7 +527,7 @@ class Nazframcontroller extends Controller
 
         $path = null;
         if ($request->hasFile('bukti_pembayaran')) {
-            $uploaded = Cloudinary::upload($request->file('bukti_pembayaran')->getRealPath(), ['folder' => 'bukti_pembayaran']);
+            $uploaded = cloudinary()->upload($request->file('bukti_pembayaran')->getRealPath(), ['folder' => 'bukti_pembayaran']);
             $path = $uploaded->getSecurePath();
         }
 
