@@ -69,7 +69,7 @@
                                         <img src="{{ $kunjungan->image_url }}" class="rounded shadow-sm" style="width: 150px; height: auto; object-fit: cover;">
                                     </div>
                                 @endif
-                                <input type="file" class="form-control-file" id="image" name="image" accept="image/*">
+                                <input type="file" class="form-control-file" id="image" name="image" accept="image/*" {{ isset($kunjungan) ? '' : 'required' }}>
                             </div>
                         </div>
                     </div>

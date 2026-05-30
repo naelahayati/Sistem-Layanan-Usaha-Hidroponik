@@ -586,8 +586,8 @@ class AdminController extends Controller
             "name" => "required|string|unique:products,name",
             "price" => "required|numeric",
             "stock" => "required|integer",
-            "description" => "nullable|string",
-            "image" => "nullable|image|mimes:jpeg,png,jpg,gif|max:10240",
+            "description" => "required|string",
+            "image" => "required|image|mimes:jpeg,png,jpg,gif|max:10240",
         ], [
             'name.unique' => 'Nama produk sudah ada, silakan gunakan nama lain.'
         ]);
@@ -621,7 +621,7 @@ class AdminController extends Controller
             "stock" => "required|integer",
             "add_stock" => "nullable|integer|min:0",
             "reduce_stock" => "nullable|integer|min:0",
-            "description" => "nullable|string",
+            "description" => "required|string",
             "image" => "nullable|image|mimes:jpeg,png,jpg,gif|max:10240",
         ], [
             'name.unique' => 'Nama produk sudah ada, silakan gunakan nama lain.'
@@ -760,7 +760,7 @@ class AdminController extends Controller
             "min_people" => "required|integer",
             "max_people" => "required|integer",
             "description" => "required|string",
-            "image" => "nullable|image|mimes:jpeg,png,jpg,gif|max:10240",
+            "image" => "required|image|mimes:jpeg,png,jpg,gif|max:10240",
         ], [
             'name.unique' => 'Nama paket kunjungan sudah ada, silakan gunakan nama lain.'
         ]);
@@ -890,7 +890,7 @@ class AdminController extends Controller
             "name" => "required|string|unique:magangs,name",
             "price" => "required|numeric",
             "description" => "required|string",
-            "image" => "nullable|image|mimes:jpeg,png,jpg,gif|max:10240",
+            "image" => "required|image|mimes:jpeg,png,jpg,gif|max:10240",
             "is_wa_confirmation" => "required|boolean",
             "show_skill_description" => "required|boolean",
         ], [

@@ -55,7 +55,7 @@
                                         <img src="{{ $magang->image_url }}" class="rounded shadow-sm" style="width: 100px; height: auto; object-fit: cover;">
                                     </div>
                                 @endif
-                                <input type="file" class="form-control-file" id="image" name="image" accept="image/*">
+                                <input type="file" class="form-control-file" id="image" name="image" accept="image/*" {{ isset($magang) ? '' : 'required' }}>
                             </div>
                         </div>
                     </div>
