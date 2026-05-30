@@ -50,10 +50,8 @@ class PaymentController extends Controller
         ]);
 
         if ($request->hasFile('bukti_pembayaran')) {
-            $result = cloudinary()->upload($request->file('bukti_pembayaran')->getRealPath(), [
-                'folder' => 'bukti_pembayaran'
-            ]);
-            $order->bukti_pembayaran = $result->getSecurePath();
+            $path = $request->file('bukti_pembayaran')->store('bukti_pembayaran', 'cloudinary');
+            $order->bukti_pembayaran = \Illuminate\Support\Facades\Storage::disk('cloudinary')->url($path);
         }
 
         $order->status = 'Menunggu Konfirmasi';

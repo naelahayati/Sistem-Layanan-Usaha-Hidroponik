@@ -393,8 +393,8 @@ class Nazframcontroller extends Controller
 
         $path = null;
         if ($request->hasFile('bukti_pembayaran')) {
-            $uploaded = cloudinary()->upload($request->file('bukti_pembayaran')->getRealPath(), ['folder' => 'bukti_pembayaran']);
-            $path = $uploaded->getSecurePath();
+            $path = $request->file('bukti_pembayaran')->store('bukti_pembayaran', 'cloudinary');
+            $path = \Illuminate\Support\Facades\Storage::disk('cloudinary')->url($path);
         }
 
         DB::table('reservasi_kunjungan')
@@ -527,8 +527,8 @@ class Nazframcontroller extends Controller
 
         $path = null;
         if ($request->hasFile('bukti_pembayaran')) {
-            $uploaded = cloudinary()->upload($request->file('bukti_pembayaran')->getRealPath(), ['folder' => 'bukti_pembayaran']);
-            $path = $uploaded->getSecurePath();
+            $path = $request->file('bukti_pembayaran')->store('bukti_pembayaran', 'cloudinary');
+            $path = \Illuminate\Support\Facades\Storage::disk('cloudinary')->url($path);
         }
 
         DB::table('pendaftaran_magang')
