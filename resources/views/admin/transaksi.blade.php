@@ -323,7 +323,11 @@
 
                 if (data.bukti_pembayaran) {
                     $('#det-bukti-row').show();
-                    $('#det-bukti-link').attr('href', '/storage/' + data.bukti_pembayaran);
+                    let buktiUrl = data.bukti_pembayaran;
+                    if (!buktiUrl.startsWith('http')) {
+                        buktiUrl = '/storage/' + buktiUrl;
+                    }
+                    $('#det-bukti-link').attr('href', buktiUrl);
                 } else {
                     $('#det-bukti-row').hide();
                 }
