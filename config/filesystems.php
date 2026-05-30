@@ -36,6 +36,11 @@ return [
             'report' => false,
         ],
 
+        'cloudinary' => [
+            'driver' => 'cloudinary',
+            'url' => env('CLOUDINARY_URL', 'cloudinary://715663534782368:pCxRIaQO09dNFpyR1T4fZjLAHMM@deqfyyc7j'),
+        ],
+
     ],
 
     'links' => [
