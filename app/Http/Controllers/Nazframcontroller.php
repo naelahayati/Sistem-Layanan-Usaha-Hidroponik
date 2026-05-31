@@ -369,6 +369,10 @@ class Nazframcontroller extends Controller
         }
 
         $qrUrl = \App\Models\Setting::get('qris_image', '');
+        $payment_method_active = \App\Models\Setting::get('payment_method_active', 'qris');
+        $bank_name = \App\Models\Setting::get('bank_name', '');
+        $bank_account_number = \App\Models\Setting::get('bank_account_number', '');
+        $bank_account_owner = \App\Models\Setting::get('bank_account_owner', '');
 
         // Abaikan midtrans logic dan gunakan qris_image dari settings
         if (!$reservasi->midtrans_order_id) {
@@ -382,7 +386,11 @@ class Nazframcontroller extends Controller
 
         return view('pembayaran_kunjungan', [
             'reservasi' => $reservasi,
-            'qrUrl' => $qrUrl
+            'qrUrl' => $qrUrl,
+            'payment_method_active' => $payment_method_active,
+            'bank_name' => $bank_name,
+            'bank_account_number' => $bank_account_number,
+            'bank_account_owner' => $bank_account_owner
         ]);
     }
     public function konfirmasiPembayaranKunjungan(Request $request, $id)
@@ -496,6 +504,10 @@ class Nazframcontroller extends Controller
         }
 
         $qrUrl = \App\Models\Setting::get('qris_image', '');
+        $payment_method_active = \App\Models\Setting::get('payment_method_active', 'qris');
+        $bank_name = \App\Models\Setting::get('bank_name', '');
+        $bank_account_number = \App\Models\Setting::get('bank_account_number', '');
+        $bank_account_owner = \App\Models\Setting::get('bank_account_owner', '');
 
         // Fallback: Jika benar-benar kosong, buat order id baru tanpa midtrans
         if (!$pendaftaran->midtrans_order_id) {
@@ -507,7 +519,10 @@ class Nazframcontroller extends Controller
                 ]);
         }
 
-        return view('pembayaran_magang', compact('pendaftaran', 'qrUrl'));
+        return view('pembayaran_magang', compact(
+            'pendaftaran', 'qrUrl', 'payment_method_active', 
+            'bank_name', 'bank_account_number', 'bank_account_owner'
+        ));
     }
 
     public function konfirmasiPembayaranMagang(Request $request, $id)

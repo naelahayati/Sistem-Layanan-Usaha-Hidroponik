@@ -2,7 +2,7 @@
 
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/admin/transaksi_offline.css') }}">
+<link rel="stylesheet" href="{{ asset('css/admin/transaksi_offline.css') }}?v={{ time() }}">
 @endpush
 
 @section('content')

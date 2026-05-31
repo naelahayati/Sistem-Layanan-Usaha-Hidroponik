@@ -1,8 +1,10 @@
 /**
- * FullCalendar — perbaikan tap/klik di HP & tablet
+ * FullCalendar - perbaikan tap/klik di HP & tablet, dan aspect-ratio
  */
 #calendar-reservasi,
-#calendar-pendaftaran {
+#calendar-reservasi-modal,
+#calendar-pendaftaran,
+#calendar-pendaftaran-modal {
     position: relative;
     z-index: 2;
     touch-action: manipulation;
@@ -10,52 +12,204 @@
 }
 
 #calendar-reservasi .fc-daygrid-day,
-#calendar-pendaftaran .fc-daygrid-day {
+#calendar-reservasi-modal .fc-daygrid-day,
+#calendar-pendaftaran .fc-daygrid-day,
+#calendar-pendaftaran-modal .fc-daygrid-day {
     cursor: pointer;
 }
 
-#calendar-reservasi .fc-daygrid-day-frame,
-#calendar-pendaftaran .fc-daygrid-day-frame {
-    min-height: 2.75rem;
-    pointer-events: auto !important;
-    touch-action: manipulation;
-}
-
 #calendar-reservasi .fc-bg-event,
-#calendar-pendaftaran .fc-bg-event {
+#calendar-reservasi-modal .fc-bg-event,
+#calendar-pendaftaran .fc-bg-event,
+#calendar-pendaftaran-modal .fc-bg-event {
     pointer-events: none !important;
 }
 
 #calendar-reservasi .fc-daygrid-day-number,
-#calendar-pendaftaran .fc-daygrid-day-number {
+#calendar-reservasi-modal .fc-daygrid-day-number,
+#calendar-pendaftaran .fc-daygrid-day-number,
+#calendar-pendaftaran-modal .fc-daygrid-day-number {
     pointer-events: none;
 }
 
 #calendar-reservasi .fc-button,
-#calendar-pendaftaran .fc-button {
+#calendar-reservasi-modal .fc-button,
+#calendar-pendaftaran .fc-button,
+#calendar-pendaftaran-modal .fc-button {
     touch-action: manipulation;
+}
+
+@media (min-width: 992px) {
+    #calendar-reservasi .fc-daygrid-day-frame,
+    #calendar-reservasi-modal .fc-daygrid-day-frame,
+    #calendar-pendaftaran .fc-daygrid-day-frame,
+    #calendar-pendaftaran-modal .fc-daygrid-day-frame {
+        aspect-ratio: 1 / 1 !important;
+        pointer-events: auto !important;
+        touch-action: manipulation;
+    }
 }
 
 @media (max-width: 991.98px) {
     #calendar-reservasi,
-    #calendar-pendaftaran {
-        padding: 8px !important;
-    }
-
-    #calendar-reservasi .fc-toolbar-title,
-    #calendar-pendaftaran .fc-toolbar-title {
-        font-size: 0.95rem !important;
-    }
-
-    #calendar-reservasi .fc-button,
-    #calendar-pendaftaran .fc-button {
-        padding: 4px 8px !important;
+    #calendar-reservasi-modal,
+    #calendar-pendaftaran,
+    #calendar-pendaftaran-modal {
+        padding: 2px !important;
         font-size: 0.75rem !important;
     }
 
-    #calendar-reservasi .fc-daygrid-day-number,
-    #calendar-pendaftaran .fc-daygrid-day-number {
+    /* Perkecil teks label "Pilih Tanggal Kunjungan / Magang" di modal */
+    .cal-modal-header span,
+    .cal-modal-header-pelatihan span {
         font-size: 0.8rem !important;
-        padding: 4px !important;
+    }
+    
+    /* Perkecil tombol pemicu "Ketuk untuk pilih tanggal" */
+    .cal-trigger-btn, .cal-trigger-btn-pelatihan {
+        font-size: 0.75rem !important;
+        padding: 8px 12px !important;
+    }
+    .cal-trigger-btn i, .cal-trigger-btn-pelatihan i {
+        font-size: 0.85rem !important;
+    }
+    
+    /* Kurangi padding pada container modal agar kalender tidak terlalu memakan layar */
+    .cal-modal-box {
+        padding: 10px 10px 15px !important;
+    }
+    .cal-modal-header {
+        margin-bottom: 8px !important;
+        padding-bottom: 6px !important;
+    }
+
+    /* Perkecil judul (Mei 2026) */
+    #calendar-reservasi .fc-toolbar-title,
+    #calendar-reservasi-modal .fc-toolbar-title,
+    #calendar-pendaftaran .fc-toolbar-title,
+    #calendar-pendaftaran-modal .fc-toolbar-title {
+        font-size: 0.8rem !important;
+        font-weight: 700;
+    }
+
+    /* Perkecil tombol navigasi */
+    #calendar-reservasi .fc-button,
+    #calendar-reservasi-modal .fc-button,
+    #calendar-pendaftaran .fc-button,
+    #calendar-pendaftaran-modal .fc-button {
+        padding: 1px 4px !important;
+        font-size: 0.65rem !important;
+    }
+
+    /* Sesuaikan header hari (Sen, Sel, dll) */
+    #calendar-reservasi .fc-col-header-cell-cushion,
+    #calendar-reservasi-modal .fc-col-header-cell-cushion,
+    #calendar-pendaftaran .fc-col-header-cell-cushion,
+    #calendar-pendaftaran-modal .fc-col-header-cell-cushion {
+        font-size: 0.65rem !important;
+        padding: 2px 0 !important;
+    }
+
+    /* Paksa sel menjadi kotak kecil ekstrim */
+    #calendar-reservasi .fc-daygrid-day,
+    #calendar-reservasi-modal .fc-daygrid-day,
+    #calendar-pendaftaran .fc-daygrid-day,
+    #calendar-pendaftaran-modal .fc-daygrid-day {
+        height: 32px !important;
+    }
+
+    #calendar-reservasi .fc-daygrid-day-frame,
+    #calendar-reservasi-modal .fc-daygrid-day-frame,
+    #calendar-pendaftaran .fc-daygrid-day-frame,
+    #calendar-pendaftaran-modal .fc-daygrid-day-frame {
+        height: 32px !important;
+        min-height: 32px !important;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        pointer-events: auto !important;
+        touch-action: manipulation;
+    }
+
+    /* Tengahkan angka tanggal dan kurangi padding */
+    #calendar-reservasi .fc-daygrid-day-top,
+    #calendar-reservasi-modal .fc-daygrid-day-top,
+    #calendar-pendaftaran .fc-daygrid-day-top,
+    #calendar-pendaftaran-modal .fc-daygrid-day-top {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        flex-direction: row !important;
+    }
+
+    #calendar-reservasi .fc-daygrid-day-number,
+    #calendar-reservasi-modal .fc-daygrid-day-number,
+    #calendar-pendaftaran .fc-daygrid-day-number,
+    #calendar-pendaftaran-modal .fc-daygrid-day-number {
+        font-size: 0.7rem !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    /* Hilangkan teks event (Sold out / Libur) di mode HP */
+    #calendar-reservasi .fc-event-title,
+    #calendar-reservasi-modal .fc-event-title,
+    #calendar-pendaftaran .fc-event-title,
+    #calendar-pendaftaran-modal .fc-event-title,
+    #calendar-reservasi .fc-event-title-container,
+    #calendar-reservasi-modal .fc-event-title-container,
+    #calendar-pendaftaran .fc-event-title-container,
+    #calendar-pendaftaran-modal .fc-event-title-container {
+        display: none !important;
+        font-size: 0 !important;
+    }
+
+    /* Kurangi jarak header dengan tabel */
+    #calendar-reservasi .fc-header-toolbar,
+    #calendar-reservasi-modal .fc-header-toolbar,
+    #calendar-pendaftaran .fc-header-toolbar,
+    #calendar-pendaftaran-modal .fc-header-toolbar {
+        margin-bottom: 0.5em !important;
+        gap: 2px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Perkecil judul kalender pada modal */
+    .cal-modal-header span,
+    .cal-modal-header-pelatihan span {
+        font-size: 0.7rem !important;
+    }
+
+    #calendar-reservasi .fc-daygrid-day,
+    #calendar-reservasi-modal .fc-daygrid-day,
+    #calendar-pendaftaran .fc-daygrid-day,
+    #calendar-pendaftaran-modal .fc-daygrid-day {
+        height: 28px !important;
+    }
+    
+    #calendar-reservasi .fc-daygrid-day-frame,
+    #calendar-reservasi-modal .fc-daygrid-day-frame,
+    #calendar-pendaftaran .fc-daygrid-day-frame,
+    #calendar-pendaftaran-modal .fc-daygrid-day-frame {
+        height: 28px !important;
+        min-height: 28px !important;
+    }
+
+    #calendar-reservasi .fc-daygrid-day-number,
+    #calendar-reservasi-modal .fc-daygrid-day-number,
+    #calendar-pendaftaran .fc-daygrid-day-number,
+    #calendar-pendaftaran-modal .fc-daygrid-day-number {
+        font-size: 0.65rem !important;
+    }
+
+    #calendar-reservasi .fc-col-header-cell-cushion,
+    #calendar-reservasi-modal .fc-col-header-cell-cushion,
+    #calendar-pendaftaran .fc-col-header-cell-cushion,
+    #calendar-pendaftaran-modal .fc-col-header-cell-cushion {
+        font-size: 0.6rem !important;
     }
 }

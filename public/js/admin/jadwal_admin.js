@@ -17,6 +17,8 @@ document.addEventListener("DOMContentLoaded", function () {
             center: "title",
             right: "",
         },
+        height: "auto",
+        contentHeight: "auto",
         buttonText: {
             today: "Hari Ini",
         },

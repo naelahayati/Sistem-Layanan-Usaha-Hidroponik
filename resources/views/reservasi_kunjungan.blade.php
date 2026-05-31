@@ -1,4 +1,4 @@
-﻿@extends('master')
+@extends('master')
 
 @section('konten')
 <link rel="stylesheet" href="{{ asset('css/pengguna/reservasi_kunjungan.css') }}">
@@ -80,26 +80,19 @@
                 </div>
 
                 <!-- Metode Pembayaran -->
-                <div class="pesanan-section">
-                    <h3 class="section-title"><i class="fas fa-wallet"></i> Metode Pembayaran</h3>
-                    <label class="radio-card active" id="card-qris">
-                        <input type="radio" name="metode_pembayaran" id="radio-qris" value="qris" checked onchange="updateUI()">
-                        <div>
-                            <strong>QRIS</strong>
-                            <div style="font-size:0.85rem;color:#666;">Bayar instan via e-Wallet/M-Banking.</div>
-                        </div>
-                    </label>
-                    <div id="qris-info" style="display:none;">
-                        <p><strong>Info:</strong> Anda akan diarahkan ke halaman pembayaran QRIS setelah menekan tombol daftar.</p>
+                <div class="pesanan-section" style="margin-top: 15px;">
+                    <h3 class="section-title" style="font-size: 1rem; margin-bottom: 15px;"><i class="fas fa-wallet"></i> Metode Pembayaran</h3>
+                    <div style="padding: 15px; background: #fff8e1; border-radius: 10px; border-left: 4px solid #ffc107; font-size: 0.9rem; color: #856404;">
+                        <i class="fas fa-info-circle mr-1"></i> Pembayaran dapat dilakukan via <strong>Transfer Bank</strong> atau <strong>QRIS</strong> pada halaman selanjutnya.
                     </div>
+                    <input type="hidden" name="metode_pembayaran" value="qris">
                 </div>
 
-                <div class="form-actions-modern" style="margin-top:30px;">
-                    <div style="margin-top:40px;">
-                        <button type="submit" id="btn-submit-reservasi" class="btn-Daftar btn-daftar-form-full">
-                            Daftar
-                        </button>
-                    </div>
+                <div class="form-actions-modern" style="margin-top:40px;">
+                    <button type="submit" id="btn-submit-reservasi" class="btn-daftar-modern"
+                        style="width: 100%; padding: 18px; border-radius: 15px; background: linear-gradient(135deg, #2d5a27 0%, #1b3a1a 100%); color: white; border: none; font-weight: 700; font-size: 1.2rem; cursor: pointer; transition: all 0.3s; box-shadow: 0 6px 20px rgba(27, 58, 26, 0.25);">
+                        <i class="fas fa-paper-plane mr-2"></i> Daftar Sekarang
+                    </button>
                 </div>
             </form>
         </div>
@@ -171,6 +164,8 @@ document.addEventListener('DOMContentLoaded', function () {
             selectLongPressDelay: 0,
             longPressDelay: 0,
             headerToolbar: { left: 'prev,next today', center: 'title', right: '' },
+            height: 'auto',
+            contentHeight: 'auto',
             buttonText: { today: 'Hari ini' },
             events: "{{ route('nazfram.pelatihan.events') }}?type=kunjungan",
             selectAllow: info => isDateAllowed(ref.instance, moment(info.start)),
@@ -214,10 +209,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // ── Metode Pembayaran ────────────────────────────────────
     function updateUI() {
-        const sel = document.querySelector('input[name="metode_pembayaran"]:checked');
-        if (qrisInfo) qrisInfo.style.display = (sel && sel.value === 'qris') ? 'block' : 'none';
+        // No UI update needed for payment method
     }
-    methodRadios.forEach(r => r.addEventListener('change', updateUI));
 
     // ── Hitung Total ─────────────────────────────────────────
     function hitungTotal() {

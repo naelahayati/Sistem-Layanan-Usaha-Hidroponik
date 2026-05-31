@@ -112,19 +112,11 @@
 
                 <!-- Metode Pembayaran -->
                 <div class="pesanan-section">
-                    <h3 class="section-title"><i class="fas fa-wallet"></i> Metode Pembayaran</h3>
-                    
-                    <label class="radio-card active" id="card-qris">
-                        <input type="radio" name="metode_pembayaran" value="qris" onchange="updateUI()" checked>
-                        <div>
-                            <strong>QRIS</strong>
-                            <div style="font-size: 0.85rem; color: #666;">Bayar instan via e-Wallet/M-Banking.</div>
-                        </div>
-                    </label>
-
-                    <div id="qris-info" style="display:none; margin-top: 15px; padding: 15px; background: #fff8e1; border-radius: 10px; border-left: 4px solid #ffc107;">
-                        <i class="fas fa-info-circle"></i> Anda akan diarahkan ke halaman pembayaran QRIS setelah menekan tombol pesan.
+                    <h3 class="section-title" style="font-size: 1rem; margin-bottom: 15px;"><i class="fas fa-wallet"></i> Metode Pembayaran</h3>
+                    <div style="padding: 15px; background: #fff8e1; border-radius: 10px; border-left: 4px solid #ffc107; font-size: 0.9rem; color: #856404;">
+                        <i class="fas fa-info-circle mr-1"></i> Pembayaran dapat dilakukan via <strong>Transfer Bank</strong> atau <strong>QRIS</strong> pada halaman selanjutnya.
                     </div>
+                    <input type="hidden" name="metode_pembayaran" value="qris">
                 </div>
 
                 <button type="button" class="btn-submit-order" onclick="submitOrder()">PESAN SEKARANG</button>
@@ -227,8 +219,7 @@
         const isPengantaran = document.querySelector('input[name="metode_pengiriman"]:checked').value === 'pengantaran';
         document.getElementById('pengantaran-details').style.display = isPengantaran ? 'block' : 'none';
 
-        const isQris = document.querySelector('input[name="metode_pembayaran"]:checked').value === 'qris';
-        document.getElementById('qris-info').style.display = isQris ? 'block' : 'none';
+        // No qris-info toggle needed anymore
     }
 
     function submitOrder() {

@@ -1,11 +1,11 @@
-﻿@extends('master')
+@extends('master')
 
 @section('konten')
 <link rel="stylesheet" href="{{ asset('css/pengguna/riwayat_pendaftaran.css') }}">
 <link rel="stylesheet" href="/css/styleriwayat.css">
 <main class="produk-page">
     <!-- Hero Header -->
-    <header class="produk-hero page-header-sub">
+    <header class="magang-hero page-header-sub">
         <div class="hero-content">
             <h1>RIWAYAT PENDAFTARAN</h1>
         </div>

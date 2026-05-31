@@ -623,7 +623,12 @@
     #total_bayar_text,
     .form-total-payment,
     .reservasi-total {
-        font-size: clamp(0.82rem, 3vw, 0.95rem) !important;
+        font-size: clamp(0.7rem, 2.5vw, 0.85rem) !important;
+    }
+    
+    .total-box-modern h3,
+    .reservasi-total h3 {
+        font-size: clamp(0.85rem, 3.5vw, 1.05rem) !important;
     }
 
     .radio-card,
@@ -631,7 +636,56 @@
     .radio-card span,
     .qris-info,
     #qris-info {
-        font-size: clamp(0.65rem, 2vw, 0.74rem) !important;
+        font-size: clamp(0.55rem, 2vw, 0.65rem) !important;
+    }
+
+    /* Info jadwal (teks paragraf warning/info) */
+    .form-group-modern p,
+    .pendaftaran-card-modern p,
+    .reservasi-card-modern p {
+        font-size: clamp(0.55rem, 2vw, 0.65rem) !important;
+        padding: 8px 10px !important;
+        margin-bottom: 10px !important;
+    }
+
+    /* Judul produk yang dipesan, metode pengantaran */
+    .section-title,
+    .order-summary h3,
+    .checkout-section h3 {
+        font-size: clamp(0.7rem, 2.5vw, 0.85rem) !important;
+    }
+
+    /* --- OVERRIDE PAKSA UNTUK INLINE STYLES & KELUHAN USER --- */
+    
+    /* 1. Judul "Total Pembayaran:" di Kunjungan & Magang */
+    .total-container span,
+    .total-container #total_bayar_text {
+        font-size: clamp(0.7rem, 2.5vw, 0.85rem) !important;
+    }
+    .total-container span:first-child {
+        font-size: clamp(0.6rem, 2vw, 0.75rem) !important;
+    }
+    
+    /* 2. Judul Section (Produk Dipesan, Metode Pengambilan, Metode Pembayaran) */
+    .pesanan-section h3.section-title,
+    .checkout-main-frame h3.section-title,
+    h3.section-title {
+        font-size: clamp(0.65rem, 2.5vw, 0.75rem) !important;
+    }
+
+    /* 3. Info Pembayaran "Pembayaran dapat dilakukan via Transfer..." (Kotak Kuning) */
+    .pesanan-section div[style*="font-size: 0.9rem"],
+    .pesanan-section div[style*="font-size:0.9rem"],
+    .pesanan-section div[style*="background: #fff8e1"],
+    .pesanan-section div[style*="background:#fff8e1"] {
+        font-size: clamp(0.55rem, 2vw, 0.65rem) !important;
+        padding: 8px 10px !important;
+    }
+
+    /* Info Tambahan di Radio button pengantaran */
+    .radio-card div[style*="font-size: 0.85rem"],
+    .radio-card div[style*="font-size:0.85rem"] {
+        font-size: clamp(0.55rem, 1.8vw, 0.6rem) !important;
     }
 
     .pembayaran-magang-page .payment-guide,

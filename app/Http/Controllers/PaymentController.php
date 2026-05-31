@@ -27,10 +27,18 @@ class PaymentController extends Controller
         }
 
         $qrUrl = \App\Models\Setting::get('qris_image', '');
+        $payment_method_active = \App\Models\Setting::get('payment_method_active', 'qris');
+        $bank_name = \App\Models\Setting::get('bank_name', '');
+        $bank_account_number = \App\Models\Setting::get('bank_account_number', '');
+        $bank_account_owner = \App\Models\Setting::get('bank_account_owner', '');
 
         return view('pembayaran', [
             'order' => $order,
-            'qrUrl' => $qrUrl
+            'qrUrl' => $qrUrl,
+            'payment_method_active' => $payment_method_active,
+            'bank_name' => $bank_name,
+            'bank_account_number' => $bank_account_number,
+            'bank_account_owner' => $bank_account_owner
         ]);
     }
 

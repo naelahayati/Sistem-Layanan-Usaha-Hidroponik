@@ -1797,7 +1797,15 @@ class AdminController extends Controller
         }
         $whatsapp = Setting::get('whatsapp_admin', '6282240867746');
         $qris_image = Setting::get('qris_image', '');
-        return view("admin.settings", compact("whatsapp", "qris_image"));
+        $payment_method_active = Setting::get('payment_method_active', 'qris');
+        $bank_name = Setting::get('bank_name', '');
+        $bank_account_number = Setting::get('bank_account_number', '');
+        $bank_account_owner = Setting::get('bank_account_owner', '');
+        
+        return view("admin.settings", compact(
+            "whatsapp", "qris_image", "payment_method_active",
+            "bank_name", "bank_account_number", "bank_account_owner"
+        ));
     }
 
     public function updateSettings(Request $request)
@@ -1813,6 +1821,19 @@ class AdminController extends Controller
                 $number = '62' . substr($number, 1);
             }
             Setting::set('whatsapp_admin', $number);
+        }
+
+        if ($request->has('payment_method_active')) {
+            $request->validate([
+                'payment_method_active' => 'required|in:qris,transfer',
+                'bank_name' => 'nullable|string',
+                'bank_account_number' => 'nullable|string',
+                'bank_account_owner' => 'nullable|string',
+            ]);
+            Setting::set('payment_method_active', $request->payment_method_active);
+            Setting::set('bank_name', $request->bank_name);
+            Setting::set('bank_account_number', $request->bank_account_number);
+            Setting::set('bank_account_owner', $request->bank_account_owner);
         }
 
         if ($request->hasFile('qris_image')) {

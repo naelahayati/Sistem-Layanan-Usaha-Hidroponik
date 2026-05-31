@@ -1,4 +1,4 @@
-﻿// ============================================================
+// ============================================================
 // CUSTOM AUTOCOMPLETE ENGINE (tanpa Select2 untuk nama pembeli)
 // ============================================================
 const acAjaxUrl = window.NazframTransaksiOffline.routes.users;
@@ -470,7 +470,7 @@ $(document).ready(function() {
                     firstDay: 0,
                     selectable: true,
                     unselectAuto: false,
-                    aspectRatio: 1.0,  /* Membuat box lebar & tinggi proporsional */
+                    height: 'auto',
                     contentHeight: 'auto',
                     headerToolbar: {
                         left: 'prev,next today',
@@ -538,7 +538,8 @@ $(document).ready(function() {
                     firstDay: 0,
                     selectable: true,
                     unselectAuto: false,
-                    aspectRatio: 1,
+                    height: 'auto',
+                    contentHeight: 'auto',
                     headerToolbar: { left: 'prev,next today', center: 'title', right: '' },
                     events: function(fetchInfo, successCallback, failureCallback) {
                         $.ajax({

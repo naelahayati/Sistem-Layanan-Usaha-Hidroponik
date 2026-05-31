@@ -38,6 +38,7 @@
     #calendar-kunjungan-offline .fc-daygrid-day-frame {
         height: 100% !important;
         min-height: 45px !important;
+        aspect-ratio: 1 / 1 !important;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -84,7 +85,7 @@
     #calendar-magang-offline .fc-day-today { background-color: #ebf8ff !important; }
     #calendar-magang-offline .fc-highlight { background: rgba(40, 167, 69, 0.2) !important; }
     #calendar-magang-offline .fc-daygrid-day { height: 45px !important; }
-    #calendar-magang-offline .fc-daygrid-day-frame { height: 100% !important; min-height: 45px !important; display: flex; align-items: center; justify-content: center; }
+    #calendar-magang-offline .fc-daygrid-day-frame { height: 100% !important; min-height: 45px !important; aspect-ratio: 1 / 1 !important; display: flex; align-items: center; justify-content: center; }
     #calendar-magang-offline .fc-daygrid-day-top { flex-direction: row !important; justify-content: center !important; width: 100%; }
     #calendar-magang-offline .fc-daygrid-day-number { font-size: 0.75rem !important; padding: 0 !important; color: #475569; }
     #calendar-magang-offline .fc-col-header-cell-cushion { font-size: 0.72rem !important; font-weight: 600; color: #64748b; text-transform: uppercase; }
@@ -461,5 +462,42 @@
     #calendar-kunjungan-offline .fc-daygrid-day-frame,
     #calendar-magang-offline .fc-daygrid-day-frame {
         min-height: 38px !important;
+    }
+}
+
+@media (max-width: 991.98px) {
+    /* TIMPAAN MUTLAK UNTUK SELECT2 DAN TEXTBOX MOBILE */
+    .page-transaksi-offline .select2-container .select2-selection--single,
+    .page-transaksi-offline .select2-container--default .select2-selection--single {
+        height: 30px !important;
+        min-height: 30px !important;
+        padding: 2px 8px !important;
+        border-radius: 6px !important;
+    }
+    .page-transaksi-offline .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 24px !important;
+        font-size: clamp(0.6rem, 2vw, 0.7rem) !important;
+        padding-left: 0 !important;
+    }
+    .page-transaksi-offline .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 28px !important;
+    }
+    
+    /* Textbox Jumlah & Input lainnya */
+    #prod_qty, #kun_qty, #mag_duration, .input-nama-direct, .form-control-custom,
+    input.form-control-custom, select.form-control-custom {
+        height: 30px !important;
+        min-height: 30px !important;
+        max-height: 30px !important;
+        padding: 2px 8px !important;
+        font-size: clamp(0.6rem, 2vw, 0.7rem) !important;
+        line-height: 1.5 !important;
+    }
+    
+    #btn_add_product {
+        height: 30px !important;
+        padding: 2px 8px !important;
+        font-size: clamp(0.6rem, 2vw, 0.7rem) !important;
+        line-height: 1.5 !important;
     }
 }

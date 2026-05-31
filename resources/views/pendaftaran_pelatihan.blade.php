@@ -178,16 +178,10 @@
                     @if(!$isFree && !$needsConfirm)
                     <div id="section-bayar-langsung" class="pesanan-section" style="margin-top: 15px;">
                         <h3 class="section-title" style="font-size: 1rem; margin-bottom: 15px;"><i class="fas fa-wallet"></i> Metode Pembayaran</h3>
-                        <label class="radio-card active" style="display: flex; align-items: center; padding: 15px; border: 1px solid #2d5a27; border-radius: 12px; background: #fcfdfc; cursor: pointer;">
-                            <input type="radio" name="metode_pembayaran" value="qris" checked style="margin-right: 12px; width: 18px; height: 18px;">
-                            <div>
-                                <strong style="display: block; color: #1b3a1a; font-size: 0.95rem;">QRIS</strong>
-                                <div style="font-size: 0.85rem; color: #666;">Bayar instan via e-Wallet/M-Banking.</div>
-                            </div>
-                        </label>
-                        <div id="qris-info" style="margin-top: 12px; font-size: 0.85rem; color: #555;">
-                            <i class="fas fa-info-circle mr-1" style="color: #2d5a27;"></i> Anda akan diarahkan ke halaman pembayaran QRIS setelah klik daftar.
+                        <div style="padding: 15px; background: #fff8e1; border-radius: 10px; border-left: 4px solid #ffc107; font-size: 0.9rem; color: #856404;">
+                            <i class="fas fa-info-circle mr-1"></i> Pembayaran dapat dilakukan via <strong>Transfer Bank</strong> atau <strong>QRIS</strong> pada halaman selanjutnya.
                         </div>
+                        <input type="hidden" name="metode_pembayaran" value="qris">
                     </div>
                     @endif
 
@@ -264,6 +258,8 @@
                     selectLongPressDelay: 0,
                     longPressDelay: 0,
                     headerToolbar: { left: 'prev,next today', center: 'title', right: '' },
+                    height: 'auto',
+                    contentHeight: 'auto',
                     buttonText: { today: 'Hari ini' },
                     events: "{{ route('nazfram.pelatihan.events') }}?type=magang",
                     selectAllow: info => isDateAllowed(ref.cal, moment(info.start)),

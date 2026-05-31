@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
     <link rel="stylesheet" href="{{ asset('css/admin/theme-default.css') }}">
     <link rel="stylesheet" href="{{ asset('css/admin/sidebar.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/admin/admin-responsive.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin/admin-responsive.css') }}?v={{ time() }}">
     <link rel="stylesheet" href="{{ asset('css/admin/modal-detail-mobile.css') }}">
 
     @stack('styles')

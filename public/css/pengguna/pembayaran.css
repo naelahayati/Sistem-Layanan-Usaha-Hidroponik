@@ -258,3 +258,36 @@
         color: #ef4444;
         border-color: #fecaca;
     }
+
+    /* Media Queries for Mobile Responsiveness */
+    @media (max-width: 768px) {
+        .payment-flex-container {
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .payment-card-premium {
+            padding: 20px;
+        }
+        
+        .payment-header h1 {
+            font-size: 1.4rem;
+        }
+        
+        .account-number-box {
+            padding: 10px !important;
+        }
+
+        #rek-number {
+            font-size: 1.15rem !important;
+            letter-spacing: 1px !important;
+        }
+        
+        .bank-transfer-frame {
+            padding: 15px !important;
+        }
+        
+        .instruction-steps li {
+            font-size: 0.8rem;
+        }
+    }

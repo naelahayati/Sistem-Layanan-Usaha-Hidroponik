@@ -372,6 +372,188 @@
         font-size: clamp(0.85rem, 3vw, 1rem) !important;
     }
 
+    /* ===== PERMINTAAN USER: ADMIN FONTS & CALENDAR ===== */
+    
+    /* 1. Kelola Magang (Jadwal) - Info warna libur & detail jadwal */
+    #calendar + div span,
+    #detailPanel .card-title,
+    /* 1. Kelola Magang (Jadwal) - Info warna libur & detail jadwal */
+    #calendar + div span {
+        font-size: clamp(0.6rem, 2.2vw, 0.75rem) !important;
+    }
+    
+    #detailPanel .card-header {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+    }
+    
+    /* Perbaikan posisi tombol X agar tidak turun dan tetap di kanan */
+    #detailPanel .card-tools {
+        width: auto !important;
+        margin-left: auto !important;
+        display: inline-flex !important;
+    }
+    
+    #detailPanel .card-title,
+    #detailTitle {
+        font-size: clamp(0.75rem, 2.5vw, 0.9rem) !important;
+        font-weight: 800 !important;
+        white-space: nowrap !important;
+    }
+    
+    #detailDeskripsi,
+    #detailDate,
+    #detailPanel p,
+    #detailPanel h6,
+    #detailKategori {
+        font-size: clamp(0.65rem, 2.2vw, 0.75rem) !important;
+    }
+    
+    .legend-dot {
+        width: 12px !important;
+        height: 12px !important;
+    }
+
+    /* 2. Seluruh Form Tambah/Edit di Admin */
+    .card-title,
+    .form-group label,
+    .modal-title,
+    .modal-body label {
+        font-size: clamp(0.7rem, 2.5vw, 0.85rem) !important;
+    }
+
+    .form-control,
+    select.form-control,
+    textarea.form-control,
+    .custom-file-label {
+        font-size: clamp(0.65rem, 2.4vw, 0.8rem) !important;
+        height: 32px !important;
+        padding: 4px 8px !important;
+        line-height: 1.5 !important;
+    }
+    
+    /* Tombol Choose File agar sejajar ukurannya */
+    .custom-file-label::after {
+        height: 30px !important;
+        padding: 4px 8px !important;
+        line-height: 1.5 !important;
+        font-size: clamp(0.65rem, 2.4vw, 0.8rem) !important;
+    }
+    
+    .btn,
+    .btn-sm,
+    .btn-primary,
+    .btn-success,
+    .btn-warning,
+    .btn-danger,
+    .btn-info,
+    .btn-outline-primary,
+    .btn-outline-secondary {
+        font-size: clamp(0.65rem, 2.2vw, 0.75rem) !important;
+        padding: 6px 10px !important;
+    }
+
+    /* 3. Tanda Hari Ini di Kalender Admin (Biar Ful & Rapi Kotaknya) */
+    .fc-day-today {
+        background-color: transparent !important;
+        border: none !important;
+    }
+    .fc-day-today .fc-daygrid-day-frame {
+        background-color: #ebf8ff !important;
+        /* Garis tidak ditipiskan, tetap tebal 2px (atau bahkan 3px) */
+        border: 2px solid #3182ce !important;
+        border-radius: 6px !important;
+        height: 100% !important;
+    }
+
+    /* 4. Menu Transaksi Admin */
+    .table-responsive .table th,
+    .table-responsive .table td {
+        font-size: clamp(0.65rem, 2.2vw, 0.75rem) !important;
+    }
+    
+    /* Judul Ringkasan dan Tambah Produk ke Keranjang */
+    h5.font-weight-bold.text-dark,
+    h6.font-weight-bold.text-primary,
+    .card-body h5,
+    .card-body h6 {
+        font-size: clamp(0.75rem, 2.8vw, 0.9rem) !important;
+    }
+    
+    /* Font dalam kotak Ringkasan (Item keranjang, harga, dll) - DIPAKSA DENGAN ID */
+    .info-box-custom .text-muted,
+    .info-box-custom .font-weight-bold.text-dark,
+    .info-box-custom span,
+    #prod_total_items_txt, #prod_subtotal_txt, #prod_total_txt, 
+    #kun_item_price_txt, #kun_qty_txt, #kun_total_txt, 
+    #mag_item_price_txt, #mag_dur_txt, #mag_total_txt {
+        font-size: clamp(0.6rem, 2.2vw, 0.7rem) !important;
+    }
+    
+    .info-box-custom .price-total-text {
+        font-size: clamp(0.75rem, 2.5vw, 0.9rem) !important;
+    }
+    
+    .border.rounded.p-3 p,
+    .border.rounded.p-3 strong,
+    .border.rounded.p-3 span,
+    #detailKunjungan p,
+    #detailMagang p,
+    .list-group-item {
+        font-size: clamp(0.65rem, 2.3vw, 0.75rem) !important;
+    }
+
+    /* Override inline style btn_add_product & submit_order */
+    #btn_add_product,
+    #prod_qty,
+    #kun_qty,
+    #mag_duration,
+    .btn-submit-custom {
+        height: 30px !important;
+        min-height: 30px !important;
+        max-height: 30px !important;
+        padding: 2px 8px !important;
+        font-size: clamp(0.6rem, 2vw, 0.7rem) !important;
+        border-radius: 6px !important;
+        line-height: 1.5 !important;
+    }
+    
+    /* Paksa Select2 Mengecil di Mobile - OVERRIDE transaksi_offline.css */
+    .page-transaksi-offline .select2-container .select2-selection--single,
+    .page-transaksi-offline .select2-container--default .select2-selection--single {
+        height: 30px !important;
+        min-height: 30px !important;
+        padding: 2px 8px !important;
+        border-radius: 6px !important;
+    }
+    .page-transaksi-offline .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 24px !important;
+        font-size: clamp(0.6rem, 2vw, 0.7rem) !important;
+        padding-left: 0 !important;
+    }
+    .page-transaksi-offline .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 28px !important;
+    }
+    
+    /* Jangan dempet untuk Tambah Produk & Jumlah di mobile */
+    .page-transaksi-offline .row.align-items-end > div {
+        margin-bottom: 8px !important;
+    }
+    
+    /* Mengecilkan label Pilih Produk & Jumlah */
+    .form-group label.form-label-custom {
+        font-size: clamp(0.55rem, 2vw, 0.65rem) !important;
+        margin-bottom: 2px !important;
+    }
+    
+    h1.m-0.font-weight-bold {
+        font-size: clamp(1rem, 3.5vw, 1.25rem) !important;
+    }
+    .text-muted.mb-0 {
+        font-size: clamp(0.65rem, 2vw, 0.75rem) !important;
+    }
 }
 
 /* Sidebar mobile — sedikit lebih lebar agar teks tidak terpotong */

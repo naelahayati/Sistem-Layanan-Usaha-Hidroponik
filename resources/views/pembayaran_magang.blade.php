@@ -5,23 +5,54 @@
 <div class="payment-wrapper pembayaran-magang-page">
     <div class="payment-card-premium">
         <header class="payment-header">
-            <h1>Pembayaran QRIS</h1>
-            <p class="payment-guide">Scan kode QR dan unggah bukti pembayaran untuk konfirmasi.</p>
+            @if(isset($payment_method_active) && $payment_method_active == 'transfer')
+                <h1>Pembayaran Transfer Bank</h1>
+                <ul class="payment-guide instruction-steps" style="margin-top: 15px;">
+                    <li><i class="fas fa-check-circle" style="color: var(--sage-green); margin-top: 2px;"></i> <span>Salin nomor rekening di bawah ini.</span></li>
+                    <li><i class="fas fa-check-circle" style="color: var(--sage-green); margin-top: 2px;"></i> <span>Lakukan transfer dari bank mana saja atau dompet digital (Dana, OVO, dll).</span></li>
+                    <li><i class="fas fa-check-circle" style="color: var(--sage-green); margin-top: 2px;"></i> <span>Simpan dan unggah bukti transfer pada form di sebelah kanan.</span></li>
+                </ul>
+            @else
+                <h1>Pembayaran QRIS</h1>
+                <ul class="payment-guide instruction-steps" style="margin-top: 15px;">
+                    <li><i class="fas fa-check-circle" style="color: var(--sage-green); margin-top: 2px;"></i> <span>Pindai (scan) kode QR di bawah menggunakan aplikasi M-Banking atau e-Wallet.</span></li>
+                    <li><i class="fas fa-check-circle" style="color: var(--sage-green); margin-top: 2px;"></i> <span>Pastikan nominal pembayaran sesuai dengan total tagihan.</span></li>
+                    <li><i class="fas fa-check-circle" style="color: var(--sage-green); margin-top: 2px;"></i> <span>Simpan dan unggah tangkapan layar (screenshot) bukti pembayaran pada form di sebelah kanan.</span></li>
+                </ul>
+            @endif
             <div class="timer-badge">
                 <i class="far fa-clock"></i> <span>Selesaikan dalam:</span> <span id="time-left">--:--</span>
             </div>
         </header>
 
         <div class="payment-flex-container" style="display: flex; gap: 40px; align-items: flex-start; flex-wrap: wrap;">
-            {{-- Kolom Kiri: QR Code --}}
+            {{-- Kolom Kiri: Pembayaran --}}
             <div class="payment-left-col">
-                <div class="qr-frame">
-                    <img src="{{ $qrUrl ? $qrUrl : '' }}" id="qris-image" alt="QRIS Code">
-                </div>
-                @if($qrUrl)
-                <a href="{{ $qrUrl }}" download="QRIS-Nazfram.png" class="btn-download-qris">
-                    <i class="fas fa-download"></i> Unduh Kode QR
-                </a>
+                @if(isset($payment_method_active) && $payment_method_active == 'transfer')
+                    <div class="bank-transfer-frame" style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 12px; border: 1px solid #dee2e6; height: 100%; display: flex; flex-direction: column; justify-content: center;">
+                        <i class="fas fa-university" style="font-size: 3rem; color: #007bff; margin-bottom: 15px;"></i>
+                        <h4 style="font-weight: bold; color: #343a40;">{{ $bank_name ?? 'Bank Transfer' }}</h4>
+                        
+                        <div id="rek-box" class="account-number-box" style="margin: 20px 0; padding: 15px; background: #fff; border: 2px dashed #007bff; border-radius: 8px; transition: all 0.3s ease;">
+                            <span style="font-size: 0.9rem; color: #6c757d; display: block; margin-bottom: 5px;">Nomor Rekening:</span>
+                            <strong id="rek-number" style="font-size: 1.5rem; color: #007bff; letter-spacing: 2px; transition: color 0.3s ease;">{{ $bank_account_number ?? '-' }}</strong>
+                            <button type="button" id="btn-copy-rek" class="btn btn-sm" style="display: block; margin: 10px auto 0; background: #e7f1ff; color: #007bff; border: 1px solid #007bff; border-radius: 6px; padding: 5px 15px; transition: all 0.3s ease;" onclick="copyRekening()">
+                                <i class="far fa-copy" id="icon-copy-rek"></i> <span id="text-copy-rek">Salin Nomor Rekening</span>
+                            </button>
+                        </div>
+                        
+                        <span style="font-size: 0.9rem; color: #6c757d; display: block; margin-bottom: 5px;">Atas Nama:</span>
+                        <strong style="font-size: 1.1rem; color: #343a40;">{{ $bank_account_owner ?? '-' }}</strong>
+                    </div>
+                @else
+                    <div class="qr-frame">
+                        <img src="{{ $qrUrl ? $qrUrl : '' }}" id="qris-image" alt="QRIS Code">
+                    </div>
+                    @if($qrUrl)
+                    <a href="{{ $qrUrl }}" download="QRIS-Nazfram.png" class="btn-download-qris">
+                        <i class="fas fa-download"></i> Unduh Kode QR
+                    </a>
+                    @endif
                 @endif
             </div>
 
@@ -74,6 +105,30 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+    function copyRekening() {
+        var text = document.getElementById("rek-number").innerText;
+        navigator.clipboard.writeText(text).then(function() {
+            var box = document.getElementById("rek-box");
+            var number = document.getElementById("rek-number");
+            var btn = document.getElementById("btn-copy-rek");
+            var btnText = document.getElementById("text-copy-rek");
+            var icon = document.getElementById("icon-copy-rek");
+
+            if (box) box.style.borderColor = '#6c757d';
+            if (number) number.style.color = '#6c757d';
+            
+            if (btn) {
+                btn.style.color = '#6c757d';
+                btn.style.borderColor = '#6c757d';
+                btn.style.background = '#f8f9fa';
+            }
+            
+            if (btnText) btnText.innerText = 'Tersalin';
+            if (icon) icon.className = 'fas fa-check';
+        }).catch(function(err) {
+            console.error('Gagal menyalin: ', err);
+        });
+    }
 
     // Form Upload Bukti Pembayaran
     document.getElementById('formBuktiPembayaran').addEventListener('submit', function(e) {

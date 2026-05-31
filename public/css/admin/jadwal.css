@@ -57,6 +57,9 @@
     }
     
     /* Ensure the date number is visible */
+    .fc-daygrid-day-frame {
+        aspect-ratio: 1 / 1 !important;
+    }
     .fc-daygrid-day-top {
         position: relative;
         z-index: 5 !important;
