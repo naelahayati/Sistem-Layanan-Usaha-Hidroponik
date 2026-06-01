@@ -439,7 +439,38 @@ class Nazframcontroller extends Controller
             return redirect()->route('magang.riwayat')->with('error', 'Pendaftaran belum dikonfirmasi admin atau sudah tidak aktif.');
         }
 
-        return view('checkout_magang', compact('pendaftaran'));
+        // Langsung ke pembayaran tanpa halaman checkout
+        // Update status dari Terkonfirmasi ke Menunggu Pembayaran
+        if ($pendaftaran->status_pembayaran === 'Terkonfirmasi') {
+            $orderId = 'MAG-' . $id . '-' . time();
+            $expiresAt = now()->addMinutes(PendaftaranMagangService::PAYMENT_MINUTES);
+
+            \Log::info("Updating checkout magang", [
+                'id_pendaftaran' => $id,
+                'id_user' => Auth::id(),
+                'orderId' => $orderId,
+                'expires_at' => $expiresAt
+            ]);
+
+            $affectedRows = DB::table('pendaftaran_magang')
+                ->where('id_pendaftaran', $id)
+                ->where('id_user', Auth::id())
+                ->update([
+                    'metode_pembayaran' => 'qris',
+                    'status_pembayaran' => 'Menunggu Pembayaran',
+                    'expires_at' => $expiresAt,
+                    'midtrans_order_id' => $orderId,
+                    'updated_at' => now(),
+                ]);
+
+            \Log::info("Checkout update result", ['affected_rows' => $affectedRows]);
+
+            if (!$affectedRows) {
+                return redirect()->route('magang.riwayat')->with('error', 'Gagal memperbarui status pembayaran. Silakan coba lagi.');
+            }
+        }
+
+        return redirect()->route('nazfram.pembayaran_magang', $id);
     }
 
     public function processCheckoutMagang(Request $request, $id)
@@ -495,11 +526,49 @@ class Nazframcontroller extends Controller
         if (!$pendaftaran)
             abort(404);
 
+        \Log::info("Payment page accessed", [
+            'id_pendaftaran' => $id,
+            'status_pembayaran' => $pendaftaran->status_pembayaran,
+            'metode_pembayaran' => $pendaftaran->metode_pembayaran,
+            'expires_at' => $pendaftaran->expires_at,
+        ]);
+
         if (in_array($pendaftaran->status_pembayaran, ['Lunas', 'Diterima'])) {
             return redirect()->route('magang.riwayat')->with('success', 'Pembayaran Anda telah berhasil diproses!');
         }
 
+        // Handle case jika masih Terkonfirmasi (timing issue dari checkout)
+        if ($pendaftaran->status_pembayaran === 'Terkonfirmasi' && !$pendaftaran->expires_at) {
+            $orderId = 'MAG-' . $id . '-' . time();
+            $expiresAt = now()->addMinutes(PendaftaranMagangService::PAYMENT_MINUTES);
+
+            DB::table('pendaftaran_magang')
+                ->where('id_pendaftaran', $id)
+                ->where('id_user', Auth::id())
+                ->update([
+                    'metode_pembayaran' => 'qris',
+                    'status_pembayaran' => 'Menunggu Pembayaran',
+                    'expires_at' => $expiresAt,
+                    'midtrans_order_id' => $orderId,
+                    'updated_at' => now(),
+                ]);
+
+            // Refresh data
+            $pendaftaran = DB::table('pendaftaran_magang')
+                ->join('magangs', 'pendaftaran_magang.id_magang', '=', 'magangs.id')
+                ->where('id_pendaftaran', '=', $id)
+                ->where('id_user', '=', Auth::id())
+                ->select('pendaftaran_magang.*', 'magangs.name as paket_name')
+                ->first();
+        }
+
         if (!PendaftaranMagangService::canAccessPaymentPage($pendaftaran)) {
+            \Log::warning("Payment access denied", [
+                'id_pendaftaran' => $id,
+                'status_pembayaran' => $pendaftaran->status_pembayaran,
+                'metode_pembayaran' => $pendaftaran->metode_pembayaran,
+                'expires_at' => $pendaftaran->expires_at,
+            ]);
             return redirect()->route('magang.riwayat')->with('error', 'Sesi pembayaran tidak valid atau sudah berakhir.');
         }
 
@@ -520,7 +589,7 @@ class Nazframcontroller extends Controller
         }
 
         return view('pembayaran_magang', compact(
-            'pendaftaran', 'qrUrl', 'payment_method_active', 
+            'pendaftaran', 'qrUrl', 'payment_method_active',
             'bank_name', 'bank_account_number', 'bank_account_owner'
         ));
     }
@@ -793,14 +862,27 @@ class Nazframcontroller extends Controller
         ]);
         $total_harga = $magangPkg->price * $request->jumlah_peserta;
 
-        // Semua pendaftaran menunggu konfirmasi admin; pembayaran QRIS dimulai setelah status Terkonfirmasi
+        // Tentukan status dan metode pembayaran berdasarkan is_wa_confirmation
         $status_pembayaran = 'Menunggu Konfirmasi';
         $metode_pembayaran = 'pending';
+        $expires_at = null;
 
         if ($magangPkg->is_wa_confirmation) {
+            // Dengan konfirmasi WA: tunggu konfirmasi admin dulu
             $metode_pembayaran = 'konfirmasi_wa';
-        } elseif ($total_harga == 0 || $request->metode_pembayaran == 'gratis') {
-            $metode_pembayaran = 'gratis';
+            $status_pembayaran = 'Menunggu Konfirmasi';
+        } else {
+            // Tanpa konfirmasi WA
+            if ($total_harga > 0) {
+                // Berbayar: langsung ke pembayaran
+                $metode_pembayaran = 'qris';
+                $status_pembayaran = 'Menunggu Pembayaran';
+                $expires_at = now()->addMinutes(PendaftaranMagangService::PAYMENT_MINUTES);
+            } else {
+                // Gratis: tunggu konfirmasi admin
+                $metode_pembayaran = 'gratis';
+                $status_pembayaran = 'Menunggu Konfirmasi';
+            }
         }
 
         $id_pendaftaran = DB::table('pendaftaran_magang')->insertGetId([
@@ -813,13 +895,13 @@ class Nazframcontroller extends Controller
             'total_harga' => $total_harga,
             'metode_pembayaran' => $metode_pembayaran,
             'status_pembayaran' => $status_pembayaran,
-            'expires_at' => null,
+            'expires_at' => $expires_at,
             'created_at' => now(),
             'midtrans_order_id' => null,
         ]);
 
         // Jika butuh konfirmasi WA (baik berbayar maupun gratis)
-        if ($status_pembayaran == 'Menunggu Konfirmasi') {
+        if ($magangPkg->is_wa_confirmation) {
             $adminPhone = \App\Models\Setting::get('whatsapp_admin', '6282240867746');
             $adminPhone = preg_replace('/[^0-9]/', '', $adminPhone);
             if (str_starts_with($adminPhone, '0')) {
@@ -853,6 +935,19 @@ class Nazframcontroller extends Controller
             ]);
         }
 
+        // Jika status Menunggu Pembayaran (non-WA confirmation, berbayar), langsung ke pembayaran
+        if ($status_pembayaran === 'Menunggu Pembayaran') {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'redirect_url' => route('nazfram.pembayaran_magang', $id_pendaftaran)
+                ]);
+            }
+
+            return redirect()->route('nazfram.pembayaran_magang', $id_pendaftaran);
+        }
+
+        // Untuk kasus lainnya (gratis non-WA confirmation), ke riwayat
         if ($request->ajax()) {
             return response()->json([
                 'success' => true,

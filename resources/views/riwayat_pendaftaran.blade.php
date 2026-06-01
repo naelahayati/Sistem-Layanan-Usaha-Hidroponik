@@ -77,20 +77,16 @@
 
                     <!-- Aksi Card -->
                     <div class="order-actions" style="gap: 12px;">
-                        {{-- Tombol Bayar: Hanya muncul jika status Terkonfirmasi (belum pilih metode) 
-                             ATAU status Menunggu Pembayaran tapi metodenya QRIS (perlu bayar online) --}}
+                        {{-- Tombol Bayar: Muncul saat status Terkonfirmasi atau Menunggu Pembayaran (QRIS) --}}
                         @php
                             $canBayarTerkonfirmasi = $item->status_pembayaran == 'Terkonfirmasi' && $item->total_harga > 0;
                             $canBayarQris = $item->status_pembayaran == 'Menunggu Pembayaran'
                                 && $item->metode_pembayaran == 'qris'
                                 && $item->expires_at
                                 && \Carbon\Carbon::parse($item->expires_at)->isFuture();
-                            $targetRoute = $canBayarQris
-                                ? route('nazfram.pembayaran_magang', $item->id_pendaftaran)
-                                : route('nazfram.checkout_magang', $item->id_pendaftaran);
                         @endphp
                         @if($canBayarTerkonfirmasi || $canBayarQris)
-                            <a href="{{ $targetRoute }}" class="btn-bayar" data-id="{{ $item->id_pendaftaran }}">
+                            <a href="{{ route('nazfram.pembayaran_magang', $item->id_pendaftaran) }}" class="btn-bayar" data-id="{{ $item->id_pendaftaran }}">
                                 <i class="fas fa-wallet"></i> Bayar
                             </a>
                         @endif
@@ -164,28 +160,28 @@
                             <!-- Info Lainnya -->
                             <div class="info-details">
                                 <div>
-                                    <i class="fas fa-building" style="color:var(--sage); margin-top:4px; font-size:1.1rem;"></i> 
+                                    <i class="fas fa-building" style="color:var(--sage); margin-top:4px; font-size:1.1rem;"></i>
                                     <div>
                                         <strong>Instansi / Pekerjaan</strong>
                                         {{ $item->pekerjaan }}
                                     </div>
                                 </div>
                                 <div>
-                                    <i class="fas fa-calendar-check" style="color:var(--sage); margin-top:4px; font-size:1.1rem;"></i> 
+                                    <i class="fas fa-calendar-check" style="color:var(--sage); margin-top:4px; font-size:1.1rem;"></i>
                                     <div>
                                         <strong>Periode Magang</strong>
                                         {{ \Carbon\Carbon::parse($item->tanggal_magang)->format('d M Y') }} s/d {{ \Carbon\Carbon::parse($item->tanggal_magang)->addMonths($item->durasi_magang)->format('d M Y') }}
                                     </div>
                                 </div>
                                 <div>
-                                    <i class="fas fa-wallet" style="color:var(--sage); margin-top:4px; font-size:1.1rem;"></i> 
+                                    <i class="fas fa-wallet" style="color:var(--sage); margin-top:4px; font-size:1.1rem;"></i>
                                     <div>
                                         <strong>Metode Pembayaran</strong>
                                         {{ strtoupper($item->metode_pembayaran) }}
                                     </div>
                                 </div>
                                 <div>
-                                    <i class="fas fa-info-circle" style="color:var(--sage); margin-top:4px; font-size:1.1rem;"></i> 
+                                    <i class="fas fa-info-circle" style="color:var(--sage); margin-top:4px; font-size:1.1rem;"></i>
                                     <div>
                                         <strong>Status Pembayaran</strong>
                                         {{ $item->status_pembayaran }}
@@ -227,7 +223,7 @@
         const pagination = document.querySelector('.pagination');
         const viewAllPlaceholder = document.getElementById('viewAllPlaceholder');
         const viewAllLi = viewAllPlaceholder ? viewAllPlaceholder.querySelector('li') : null;
-        
+
         if (viewAllLi) {
             viewAllLi.classList.add('view-all-item');
             if (pagination) {
