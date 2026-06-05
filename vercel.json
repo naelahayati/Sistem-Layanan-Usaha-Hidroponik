@@ -3,7 +3,7 @@
   "builds": [
     {
       "src": "api/index.php",
-      "use": "@vercel/php"
+      "use": "vercel-php@0.6.0"
     }
   ],
   "routes": [
@@ -19,7 +19,7 @@
   "env": {
     "APP_ENV": "production",
     "APP_DEBUG": "true",
-    "APP_URL": "https://sistem-layanan-usaha-hidroponik.vercel.app",
+    "APP_URL": "https://naz-hidrofarm.vercel.app",
     "APP_CONFIG_CACHE": "/tmp/config.php",
     "APP_EVENTS_CACHE": "/tmp/events.php",
     "APP_PACKAGES_CACHE": "/tmp/packages.php",
