@@ -1,6 +1,11 @@
 {
   "version": 2,
-  "plugins": [{ "src": "@vercel/php" }],
+  "builds": [
+    {
+      "src": "api/index.php",
+      "use": "@vercel/php"
+    }
+  ],
   "routes": [
     {
       "src": "/(css|js|images|build)/(.*)",
