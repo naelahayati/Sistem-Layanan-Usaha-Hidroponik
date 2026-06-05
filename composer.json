@@ -9,9 +9,7 @@
         "php": "^8.2",
         "cloudinary-labs/cloudinary-laravel": "^3.0",
         "laravel/framework": "^11.31",
-        "laravel/tinker": "^2.9",
-        "league/flysystem-aws-s3-v3": "*",
-        "midtrans/midtrans-php": "^2.6"
+        "laravel/tinker": "^2.9"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.7",
