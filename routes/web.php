@@ -6,6 +6,19 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\PaymentController;
+use Spatie\Sitemap\Sitemap;
+use Spatie\Sitemap\Tags\Url;
+
+
+Route::get('/sitemap.xml', function () {
+    $sitemap = Sitemap::create()
+        ->add(Url::create('/'))
+        ->add(Url::create('/produk'))
+        ->add(Url::create('/kunjungan'))
+        ->add(Url::create('/magang'));
+
+    return $sitemap->toResponse(request());
+});
 
 // --- AUTHENTICATION ---
 Route::get("/login", [AuthController::class, "login"])->name("login");
