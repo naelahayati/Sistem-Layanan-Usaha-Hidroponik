@@ -108,9 +108,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($laporans as $index => $item)
+                            @forelse($laporans as $item)
+                            @php $loop_no = $loop->iteration; @endphp
                             <tr style="transition: background 0.2s;">
-                                <td class="py-3 text-muted">{{ $index + 1 }}</td>
+                                <td class="py-3 text-muted">{{ $loop->iteration }}</td>
                                 <td class="py-3">{{ $item->id_transaksi }}</td>
                                 <td class="py-3 font-weight-bold">{{ date('d-m-Y', strtotime($item->tanggal)) }}</td>
                                 <td class="py-3 text-left">
