@@ -517,10 +517,29 @@ $(document).ready(function() {
                     },
                     select: function(info) { inputTanggal.value = info.startStr; },
                     dateClick: function(info) {
-                        calendar.select(info.dateStr);
+                        const start = moment(info.date);
+                        const day = start.day();
+                        if (day === 0 || day === 6) return;
+
+                        const minDate = moment().add(3, 'days').startOf('day');
+                        if (start.isBefore(minDate)) return;
+
+                        const dateStr = start.format('YYYY-MM-DD');
+                        const overlapping = this.getEvents().some(event => {
+                            if (event.display === 'background') {
+                                const evStart = moment(event.start).format('YYYY-MM-DD');
+                                const evEnd = event.end ? moment(event.end).format('YYYY-MM-DD') : moment(event.start).add(1, 'days').format('YYYY-MM-DD');
+                                return moment(dateStr).isSameOrAfter(evStart) && moment(dateStr).isBefore(evEnd);
+                            }
+                            return false;
+                        });
+
+                        if (!overlapping) {
+                            this.select(info.date);
+                        }
                     },
-                    longPressDelay: 0,
-                    selectLongPressDelay: 0
+                    longPressDelay: 50,
+                    selectLongPressDelay: 50
                 });
                 calendar.render();
 
@@ -584,10 +603,29 @@ $(document).ready(function() {
                     },
                     select: function(info) { inputTanggalMagang.value = info.startStr; },
                     dateClick: function(info) {
-                        calendarMagang.select(info.dateStr);
+                        const start = moment(info.date);
+                        const day = start.day();
+                        if (day === 0 || day === 6) return;
+
+                        const minDate = moment().add(3, 'days').startOf('day');
+                        if (start.isBefore(minDate)) return;
+
+                        const dateStr = start.format('YYYY-MM-DD');
+                        const overlapping = this.getEvents().some(event => {
+                            if (event.display === 'background') {
+                                const evStart = moment(event.start).format('YYYY-MM-DD');
+                                const evEnd = event.end ? moment(event.end).format('YYYY-MM-DD') : moment(event.start).add(1, 'days').format('YYYY-MM-DD');
+                                return moment(dateStr).isSameOrAfter(evStart) && moment(dateStr).isBefore(evEnd);
+                            }
+                            return false;
+                        });
+
+                        if (!overlapping) {
+                            this.select(info.date);
+                        }
                     },
-                    longPressDelay: 0,
-                    selectLongPressDelay: 0
+                    longPressDelay: 50,
+                    selectLongPressDelay: 50
                 });
                 calendarMagang.render();
 

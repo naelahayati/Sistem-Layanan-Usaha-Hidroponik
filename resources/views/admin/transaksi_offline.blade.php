@@ -513,5 +513,5 @@ window.NazframTransaksiOffline = {
     }
 };
 </script>
-<script src="{{ asset('js/admin/transaksi_offline.js') }}"></script>
+<script src="{{ asset('js/admin/transaksi_offline.js') }}?v={{ time() }}"></script>
 @endpush
