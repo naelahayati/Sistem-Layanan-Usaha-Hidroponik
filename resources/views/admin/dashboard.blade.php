@@ -199,6 +199,91 @@
                 </div>
             </div>
         </div>
+         <!-- Row: Rekapitulasi Status Hari Ini -->
+        <div class="row">
+            <!-- Status Pesanan -->
+            <div class="col-md-4 mb-4">
+                <div class="card card-outline card-info shadow-sm" style="border-radius:15px;">
+                    <div class="card-header">
+                        <h3 class="card-title font-weight-bold">
+                            <i class="fas fa-shopping-bag mr-2 text-info"></i> Status Pesanan Hari Ini
+                        </h3>
+                    </div>
+                    <div class="card-body p-3">
+                        @foreach([
+                            'Menunggu Konfirmasi'  => 'warning',
+                            'Diproses'             => 'info',
+                            'Sedang Dikemas'       => 'primary',
+                            'Pesanan Siap Diambil' => 'success',
+                        ] as $status => $color)
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="text-muted small">{{ $status }}</span>
+                            <span class="badge badge-{{ $color }} px-2 py-1">{{ $statusPesanan[$status] ?? 0 }}</span>
+                        </div>
+                        @endforeach
+                    </div>
+                    <div class="card-footer bg-white py-2 text-center" style="border-radius:0 0 15px 15px;">
+                        <a href="{{ route('admin.transaksi') }}" class="text-info font-weight-bold small">
+                            LIHAT SEMUA <i class="fas fa-chevron-right ml-1" style="font-size:0.7rem;"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status Kunjungan -->
+            <div class="col-md-4 mb-4">
+                <div class="card card-outline card-success shadow-sm" style="border-radius:15px;">
+                    <div class="card-header">
+                        <h3 class="card-title font-weight-bold">
+                            <i class="fas fa-calendar-alt mr-2 text-success"></i> Status Kunjungan Hari Ini
+                        </h3>
+                    </div>
+                    <div class="card-body p-3">
+                        @foreach([
+                            'Menunggu Pembayaran' => 'warning',
+                            'Diterima'            => 'success',
+                        ] as $status => $color)
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="text-muted small">{{ $status }}</span>
+                            <span class="badge badge-{{ $color }} px-2 py-1">{{ $statusKunjungan[$status] ?? 0 }}</span>
+                        </div>
+                        @endforeach
+                    </div>
+                    <div class="card-footer bg-white py-2 text-center" style="border-radius:0 0 15px 15px;">
+                        <a href="{{ route('admin.kunjungan-manajemen') }}" class="text-success font-weight-bold small">
+                            LIHAT SEMUA <i class="fas fa-chevron-right ml-1" style="font-size:0.7rem;"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status Magang -->
+            <div class="col-md-4 mb-4">
+                <div class="card card-outline card-warning shadow-sm" style="border-radius:15px;">
+                    <div class="card-header">
+                        <h3 class="card-title font-weight-bold">
+                            <i class="fas fa-user-graduate mr-2 text-warning"></i> Status Magang Aktif
+                        </h3>
+                    </div>
+                    <div class="card-body p-3">
+                        @foreach([
+                            'Menunggu Konfirmasi' => 'warning',
+                            'Terkonfirmasi'       => 'info',
+                            'Diterima'            => 'success',
+                        ] as $status => $color)
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="text-muted small">{{ $status }}</span>
+                            <span class="badge badge-{{ $color }} px-2 py-1">{{ $statusMagang[$status] ?? 0 }}</span>
+                        </div>
+                        @endforeach
+                    </div>
+                    <div class="card-footer bg-white py-2 text-center" style="border-radius:0 0 15px 15px;">
+                        <a href="{{ route('admin.magang-manajemen') }}" class="text-warning font-weight-bold small">
+                            LIHAT SEMUA <i class="fas fa-chevron-right ml-1" style="font-size:0.7rem;"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
     </div>
 </section>
 @endsection

@@ -181,6 +181,117 @@ body {
     opacity: 0.8;
 }
 
+.info-pengiriman {
+    background: #f0f9f0;
+    border-bottom: 2px solid #c8e6c9;
+    padding: 16px 24px;
+}
+
+.info-pengiriman-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.info-item i {
+    font-size: 22px;
+    color: #2e7d32;
+}
+
+.info-item div {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-title {
+    font-weight: 600;
+    font-size: 13px;
+    color: #1b5e20;
+}
+
+.info-desc {
+    font-size: 12px;
+    color: #4a4a4a;
+}
+
+.info-divider {
+    width: 1px;
+    height: 40px;
+    background: #a5d6a7;
+}
+
+/* TABLET */
+@media (max-width: 768px) {
+    .info-pengiriman {
+        padding: 14px 16px;
+    }
+
+    .info-pengiriman-inner {
+        gap: 16px;
+    }
+
+    .info-divider {
+        display: none;
+    }
+
+    .info-item {
+        width: 100%;
+        background: #fff;
+        border: 1px solid #c8e6c9;
+        border-radius: 10px;
+        padding: 10px 14px;
+    }
+
+    .info-item i {
+        font-size: 20px;
+    }
+}
+
+/* HP */
+@media (max-width: 480px) {
+    .info-pengiriman {
+        padding: 12px;
+    }
+
+    .info-pengiriman-inner {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .info-item {
+        width: 100%;
+        background: #fff;
+        border: 1px solid #c8e6c9;
+        border-radius: 10px;
+        padding: 10px 12px;
+        gap: 8px;
+    }
+
+    .info-item i {
+        font-size: 18px;
+        min-width: 20px;
+    }
+
+    .info-title {
+        font-size: 12px;
+    }
+
+    .info-desc {
+        font-size: 11px;
+    }
+}
+
 /* =========================================
    RESPONSIVE TABLET (768px - 1024px)
    ========================================= */

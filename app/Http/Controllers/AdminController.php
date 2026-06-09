@@ -20,6 +20,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
 use App\Mail\SendKodeVerifikasiProfil;
+use App\Notifications\StatusNotification;
 
 class AdminController extends Controller
 {
@@ -42,6 +43,26 @@ class AdminController extends Controller
         }
 
         $today = Carbon::today();
+
+        // Status count pesanan
+        $statusPesanan = Order::whereNotIn('status', ['Selesai', 'Expired', 'Dibatalkan Pengguna', 'Dibatalkan'])
+            ->selectRaw('status, count(*) as total')
+            ->groupBy('status')
+            ->pluck('total', 'status');
+
+        // Status count kunjungan
+        $statusKunjungan = DB::table('reservasi_kunjungan')
+            ->whereNotIn('status_pembayaran', ['Selesai', 'Expired', 'Dibatalkan Pengguna', 'Dibatalkan', 'Tidak Diterima'])
+            ->selectRaw('status_pembayaran as status, count(*) as total')
+            ->groupBy('status_pembayaran')
+            ->pluck('total', 'status');
+
+        // Status count magang
+        $statusMagang = DB::table('pendaftaran_magang')
+            ->whereNotIn('status_pembayaran', ['Selesai', 'Expired', 'Dibatalkan Pengguna', 'Dibatalkan', 'Tidak Diterima'])
+            ->selectRaw('status_pembayaran as status, count(*) as total')
+            ->groupBy('status_pembayaran')
+            ->pluck('total', 'status');
 
         // 1. Pesanan Hari Ini
         $pesananHariIniCount = Order::whereDate('created_at', $today)
@@ -112,7 +133,10 @@ class AdminController extends Controller
             'daftarKunjunganHariIni' => $daftarKunjunganHariIni,
             'recentOrders' => $recentOrders,
             'detailMagangMulai' => $detailMagangMulai,
-            'todayStr' => $today->format('Y-m-d')
+            'todayStr' => $today->format('Y-m-d'),
+            'statusPesanan'   => $statusPesanan,
+            'statusKunjungan' => $statusKunjungan,
+            'statusMagang'    => $statusMagang,
         ]);
     }
 
@@ -198,6 +222,10 @@ class AdminController extends Controller
         $order = Order::findOrFail($id);
         $order->status = $request->status;
         $order->save();
+
+        if ($order->user && $order->user->email) {
+            $order->user->notify(new StatusNotification('pesanan', $order, $request->status));
+        }
 
         return response()->json(["success" => true, "message" => "Status pesanan berhasil diperbarui"]);
     }
@@ -1550,7 +1578,7 @@ class AdminController extends Controller
             // Filter Pencarian
             $searchMatch = true;
             if (!empty($search)) {
-                $kunId = 'kun-' . str_pad($k->id_reservasi, 4, '0', STR_PAD_LEFT);
+                $kunId = 'kun-' . str_pad($k->id_reservasi, 5, '0', STR_PAD_LEFT);
                 $searchStr = strtolower($kunId . ' ' . $k->user_name . ' ' . $k->user_username . ' ' . $k->paket_name . ' ' . $k->instansi . ' ' . $k->status_pembayaran);
                 $searchMatch = str_contains($searchStr, $search);
             }
@@ -1577,27 +1605,6 @@ class AdminController extends Controller
 
         return view("admin.kunjungan_manajemen", compact("kunjungans", "statusFilter", "search", "date"));
     }
-
-    // public function magangManajemen()
-    // {
-    //     if (!$this->isAdmin()) {
-    //         return redirect()->route("login")->with("error", "Akses ditolak.");
-    //     }
-
-    //     $magangs = DB::table('pendaftaran_magang')
-    //         ->join('users', 'pendaftaran_magang.id_user', '=', 'users.id')
-    //         ->join('magangs', 'pendaftaran_magang.id_magang', '=', 'magangs.id')
-    //         ->select('pendaftaran_magang.*', 'users.name as user_name', 'users.username as user_username', 'magangs.name as paket_name')
-    //         ->orderBy('pendaftaran_magang.created_at', 'desc')
-    //         ->get();
-
-    //     foreach ($magangs as $m) {
-    //         $endDate = Carbon::parse($m->tanggal_magang)->addMonths($m->durasi_magang)->startOfDay();
-    //         $m->status_magang = (Carbon::today() > $endDate) ? 'Selesai' : 'Aktif';
-    //     }
-
-    //     return view("admin.magang_manajemen", compact("magangs"));
-    // }
 
     public function magangManajemen(Request $request)
     {
@@ -1714,7 +1721,7 @@ class AdminController extends Controller
             $searchMatch = true;
             if (!empty($search)) {
                 // Menambahkan format MAG-ID, id_user, tanggal_magang, dan tanggal hari (1-31) ke jangkauan pencarian
-                $magangId = 'mag-' . str_pad($m->id, 4, '0', STR_PAD_LEFT);
+                $magangId = 'mag-' . str_pad($m->id, 5, '0', STR_PAD_LEFT);
                 $dayStr = \Carbon\Carbon::parse($m->tanggal_magang)->format('d');
                 $searchStr = strtolower($magangId . ' ' . $m->id . ' ' . $m->id_user . ' ' . $m->user_name . ' ' . $m->user_username . ' ' . $m->paket_name . ' ' . $m->tanggal_magang . ' ' . $dayStr . ' ' . $m->status_pembayaran);
                 $searchMatch = str_contains($searchStr, $search);
@@ -1762,6 +1769,19 @@ class AdminController extends Controller
             ->where('id_reservasi', $id)
             ->update(['status_pembayaran' => $request->status, 'updated_at' => now()]);
 
+        $reservasi = DB::table('reservasi_kunjungan')
+            ->join('users', 'reservasi_kunjungan.id_user', '=', 'users.id')
+            ->where('id_reservasi', $id)
+            ->select('reservasi_kunjungan.*', 'users.email')
+            ->first();
+
+        if ($reservasi && $reservasi->email) {
+            $user = User::where('email', $reservasi->email)->first();
+            if ($user) {
+                $user->notify(new StatusNotification('kunjungan', $reservasi, $request->status));
+            }
+        }
+
         return response()->json(["success" => true, "message" => "Status pembayaran kunjungan berhasil diperbarui"]);
     }
 
@@ -1787,6 +1807,19 @@ class AdminController extends Controller
         DB::table('pendaftaran_magang')
             ->where('id_pendaftaran', $id)
             ->update($update);
+
+        $pendaftaran = DB::table('pendaftaran_magang')
+            ->join('users', 'pendaftaran_magang.id_user', '=', 'users.id')
+            ->where('id_pendaftaran', $id)
+            ->select('pendaftaran_magang.*', 'users.email')
+            ->first();
+
+        if ($pendaftaran && $pendaftaran->email) {
+            $user = User::where('email', $pendaftaran->email)->first();
+            if ($user) {
+                $user->notify(new StatusNotification('magang', $pendaftaran, $request->status));
+            }
+        }
 
         return response()->json(["success" => true, "message" => "Status pendaftaran berhasil diperbarui"]);
     }

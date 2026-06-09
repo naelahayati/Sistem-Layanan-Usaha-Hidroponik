@@ -17,6 +17,35 @@
             </div>
         </header>
 
+        <!-- Info Pengiriman -->
+        <div class="info-pengiriman">
+            <div class="info-pengiriman-inner">
+                <div class="info-item">
+                    <i class="fas fa-truck"></i>
+                    <div>
+                        <span class="info-title">Pengiriman Melon</span>
+                        <span class="info-desc">Minimal pembelian <strong>5 kg</strong> untuk layanan antar</span>
+                    </div>
+                </div>
+                <div class="info-divider"></div>
+                <div class="info-item">
+                    <i class="fas fa-leaf"></i>
+                    <div>
+                        <span class="info-title">Pengiriman Sayuran</span>
+                        <span class="info-desc">Minimal pembelian <strong>Rp.150.000</strong> untuk layanan antar</span>
+                    </div>
+                </div>
+                <div class="info-divider"></div>
+                <div class="info-item">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <span class="info-title">Catatan</span>
+                        <span class="info-desc">Pembelian di bawah minimal bisa diambil langsung ke lokasi</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <!-- Product Grid: Card Bernapas dengan Soft Shadow -->
         <div class="container-produk-list">

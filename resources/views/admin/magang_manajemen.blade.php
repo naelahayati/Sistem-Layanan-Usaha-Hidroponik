@@ -31,7 +31,7 @@
 
 <section class="content page-manajemen">
     <div class="container-fluid">
-        
+
         <!-- Search di Atas Filter -->
         <div class="mb-3 w-100">
             <form action="{{ route('admin.magang-manajemen') }}" method="GET">
@@ -75,22 +75,22 @@
                     <a class="nav-link {{ $statusFilter == 'offline' ? 'active' : '' }}" href="{{ route('admin.magang-manajemen', array_merge(request()->query(), ['status' => 'offline'])) }}">Transaksi Offline</a>
                 </li>
             </ul>
-            
-            
+
+
         </div>
 
         <!-- Filter Sub Magang (PKL / Umum) -->
         <div class="mb-4 mt-2">
             <div class="btn-group btn-group-toggle shadow-sm" style="border-radius: 12px; overflow: hidden; border: 1px solid #eee;">
-                <a href="{{ route('admin.magang-manajemen', array_merge(request()->query(), ['sub_magang' => 'Semua'])) }}" 
+                <a href="{{ route('admin.magang-manajemen', array_merge(request()->query(), ['sub_magang' => 'Semua'])) }}"
                    class="btn btn-sm {{ $subMagangFilter == 'Semua' ? 'btn-primary' : 'btn-white' }} px-4 py-2 font-weight-bold">
                    Semua Program
                 </a>
-                <a href="{{ route('admin.magang-manajemen', array_merge(request()->query(), ['sub_magang' => 'PKL'])) }}" 
+                <a href="{{ route('admin.magang-manajemen', array_merge(request()->query(), ['sub_magang' => 'PKL'])) }}"
                    class="btn btn-sm {{ $subMagangFilter == 'PKL' ? 'btn-primary' : 'btn-white' }} px-4 py-2 font-weight-bold">
                    Program PKL
                 </a>
-                <a href="{{ route('admin.magang-manajemen', array_merge(request()->query(), ['sub_magang' => 'Magang Umum'])) }}" 
+                <a href="{{ route('admin.magang-manajemen', array_merge(request()->query(), ['sub_magang' => 'Magang Umum'])) }}"
                    class="btn btn-sm {{ $subMagangFilter == 'Magang Umum' ? 'btn-primary' : 'btn-white' }} px-4 py-2 font-weight-bold">
                    Magang Umum
                 </a>
@@ -118,7 +118,7 @@
                                 $startDate = \Carbon\Carbon::parse($m->tanggal_magang);
                                 $endDate = \Carbon\Carbon::parse($m->tanggal_magang)->addMonths($m->durasi_magang);
                                 $today = \Carbon\Carbon::today();
-                                
+
                                 $timeInfo = '';
                                 $timeClass = '';
                                 if ($m->status_pembayaran == 'Dibatalkan' || $m->status_pembayaran == 'Tidak Diterima') {
@@ -139,7 +139,7 @@
                             @endphp
                             <tr>
                                 <td class="pl-4">
-                                    <span class="text-primary font-weight-bold">#MAG-{{ str_pad($m->id, 4, '0', STR_PAD_LEFT) }}</span>
+                                    <span class="text-primary font-weight-bold">#MAG-{{ str_pad($m->id, 5, '0', STR_PAD_LEFT) }}</span>
                                 </td>
                                 <td>
                                     <strong>{{ $m->user_name }}</strong>
@@ -165,8 +165,8 @@
                                     </span>
                                 </td>
                                 <td class="text-center">
-                                    <button class="btn btn-sm btn-primary btn-detail-magang" 
-                                            data-id="{{ $m->id }}" 
+                                    <button class="btn btn-sm btn-primary btn-detail-magang"
+                                            data-id="{{ $m->id }}"
                                             data-all="{{ json_encode($m) }}"
                                             data-time="{{ $timeInfo }}"
                                             style="border-radius: 10px; padding: 6px 15px;">
@@ -258,7 +258,7 @@
                         <div class="form-group mt-4 pt-2">
                             <label class="text-uppercase text-muted font-weight-bold small">Status Saat Ini</label>
                             <input type="text" id="det-status-skrg" class="form-control mb-3" readonly style="border-radius: 12px; background: #e9ecef; font-weight: bold; color: #495057; border: 1px solid #ced4da;">
-                            
+
                             <label class="text-uppercase text-muted font-weight-bold small">Ubah Status Konfirmasi</label>
                             <form id="formUpdateStatus">
                                 @csrf
@@ -275,7 +275,7 @@
                                 </button>
                             </form>
                         </div>
-                        
+
                         <div class="alert alert-info mt-3 p-2 small border-0" style="border-radius: 10px; background: #eef7ff; color: #3182ce;">
                             <i class="fas fa-info-circle mr-1"></i> Status <strong>Menunggu Konfirmasi</strong> diatur otomatis oleh sistem.
                         </div>
@@ -295,7 +295,7 @@ function runScript() {
             $(document).on('click', '.btn-detail-magang', function() {
                 const data = $(this).data('all');
                 const timeInfo = $(this).data('time');
-                
+
                 // Isi data ke modal
                 $('#magang_id').val(data.id);
                 $('#det-nama').text(data.user_name);
@@ -308,20 +308,20 @@ function runScript() {
                 $('#det-deskripsi').text(data.deskripsi_kemampuan || 'Tidak ada deskripsi.');
                 $('#det-metode').text(data.metode_pembayaran.toUpperCase());
                 $('#det-total').text('Rp ' + new Intl.NumberFormat('id-ID').format(data.total_harga));
-                
+
                 // Logika Indikator Bayar Khusus Admin
                 let bayarLabel = 'Belum Bayar';
                 let bayarClass = 'badge-danger';
-                
+
                 if (['Menunggu Konfirmasi'].includes(data.status_pembayaran)) {
                     bayarLabel = 'Menunggu Konfirmasi';
                     bayarClass = 'badge-warning';
-                } else if (data.metode_pembayaran.toLowerCase() == 'qris' || data.metode_pembayaran.toLowerCase() == 'tunai' || 
+                } else if (data.metode_pembayaran.toLowerCase() == 'qris' || data.metode_pembayaran.toLowerCase() == 'tunai' ||
                     ['Lunas', 'Diterima', 'Selesai'].includes(data.status_pembayaran)) {
                     bayarLabel = 'Sudah Bayar';
                     bayarClass = 'badge-success';
                 }
-                
+
                 $('#det-bayar-status').text(bayarLabel).attr('class', 'badge ' + bayarClass + ' p-1 px-2');
 
                 if (data.bukti_pembayaran) {
@@ -334,13 +334,13 @@ function runScript() {
                 } else {
                     $('#det-bukti-container').hide();
                 }
-                
+
                 // Isi Status Saat Ini (Text Box)
                 $('#det-status-skrg').val(data.status_pembayaran);
-                
+
                 // Set value dropdown status
                 $('#selectStatus').val(data.status_pembayaran);
-                
+
                 $('#modalDetailMagang').modal('show');
             });
 

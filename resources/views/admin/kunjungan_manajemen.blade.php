@@ -70,8 +70,8 @@
                     <a class="nav-link {{ $statusFilter == 'offline' ? 'active' : '' }}" href="{{ route('admin.kunjungan-manajemen', ['status' => 'offline']) }}">Transaksi Offline</a>
                 </li>
             </ul>
-            
-            
+
+
         </div>
 
         <div class="card shadow-sm border-0" style="border-radius:20px;">
@@ -94,10 +94,10 @@
                             @php
                                 $visitDate = \Carbon\Carbon::parse($k->tanggal_reservasi);
                                 $today = \Carbon\Carbon::today();
-                                
+
                                 $timeInfo = '';
                                 $timeClass = '';
-                                
+
                                 if ($k->status_pembayaran == 'Dibatalkan' || $k->status_pembayaran == 'Tidak Diterima') {
                                     $timeInfo = "Batal";
                                     $timeClass = "badge-danger opacity-75";
@@ -115,7 +115,7 @@
                             @endphp
                             <tr>
                                 <td class="pl-4">
-                                    <span class="text-primary font-weight-bold">#KUN-{{ str_pad($k->id_reservasi, 4, '0', STR_PAD_LEFT) }}</span>
+                                    <span class="text-primary font-weight-bold">#KUN-{{ str_pad($k->id_reservasi, 5, '0', STR_PAD_LEFT) }}</span>
                                 </td>
                                 <td>
                                     <strong>{{ $k->user_name }}</strong>
@@ -140,8 +140,8 @@
                                     </span>
                                 </td>
                                 <td class="text-center">
-                                    <button class="btn btn-sm btn-primary btn-detail-kunjungan" 
-                                            data-id="{{ $k->id_reservasi }}" 
+                                    <button class="btn btn-sm btn-primary btn-detail-kunjungan"
+                                            data-id="{{ $k->id_reservasi }}"
                                             data-all="{{ json_encode($k) }}"
                                             data-time="{{ $timeInfo }}"
                                             style="border-radius: 10px; padding: 6px 15px;">
@@ -230,14 +230,14 @@
                         <div class="form-group mt-4 pt-2">
                             <label class="text-uppercase text-muted font-weight-bold small">Status Saat Ini</label>
                             <input type="text" id="det-status-skrg" class="form-control mb-3" readonly style="border-radius: 12px; background: #e9ecef; font-weight: bold; color: #495057; border: 1px solid #ced4da;">
-                            
+
                             <label class="text-uppercase text-muted font-weight-bold small">Ubah Status Kunjungan</label>
                             <form id="formUpdateStatus">
                                 @csrf
                                 <input type="hidden" id="reservasi_id">
                                 <select class="form-control form-control-lg mb-3" id="selectStatus" style="border-radius: 12px; font-size: 1rem; border: 2px solid #eee;">
                                     <option value="Diterima">Diterima</option>
-                                    <option value="Dibatalkan">Dibatalkan / Tidak Diterima</option>
+                                    <option value="Dibatalkan">Tidak Diterima</option>
                                     <option value="Selesai">Selesai</option>
                                 </select>
                                 <button type="submit" class="btn btn-primary btn-block btn-lg font-weight-bold" style="border-radius: 12px; box-shadow: 0 5px 15px rgba(0,123,255,0.2);">
@@ -262,7 +262,7 @@ function runScript() {
             $(document).on('click', '.btn-detail-kunjungan', function() {
                 const data = $(this).data('all');
                 const timeInfo = $(this).data('time');
-                
+
                 $('#reservasi_id').val(data.id_reservasi);
                 $('#det-nama').text(data.user_name);
                 $('#det-username').text(data.user_username);
@@ -279,12 +279,12 @@ function runScript() {
                 // Logika Indikator Bayar Khusus Admin
                 let bayarLabel = 'Belum Bayar';
                 let bayarClass = 'badge-danger';
-                
+
                 // Jika QRIS atau statusnya sudah Diterima/Lunas/Selesai/Menunggu Konfirmasi, maka dianggap Sudah Bayar atau Menunggu
                 if (['Menunggu Konfirmasi'].includes(data.status_pembayaran)) {
                     bayarLabel = 'Menunggu Konfirmasi';
                     bayarClass = 'badge-warning';
-                } else if (data.metode_pembayaran.toLowerCase() == 'qris' || 
+                } else if (data.metode_pembayaran.toLowerCase() == 'qris' ||
                     ['Lunas', 'Diterima', 'Selesai'].includes(data.status_pembayaran)) {
                     bayarLabel = 'Sudah Bayar';
                     bayarClass = 'badge-success';
@@ -301,7 +301,7 @@ function runScript() {
                 } else {
                     $('#det-bukti-container').hide();
                 }
-                
+
                 $('#modalDetailKunjungan').modal('show');
             });
 
