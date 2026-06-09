@@ -161,6 +161,10 @@
         color: #475569;
     }
 
+    .input-radius-addon {
+        border-radius: 0 12px 12px 0 !important;
+    }
+
     .btn-submit-custom {
         border-radius: 14px;
         padding: 14px 28px;
@@ -206,7 +210,7 @@
         align-items: center !important;
         padding-left: 6px !important;
     }
-    
+
     .select2-container--default .select2-selection--single .select2-selection__rendered {
         color: #334155 !important;
         font-weight: 600 !important;
@@ -214,7 +218,7 @@
         line-height: 28px !important;
         padding-left: 0 !important;
     }
-    
+
     .select2-container--default .select2-selection--single .select2-selection__placeholder {
         color: #94a3b8 !important;
         font-weight: 500 !important;
@@ -224,12 +228,12 @@
         height: 48px !important;
         right: 10px !important;
     }
-    
+
     .select2-container--default .select2-selection--single .select2-selection__arrow b {
         border-color: #64748b transparent transparent transparent !important;
         border-width: 6px 5px 0 5px !important;
     }
-    
+
     .select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
         border-color: transparent transparent #64748b transparent !important;
         border-width: 0 5px 6px 5px !important;
@@ -482,18 +486,37 @@
     .page-transaksi-offline .select2-container--default .select2-selection--single .select2-selection__arrow {
         height: 28px !important;
     }
-    
-    /* Textbox Jumlah & Input lainnya */
+
+    /* Textbox Jumlah, Input lainnya, dan Input Group Prepend */
     #prod_qty, #kun_qty, #mag_duration, .input-nama-direct, .form-control-custom,
-    input.form-control-custom, select.form-control-custom {
+    input.form-control-custom, select.form-control-custom, .input-group-text-custom {
         height: 30px !important;
         min-height: 30px !important;
         max-height: 30px !important;
         padding: 2px 8px !important;
         font-size: clamp(0.6rem, 2vw, 0.7rem) !important;
-        line-height: 1.5 !important;
+        line-height: normal !important;
+        display: flex !important;
+        align-items: center !important;
     }
-    
+
+    .input-group-text-custom {
+        border-radius: 6px 0 0 6px !important;
+    }
+
+    .input-radius-addon {
+        border-radius: 0 6px 6px 0 !important;
+    }
+
+    .form-label-custom {
+        font-size: 0.65rem !important;
+        margin-bottom: 4px !important;
+    }
+
+    .form-group {
+        margin-bottom: 0.8rem !important;
+    }
+
     #btn_add_product {
         height: 30px !important;
         padding: 2px 8px !important;

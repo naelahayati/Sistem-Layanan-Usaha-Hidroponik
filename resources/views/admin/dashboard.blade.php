@@ -215,6 +215,7 @@
                             'Diproses'             => 'info',
                             'Sedang Dikemas'       => 'primary',
                             'Pesanan Siap Diambil' => 'success',
+                            'dikirim'              => 'secondary',
                         ] as $status => $color)
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <span class="text-muted small">{{ $status }}</span>
@@ -240,7 +241,7 @@
                     </div>
                     <div class="card-body p-3">
                         @foreach([
-                            'Menunggu Pembayaran' => 'warning',
+                            'Menunggu Konfirmasi' => 'warning',
                             'Diterima'            => 'success',
                         ] as $status => $color)
                         <div class="d-flex justify-content-between align-items-center mb-2">

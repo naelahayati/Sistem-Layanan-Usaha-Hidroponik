@@ -93,12 +93,14 @@ Route::middleware(['auth', 'cek_pengguna'])->group(function () {
     ->name('nazfram.kunjungan.payment');
 
     // --- PEMBAYARAN QRIS ---
+    Route::get("Nazfram/unduh-qris", [PaymentController::class, "unduhQR"])
+        ->name("nazfram.pembayaran.unduh-qr");
     Route::get("Nazfram/pembayaran/{id}/qr", [PaymentController::class, "generateQR"])
-        ->name("nazfram.pembayaran.qr");
+        ->name("nazfram.pembayaran.qr")->where('id', '[0-9]+');
     Route::get("Nazfram/pembayaran/{id}", [PaymentController::class, "generateQR"])
-        ->name("nazfram.pembayaran");
+        ->name("nazfram.pembayaran")->where('id', '[0-9]+');
     Route::post("Nazfram/pembayaran/konfirmasi/{id}", [PaymentController::class, "konfirmasiPembayaran"])
-        ->name("nazfram.pembayaran.konfirmasi");
+        ->name("nazfram.pembayaran.konfirmasi")->where('id', '[0-9]+');
     Route::post("Nazfram/pesanan/expire/{id}", [Nazframcontroller::class, "expirePesanan"])->name("nazfram.pesanan.expire");
 
 }); // <--- PENUTUP UNTUK USER BIASA (CEK_PENGGUNA)

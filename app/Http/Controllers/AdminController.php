@@ -219,7 +219,7 @@ class AdminController extends Controller
             'status' => 'required|string'
         ]);
 
-        $order = Order::findOrFail($id);
+        $order = Order::with(['user', 'items.product'])->findOrFail($id);
         $order->status = $request->status;
         $order->save();
 
@@ -1771,8 +1771,14 @@ class AdminController extends Controller
 
         $reservasi = DB::table('reservasi_kunjungan')
             ->join('users', 'reservasi_kunjungan.id_user', '=', 'users.id')
+            ->join('kunjungans', 'reservasi_kunjungan.id_kunjungan', '=', 'kunjungans.id')
             ->where('id_reservasi', $id)
-            ->select('reservasi_kunjungan.*', 'users.email')
+            ->select(
+                'reservasi_kunjungan.*',
+                'users.email',
+                'kunjungans.name as paket_name',
+                'kunjungans.price as paket_harga'
+            )
             ->first();
 
         if ($reservasi && $reservasi->email) {
@@ -1810,8 +1816,14 @@ class AdminController extends Controller
 
         $pendaftaran = DB::table('pendaftaran_magang')
             ->join('users', 'pendaftaran_magang.id_user', '=', 'users.id')
+            ->join('magangs', 'pendaftaran_magang.id_magang', '=', 'magangs.id')
             ->where('id_pendaftaran', $id)
-            ->select('pendaftaran_magang.*', 'users.email')
+            ->select(
+                'pendaftaran_magang.*',
+                'users.email',
+                'magangs.name as paket_name',
+                'magangs.price as paket_harga'
+            )
             ->first();
 
         if ($pendaftaran && $pendaftaran->email) {

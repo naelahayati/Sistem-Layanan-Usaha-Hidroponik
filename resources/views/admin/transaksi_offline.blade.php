@@ -115,7 +115,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text input-group-text-custom"><i class="fab fa-whatsapp"></i></span>
                                                     </div>
-                                                    <input type="text" name="no_hp_prod" id="nohp_prod" class="form-control form-control-custom" style="border-radius: 0 12px 12px 0;" placeholder="Contoh: 08123456789">
+                                                    <input type="text" name="no_hp_prod" id="nohp_prod" class="form-control form-control-custom input-radius-addon" placeholder="Contoh: 08123456789">
                                                 </div>
                                             </div>
                                         </div>
@@ -255,7 +255,7 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text input-group-text-custom"><i class="fab fa-whatsapp"></i></span>
                                                 </div>
-                                                <input type="text" name="no_wa" id="nohp_kun" class="form-control form-control-custom" style="border-radius: 0 12px 12px 0;" placeholder="Contoh: 08123456789">
+                                                <input type="text" name="no_wa" id="nohp_kun" class="form-control form-control-custom input-radius-addon" placeholder="Contoh: 08123456789">
                                             </div>
                                         </div>
                                     </div>
@@ -292,7 +292,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text input-group-text-custom">Rp</span>
                                                     </div>
-                                                    <input type="text" id="kun_price" class="form-control form-control-custom" style="border-radius: 0 12px 12px 0;" readonly value="0">
+                                                    <input type="text" id="kun_price" class="form-control form-control-custom input-radius-addon" readonly value="0">
                                                 </div>
                                             </div>
                                         </div>
@@ -395,7 +395,7 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text input-group-text-custom"><i class="fab fa-whatsapp"></i></span>
                                                 </div>
-                                                <input type="text" name="no_wa" id="nohp_mag" class="form-control form-control-custom" style="border-radius: 0 12px 12px 0;" placeholder="Contoh: 08123456789">
+                                                <input type="text" name="no_wa" id="nohp_mag" class="form-control form-control-custom input-radius-addon" placeholder="Contoh: 08123456789">
                                             </div>
                                         </div>
                                     </div>
@@ -433,7 +433,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text input-group-text-custom">Rp</span>
                                                     </div>
-                                                    <input type="text" id="mag_price" class="form-control form-control-custom" style="border-radius: 0 12px 12px 0;" readonly value="0">
+                                                    <input type="text" id="mag_price" class="form-control form-control-custom input-radius-addon" readonly value="0">
                                                 </div>
                                             </div>
                                         </div>

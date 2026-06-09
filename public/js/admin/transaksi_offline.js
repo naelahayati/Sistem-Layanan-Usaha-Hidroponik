@@ -515,7 +515,12 @@ $(document).ready(function() {
                         });
                         return !overlapping;
                     },
-                    select: function(info) { inputTanggal.value = info.startStr; }
+                    select: function(info) { inputTanggal.value = info.startStr; },
+                    dateClick: function(info) {
+                        calendar.select(info.dateStr);
+                    },
+                    longPressDelay: 0,
+                    selectLongPressDelay: 0
                 });
                 calendar.render();
 
@@ -577,7 +582,12 @@ $(document).ready(function() {
                         });
                         return !overlapping;
                     },
-                    select: function(info) { inputTanggalMagang.value = info.startStr; }
+                    select: function(info) { inputTanggalMagang.value = info.startStr; },
+                    dateClick: function(info) {
+                        calendarMagang.select(info.dateStr);
+                    },
+                    longPressDelay: 0,
+                    selectLongPressDelay: 0
                 });
                 calendarMagang.render();
 

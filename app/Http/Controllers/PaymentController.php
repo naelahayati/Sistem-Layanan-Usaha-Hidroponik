@@ -101,4 +101,45 @@ class PaymentController extends Controller
         $order->status = 'Expired';
         $order->save();
     }
+    public function unduhQR()
+    {
+        $qrUrl = \App\Models\Setting::get('qris_image');
+        if (!$qrUrl) {
+            abort(404);
+        }
+
+        try {
+            // Context untuk mengabaikan isu SSL (sering terjadi di lokal/XAMPP) dan timeout
+            $context = stream_context_create([
+                "ssl" => [
+                    "verify_peer" => false,
+                    "verify_peer_name" => false,
+                ],
+                "http" => [
+                    "timeout" => 15, // 15 detik timeout
+                ]
+            ]);
+
+            // Mengambil konten gambar dari URL (Cloudinary)
+            $content = @file_get_contents($qrUrl, false, $context);
+            
+            if ($content === false) {
+                return redirect()->back()->with('error', 'Gagal menyambung ke server penyimpanan gambar. Pastikan koneksi internet stabil.');
+            }
+
+            // Menentukan ekstensi file
+            $extension = pathinfo(parse_url($qrUrl, PHP_URL_PATH), PATHINFO_EXTENSION) ?: 'png';
+            $filename = 'QRIS-Nazfram.' . $extension;
+
+            // Mendapatkan mime type yang sesuai
+            $finfo = new \finfo(FILEINFO_MIME_TYPE);
+            $mimeType = $finfo->buffer($content) ?: 'image/png';
+
+            return response($content)
+                ->header('Content-Type', $mimeType)
+                ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
 }

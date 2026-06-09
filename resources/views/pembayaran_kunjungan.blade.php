@@ -49,7 +49,7 @@
                         <img src="{{ $qrUrl ? $qrUrl : '' }}" id="qris-image" alt="QRIS Code">
                     </div>
                     @if($qrUrl)
-                    <a href="{{ $qrUrl }}" download="QRIS-Nazfram.png" class="btn-download-qris">
+                    <a href="{{ route('nazfram.pembayaran.unduh-qr') }}" class="btn-download-qris">
                         <i class="fas fa-download"></i> Unduh Kode QR
                     </a>
                     @endif

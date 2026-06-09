@@ -14,6 +14,9 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        // Set timezone aplikasi agar real-time sesuai lokasi (Asia/Jakarta)
+        date_default_timezone_set(config('app.timezone'));
+
         // Set bahasa Carbon ke Indonesia
         Carbon::setLocale('id');
 
