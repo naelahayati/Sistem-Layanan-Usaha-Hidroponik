@@ -27,7 +27,7 @@
 
 <section class="content page-laporan">
     <div class="container-fluid">
-        
+
         <!-- Filter Card (Hides on Print) -->
         <div class="card shadow-sm border-0 d-print-none" style="border-radius: 15px;">
             <div class="card-body p-4">
@@ -148,7 +148,7 @@
                 </div>
             </div>
         </div>
-        
+
     </div>
 </section>
 @push('scripts')

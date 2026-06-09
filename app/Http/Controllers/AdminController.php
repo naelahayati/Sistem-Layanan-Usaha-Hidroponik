@@ -1411,7 +1411,7 @@ class AdminController extends Controller
                 }
 
                 $laporans->push((object) [
-                    'id_transaksi' => 'TRX-' . str_pad($o->id, 5, '0', STR_PAD_LEFT),
+                    'id_transaksi' => 'ORD-' . str_pad($o->id, 5, '0', STR_PAD_LEFT),
                     'tanggal' => Carbon::parse($o->created_at),
                     'kategori' => 'Produk',
                     'keterangan' => implode(', ', $detailItems),
@@ -1801,7 +1801,7 @@ class AdminController extends Controller
         $bank_name = Setting::get('bank_name', '');
         $bank_account_number = Setting::get('bank_account_number', '');
         $bank_account_owner = Setting::get('bank_account_owner', '');
-        
+
         return view("admin.settings", compact(
             "whatsapp", "qris_image", "payment_method_active",
             "bank_name", "bank_account_number", "bank_account_owner"
