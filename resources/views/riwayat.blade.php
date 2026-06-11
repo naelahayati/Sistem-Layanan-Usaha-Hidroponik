@@ -10,6 +10,11 @@
             <h1>RIWAYAT KUNJUNGAN</h1>
         </div>
     </header>
+    
+    <div class="info-alert-banner">
+        <i class="fas fa-info-circle"></i>
+        <span>Informasi: Setiap perubahan status pendaftaran atau pesanan Anda akan kami informasikan secara otomatis melalui notifikasi email.</span>
+    </div>
 
     <!-- Tombol Kembali -->
     <div class="action-bar-riwayat">

@@ -1545,8 +1545,11 @@ class AdminController extends Controller
         foreach ($allKunjungans as $k) {
             $isPast = Carbon::parse($k->tanggal_reservasi)->startOfDay() < Carbon::today();
 
-            // Jika kunjungan sudah lewat dan statusnya 'Diterima', ubah otomatis ke 'Selesai'
+            // Jika kunjungan sudah lewat dan statusnya 'Diterima', ubah otomatis ke 'Selesai' di database
             if ($isPast && $k->status_pembayaran == 'Diterima') {
+                DB::table('reservasi_kunjungan')
+                    ->where('id_reservasi', $k->id_reservasi)
+                    ->update(['status_pembayaran' => 'Selesai', 'updated_at' => now()]);
                 $k->status_pembayaran = 'Selesai';
             }
 

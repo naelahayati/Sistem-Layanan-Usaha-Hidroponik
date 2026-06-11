@@ -93,6 +93,12 @@ class Nazframcontroller extends Controller
 
     public function profilSaya()
     {
+        $prev = url()->previous();
+        // Hanya simpan jika bukan dari halaman profil itu sendiri (menghindari loop back ke diri sendiri)
+        if ($prev && !str_contains($prev, 'profil-saya')) {
+            session(['url_sebelum_profil' => $prev]);
+        }
+        
         return view("profil_pengguna", ["user" => Auth::user()]);
     }
 

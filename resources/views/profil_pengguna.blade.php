@@ -49,7 +49,7 @@
 
         {{-- Back Button - Dipindahkan ke bawah header --}}
         <div class="back-button-wrapper">
-            <a href="{{ url()->previous() }}" class="btn-back">
+            <a href="{{ session('url_sebelum_profil', route('nazfram.home')) }}" class="btn-back">
                 <i class="fas fa-arrow-left"></i> <span>Kembali ke Halaman Sebelumnya</span>
             </a>
         </div>

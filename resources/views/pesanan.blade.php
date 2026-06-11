@@ -2,6 +2,7 @@
 
 @section('konten')
 <link rel="stylesheet" href="/css/stylepesanan.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
 <div class="pesanan-page">
     <header class="product-header page-header-sub">
@@ -27,12 +28,12 @@
                     <input type="hidden" name="selected_items[]" value="{{ $itemId }}">
                 @endforeach
             @endif
-            
+
             <div class="checkout-main-frame">
                 <!-- Opsi Pengiriman -->
                 <div class="pesanan-section">
                     <h3 class="section-title"><i class="fas fa-truck"></i> Metode Pengantaran/Pengambilan</h3>
-                    
+
                     <label class="radio-card" id="card-pengambilan">
                         <input type="radio" name="metode_pengiriman" value="pengambilan" checked onchange="updateCost()">
                         <div>
@@ -56,24 +57,80 @@
                         <div class="address-box">
                             <strong>Alamat Tujuan:</strong>
                             <p>{{ $user->alamat ?? 'Alamat belum diatur.' }}</p>
-                            <a href="{{ route('nazfram.profil-saya') }}" style="font-size: 0.85rem; color: var(--blue-soft);">Ubah Alamat</a>
+                            <a href="{{ route('nazfram.profil-saya') }}" style="font-size: 0.85rem; color: var(--blue-soft);">Ubah Alamat dan Jarak</a>
                         </div>
 
-                        <div class="form-group-jarak">
-                            <label for="jarak_km">Jarak dari Kebun (KM)</label>
-                            <input type="number" id="jarak_km_input" min="0" step="0.1" value="0" oninput="updateCost()" {{ $user->latitude && $user->longitude ? 'readonly' : '' }}>
-                            <div style="font-size: 0.8rem; color: #888; margin-top:5px;" id="jarak-hint">
-                                @if($user->latitude && $user->longitude)
-                                    <span style="color: var(--primary-green); font-weight: bold;"><i class="fas fa-check-circle"></i> Jarak terdeteksi otomatis dari lokasi rumah Anda.</span>
-                                @else
-                                    * 0-10 km: Gratis | 10.1-15 km: Rp 15rb | 15.1-20 km: Rp 22rb | 20.1-25 km: Rp 30rb | > 25 km: +Rp 5rb/5km
-                                @endif
-                            </div>
-                        </div>
+                        <input type="number" id="jarak_km_input" min="0" step="0.1" value="0" oninput="updateCost()" style="display:none;" {{ $user->latitude && $user->longitude ? 'readonly' : '' }}>
+                        <button type="button" class="btn-lihat-rute" onclick="openMapModal()">
+                            <i class="fas fa-map-marked-alt"></i> Lihat Rute & Estimasi Ongkir di Peta
+                        </button>
                     </div>
+                 </div>
                 </div>
 
+                @if($user->latitude && $user->longitude)
+                <div id="modal-peta" style="position:fixed; inset:0; background:rgba(0,0,0,0.65); z-index:9999; align-items:center; justify-content:center; padding:16px;">
+                    <div style="background:#fff; border-radius:20px; width:100%; max-width:520px; max-height:90vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+
+                        <div style="background:linear-gradient(135deg,#2D5A27,#4a8c3f); padding:20px 24px; border-radius:20px 20px 0 0; display:flex; align-items:center; justify-content:space-between;">
+                            <div>
+                                <div style="color:#fff; font-weight:700; font-size:1.1rem;"><i class="fas fa-route" style="margin-right:8px;"></i>Rute Pengantaran</div>
+                                <div style="color:rgba(255,255,255,0.75); font-size:0.8rem; margin-top:2px;">Naz Hidrofarm → Alamat Anda</div>
+                            </div>
+                            <button type="button" onclick="closeMapModal()" style="background:rgba(255,255,255,0.2); border:none; color:#fff; width:36px; height:36px; border-radius:50%; cursor:pointer; font-size:1.1rem; display:flex; align-items:center; justify-content:center;">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; padding:18px 20px 0;">
+                            <div style="text-align:center; background:#f0faf0; border-radius:12px; padding:14px 8px; border:1px solid #c8e6c9;">
+                                <div style="font-size:1.4rem; color:#2D5A27; font-weight:800;" id="modal-jarak">—</div>
+                                <div style="font-size:0.72rem; color:#666; margin-top:3px;"><i class="fas fa-road" style="color:#4a8c3f;"></i> Jarak Jalan</div>
+                            </div>
+                            <div style="text-align:center; background:#fff8e1; border-radius:12px; padding:14px 8px; border:1px solid #ffe082;">
+                                <div style="font-size:1.1rem; color:#e65100; font-weight:800;" id="modal-ongkir">—</div>
+                                <div style="font-size:0.72rem; color:#666; margin-top:3px;"><i class="fas fa-motorcycle" style="color:#e65100;"></i> Ongkos Kirim</div>
+                            </div>
+                        </div>
+
+                        <div style="padding:14px 20px 0;">
+                            <div id="map-leaflet" style="height:240px; border-radius:12px; overflow:hidden; border:1px solid #ddd; background:#e8e8e8; position:relative;">
+                                <div id="map-loading" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#f5f5f5;z-index:10;border-radius:12px;">
+                                    <div style="text-align:center; color:#888;">
+                                        <i class="fas fa-spinner fa-spin" style="font-size:1.5rem; margin-bottom:8px;"></i>
+                                        <div style="font-size:0.85rem;">Memuat peta...</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="padding:12px 20px 0; display:flex; flex-direction:column; gap:6px;">
+                            <div style="display:flex; align-items:center; gap:8px; font-size:0.82rem; color:#444;">
+                                <span style="width:12px;height:12px;background:#2D5A27;border-radius:50%;flex-shrink:0;"></span>
+                                <span><b>Naz Hidrofarm</b> — Kebun kami</span>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:8px; font-size:0.82rem; color:#444;">
+                                <span style="width:12px;height:12px;background:#e53935;border-radius:50%;flex-shrink:0;"></span>
+                                <span><b>{{ $user->alamat ?? 'Alamat Anda' }}</b></span>
+                            </div>
+                        </div>
+
+                        <div style="padding:16px 20px 20px; display:flex; flex-direction:column; gap:10px;">
+                            <a id="btn-gmaps" href="#" target="_blank" style="display:flex; align-items:center; justify-content:center; gap:8px; background:#4285F4; color:#fff; padding:13px; border-radius:12px; text-decoration:none; font-weight:600; font-size:0.9rem;">
+                                <img src="https://www.gstatic.com/images/branding/product/1x/maps_24dp.png" style="width:20px;height:20px;" onerror="this.style.display='none'">
+                                Buka di Google Maps
+                            </a>
+                            <button type="button" onclick="closeMapModal()" style="background:#f5f5f5; border:1px solid #ddd; color:#444; padding:12px; border-radius:12px; font-size:0.9rem; font-weight:600; cursor:pointer;">
+                                Tutup
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+                @endif
+
                 <!-- Daftar Belanja -->
+
                 <div class="order-items">
                     <h3 class="section-title"><i class="fas fa-shopping-basket"></i> Produk yang dipesan</h3>
                     @foreach($items as $item)
@@ -156,9 +213,9 @@
         const R = 6371; // Radius bumi dalam km
         const dLat = (lat2 - lat1) * Math.PI / 180;
         const dLon = (lon2 - lon1) * Math.PI / 180;
-        const a = 
+        const a =
             Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
             Math.sin(dLon / 2) * Math.sin(dLon / 2);
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return R * c;
@@ -174,7 +231,7 @@
 
     function updateCost() {
         const isPengantaran = document.querySelector('input[name="metode_pengiriman"]:checked').value === 'pengantaran';
-        
+
         if (isPengantaran) {
             const jarak = parseFloat(document.getElementById('jarak_km_input').value) || 0;
             ongkir = calculateOngkir(jarak);
@@ -188,7 +245,7 @@
 
         document.getElementById('txt-ongkir').innerText = formatRupiah(ongkir);
         document.getElementById('in-ongkir').value = ongkir;
-        
+
         grandTotal = totalProduk + ongkir;
         document.getElementById('txt-grand-total').innerText = formatRupiah(grandTotal);
         document.getElementById('in-grand-total').value = grandTotal;
@@ -201,12 +258,12 @@
         const cardPengantaran = document.getElementById('card-pengantaran');
         const pengantaranRadio = document.querySelector('input[name="metode_pengiriman"][value="pengantaran"]');
         const warningMin = document.getElementById('warning-min-belanja');
-        
+
         if (!canDeliver) {
             cardPengantaran.classList.add('disabled');
             pengantaranRadio.disabled = true;
             warningMin.style.display = 'block';
-            
+
             if (pengantaranRadio.checked) {
                 document.querySelector('input[name="metode_pengiriman"][value="pengambilan"]').checked = true;
             }
@@ -248,4 +305,89 @@
         updateCost();
     };
 </script>
+
+@if($user->latitude && $user->longitude)
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+    let leafletMap = null;
+    let mapInitialized = false;
+
+    function openMapModal() {
+        const modal = document.getElementById('modal-peta');
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        if (!mapInitialized) {
+            setTimeout(() => initMap(), 100);
+        }
+    }
+
+    function closeMapModal() {
+        document.getElementById('modal-peta').classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    document.getElementById('modal-peta').addEventListener('click', function(e) {
+        if (e.target === this) closeMapModal();
+    });
+
+    function initMap() {
+        mapInitialized = true;
+        const uLat = {{ $user->latitude }};
+        const uLng = {{ $user->longitude }};
+
+        leafletMap = L.map('map-leaflet', { zoomControl: true, attributionControl: false });
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18 }).addTo(leafletMap);
+
+        const iconKebun = L.divIcon({
+            html: '<div style="background:#2D5A27;width:14px;height:14px;border-radius:50%;border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.4);"></div>',
+            iconSize: [20,20], iconAnchor: [10,10], className: ''
+        });
+        const iconUser = L.divIcon({
+            html: '<div style="background:#e53935;width:14px;height:14px;border-radius:50%;border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.4);"></div>',
+            iconSize: [20,20], iconAnchor: [10,10], className: ''
+        });
+
+        L.marker([farmLat, farmLng], { icon: iconKebun }).addTo(leafletMap).bindPopup('<b>Naz Hidrofarm</b>');
+        L.marker([uLat, uLng], { icon: iconUser }).addTo(leafletMap).bindPopup('<b>Lokasi Anda</b>');
+
+        document.getElementById('btn-gmaps').href =
+            `https://www.google.com/maps/dir/${farmLat},${farmLng}/${uLat},${uLng}`;
+
+        fetch(`https://router.project-osrm.org/route/v1/driving/${farmLng},${farmLat};${uLng},${uLat}?overview=full&geometries=geojson`)
+            .then(r => r.json())
+            .then(data => {
+                document.getElementById('map-loading').style.display = 'none';
+                if (data.routes && data.routes.length > 0) {
+                    const route = data.routes[0];
+                    const jarakKm = route.distance / 1000;
+                    const ongkirRute = calculateOngkir(jarakKm);
+
+                    document.getElementById('modal-jarak').textContent = jarakKm.toFixed(1) + ' km';
+                    document.getElementById('modal-ongkir').textContent = formatRupiah(ongkirRute);
+
+                    const coords = route.geometry.coordinates.map(c => [c[1], c[0]]);
+                    const polyline = L.polyline(coords, { color: '#1a73e8', weight: 4, opacity: 0.85 }).addTo(leafletMap);
+                    leafletMap.fitBounds(polyline.getBounds(), { padding: [20, 20] });
+                } else {
+                    fallbackStraightLine(uLat, uLng);
+                }
+            })
+            .catch(() => {
+                document.getElementById('map-loading').style.display = 'none';
+                fallbackStraightLine(uLat, uLng);
+            });
+    }
+
+    function fallbackStraightLine(uLat, uLng) {
+        const jarakKm = haversineDistance(farmLat, farmLng, uLat, uLng);
+        document.getElementById('modal-jarak').textContent = '~' + jarakKm.toFixed(1) + ' km';
+        document.getElementById('modal-ongkir').textContent = formatRupiah(calculateOngkir(jarakKm));
+
+        const polyline = L.polyline([[farmLat, farmLng], [uLat, uLng]], {
+            color: '#e53935', weight: 3, dashArray: '8, 8', opacity: 0.7
+        }).addTo(leafletMap);
+        leafletMap.fitBounds(polyline.getBounds(), { padding: [30, 30] });
+    }
+</script>
+@endif
 @endsection
