@@ -515,7 +515,7 @@ $(document).ready(function() {
                         });
                         return !overlapping;
                     },
-                    select: function(info) { inputTanggal.value = info.startStr; },
+                    select: function(info) { inputTanggal.value = moment(info.start).format('YYYY-MM-DD'); },
                     dateClick: function(info) {
                         const start = moment(info.date);
                         const day = start.day();
@@ -601,7 +601,7 @@ $(document).ready(function() {
                         });
                         return !overlapping;
                     },
-                    select: function(info) { inputTanggalMagang.value = info.startStr; },
+                    select: function(info) { inputTanggalMagang.value = moment(info.start).format('YYYY-MM-DD'); },
                     dateClick: function(info) {
                         const start = moment(info.date);
                         const day = start.day();

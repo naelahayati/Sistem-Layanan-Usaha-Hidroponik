@@ -49,8 +49,41 @@
                 font-size: 11px;
                 padding: 8px 16px;
             }
+
             .main-footer a {
                 font-size: 11px;
+            }
+        }
+
+        /* Responsive SweetAlert2 for Mobile */
+        @media (max-width: 576px) {
+            .swal2-popup {
+                width: 85% !important;
+                font-size: 0.8rem !important;
+                padding: 0.75rem !important;
+                border-radius: 15px !important;
+            }
+
+            .swal2-title {
+                font-size: 1.1rem !important;
+            }
+
+            .swal2-content,
+            .swal2-html-container {
+                font-size: 0.85rem !important;
+            }
+
+            .swal2-actions button {
+                padding: 6px 12px !important;
+                font-size: 0.8rem !important;
+                margin: 5px !important;
+                min-width: 70px !important;
+            }
+
+            .swal2-icon {
+                transform: scale(0.7) !important;
+                margin-top: 5px !important;
+                margin-bottom: 5px !important;
             }
         }
     </style>

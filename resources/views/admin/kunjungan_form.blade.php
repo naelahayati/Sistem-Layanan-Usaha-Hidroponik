@@ -23,7 +23,10 @@
     <div class="container-fluid">
         <div class="card shadow-sm" style="border-radius: 12px; border: none;">
             <div class="card-body">
-                <form action="{{ isset($kunjungan) ? route('admin.kunjungan.edit', $kunjungan->id) : route('admin.kunjungan.add') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ isset($kunjungan) ? route('admin.kunjungan.edit', $kunjungan->id) : route('admin.kunjungan.add') }}" method="POST" enctype="multipart/form-data" id="{{ isset($kunjungan) ? 'editKunjunganForm' : 'addKunjunganForm' }}">
+                    @if(isset($kunjungan))
+                        <input type="hidden" id="editKunjunganId" value="{{ $kunjungan->id }}">
+                    @endif
                     @csrf
                     
                     @if($errors->any())
@@ -88,5 +91,11 @@
         </div>
     </div>
 </section>
+
+</section>
+
+@push('scripts')
+<script src="{{ asset('js/admin/kunjungan_admin.js') }}"></script>
+@endpush
 
 @endsection

@@ -98,7 +98,7 @@ class Nazframcontroller extends Controller
         if ($prev && !str_contains($prev, 'profil-saya')) {
             session(['url_sebelum_profil' => $prev]);
         }
-        
+
         return view("profil_pengguna", ["user" => Auth::user()]);
     }
 
@@ -318,11 +318,12 @@ class Nazframcontroller extends Controller
 
         // Ambil data paket untuk menghitung total harga
         $kunjungan = Kunjungan::findOrFail($request->id_kunjungan);
+        $tanggalReservasi = Carbon::parse($request->tanggal_reservasi)->toDateString();
         $total_harga = $kunjungan->price * $request->jumlah_peserta;
 
         // Validasi: Cek apakah tanggal sudah dipesan oleh orang lain
         $existing = DB::table('reservasi_kunjungan')
-            ->where('tanggal_reservasi', '=', $request->tanggal_reservasi, 'and')
+            ->whereDate('tanggal_reservasi', $tanggalReservasi)
             ->whereNotIn('status_pembayaran', ['Dibatalkan', 'Tidak Diterima', 'Expired', 'Dibatalkan Pengguna'])
             ->exists();
 
@@ -334,7 +335,8 @@ class Nazframcontroller extends Controller
         $id_reservasi = DB::table('reservasi_kunjungan')->insertGetId([
             'id_user' => Auth::id(),
             'id_kunjungan' => $request->id_kunjungan,
-            'tanggal_reservasi' => $request->tanggal_reservasi,
+            'paket_name' => $kunjungan->name,
+            'tanggal_reservasi' => $tanggalReservasi,
             'jumlah_peserta' => $request->jumlah_peserta,
             'metode_pembayaran' => $request->metode_pembayaran,
             'total_harga' => $total_harga,
@@ -342,6 +344,7 @@ class Nazframcontroller extends Controller
             'status_pembayaran' => 'Menunggu Pembayaran',
             'expires_at' => $request->metode_pembayaran == 'qris' ? now()->addMinutes(25) : null,
             'created_at' => now(),
+            'updated_at' => now(),
         ]);
         if ($request->metode_pembayaran == 'qris') {
             return redirect()->route('nazfram.kunjungan.payment', $id_reservasi);
@@ -891,10 +894,13 @@ class Nazframcontroller extends Controller
             }
         }
 
+        $tanggal_magang = \Carbon\Carbon::parse($request->tanggal_magang)->toDateString();
+
         $id_pendaftaran = DB::table('pendaftaran_magang')->insertGetId([
             'id_user' => Auth::id(),
             'id_magang' => $request->id_pelatihan,
-            'tanggal_magang' => $request->tanggal_magang,
+            'paket_name' => $magangPkg->name,
+            'tanggal_magang' => $tanggal_magang,
             'durasi_magang' => $request->jumlah_peserta,
             'pekerjaan' => $request->instansi,
             'deskripsi_kemampuan' => $request->deskripsi_kemampuan,
@@ -919,7 +925,7 @@ class Nazframcontroller extends Controller
             $pesan .= "Nama        : " . Auth::user()->name . "\n";
             $pesan .= "ID Daftar   : #MAG-" . str_pad($id_pendaftaran, 4, '0', STR_PAD_LEFT) . "\n";
             $pesan .= "Paket       : " . $magangPkg->title . "\n";
-            $pesan .= "Tgl Mulai   : " . \Carbon\Carbon::parse($request->tanggal_magang)->format('d F Y') . "\n";
+            $pesan .= "Tgl Mulai   : " . \Carbon\Carbon::parse($tanggal_magang)->format('d F Y') . "\n";
             $pesan .= "Durasi      : " . $request->jumlah_peserta . " Bulan\n\n";
             $pesan .= "Saya ingin mengonfirmasi pendaftaran " . $magangPkg->title . " saya di Naz Hidrofarm dan menyatakan kesiapan untuk mengikuti program sesuai jadwal yang telah ditentukan.\n\n";
             $pesan .= "Mohon kiranya pendaftaran saya dapat segera diproses. Atas perhatian dan kerjasamanya, saya ucapkan terima kasih.\n\n";
@@ -1268,6 +1274,7 @@ class Nazframcontroller extends Controller
             OrderItem::create([
                 'order_id' => $order->id,
                 'product_id' => $ci->product_id,
+                'product_name' => $ci->product->name,
                 'quantity' => $ci->quantity,
                 'price' => $ci->product->price
             ]);

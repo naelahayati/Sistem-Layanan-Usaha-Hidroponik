@@ -54,17 +54,28 @@ function addMagang() {
     const formData = new FormData(form);
     const csrfToken = getCsrfToken();
 
+    Swal.fire({
+        title: 'Memproses...',
+        text: 'Sedang menyimpan paket magang baru.',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading()
+        }
+    });
+
     fetch('/admin/magang/add', {
         method: 'POST',
         headers: {
-            'X-CSRF-TOKEN': csrfToken
+            'X-CSRF-TOKEN': csrfToken,
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json'
         },
         body: formData
     })
     .then(res => res.json())
     .then(result => {
         if (result.success) {
-            Swal.fire('Berhasil!', result.message, 'success').then(() => location.reload());
+            Swal.fire('Berhasil!', result.message, 'success').then(() => { if (result.redirect) { window.location.href = result.redirect; } else { location.reload(); } });
         } else {
             Swal.fire('Gagal!', result.message || 'Terjadi kesalahan', 'error');
         }
@@ -100,17 +111,28 @@ function updateMagang() {
     const formData = new FormData(form);
     const csrfToken = getCsrfToken();
 
+    Swal.fire({
+        title: 'Memproses...',
+        text: 'Sedang memperbarui data magang.',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading()
+        }
+    });
+
     fetch(`/admin/magang/edit/${magangId}`, {
         method: 'POST',
         headers: {
-            'X-CSRF-TOKEN': csrfToken
+            'X-CSRF-TOKEN': csrfToken,
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json'
         },
         body: formData
     })
     .then(res => res.json())
     .then(result => {
         if (result.success) {
-            Swal.fire('Berhasil!', result.message, 'success').then(() => location.reload());
+            Swal.fire('Berhasil!', result.message, 'success').then(() => { if (result.redirect) { window.location.href = result.redirect; } else { location.reload(); } });
         } else {
             Swal.fire('Gagal!', result.message || 'Terjadi kesalahan', 'error');
         }
@@ -125,13 +147,15 @@ function deleteMagang(magangId) {
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
-        confirmButtonText: 'Ya, Hapus!'
+        confirmButtonText: 'Ya, Hapus!', cancelButtonText: 'Batal', reverseButtons: true
     }).then((result) => {
         if (result.isConfirmed) {
             fetch(`/admin/magang/delete/${magangId}`, {
                 method: 'DELETE',
                 headers: {
-                    'X-CSRF-TOKEN': getCsrfToken()
+                    'X-CSRF-TOKEN': getCsrfToken(),
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
                 }
             })
             .then(res => res.json())
@@ -168,3 +192,5 @@ function showMagangModal(magang) {
 
     $('#viewMagangModal').modal('show');
 }
+
+

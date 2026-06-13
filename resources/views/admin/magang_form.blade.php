@@ -23,7 +23,10 @@
     <div class="container-fluid">
         <div class="card shadow-sm" style="border-radius: 12px; border: none;">
             <div class="card-body">
-                <form action="{{ isset($magang) ? route('admin.magang.edit', $magang->id) : route('admin.magang.add') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ isset($magang) ? route('admin.magang.edit', $magang->id) : route('admin.magang.add') }}" method="POST" enctype="multipart/form-data" id="{{ isset($magang) ? 'editMagangForm' : 'addMagangForm' }}">
+                    @if(isset($magang))
+                        <input type="hidden" id="editMagangId" value="{{ $magang->id }}">
+                    @endif
                     @csrf
                     
                     @if($errors->any())
@@ -107,5 +110,11 @@
         </div>
     </div>
 </section>
+
+</section>
+
+@push('scripts')
+<script src="{{ asset('js/admin/magang_admin.js') }}"></script>
+@endpush
 
 @endsection

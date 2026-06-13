@@ -54,17 +54,28 @@ function addProduct() {
     const formData = new FormData(form);
     const csrfToken = getCsrfToken();
 
+    Swal.fire({
+        title: 'Memproses...',
+        text: 'Sedang menyimpan produk baru.',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading()
+        }
+    });
+
     fetch('/admin/produk/add', {
         method: 'POST',
         headers: {
-            'X-CSRF-TOKEN': csrfToken
+            'X-CSRF-TOKEN': csrfToken,
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json'
         },
         body: formData
     })
     .then(res => res.json())
     .then(result => {
         if (result.success) {
-            Swal.fire('Berhasil!', result.message, 'success').then(() => location.reload());
+            Swal.fire('Berhasil!', result.message, 'success').then(() => { if (result.redirect) { window.location.href = result.redirect; } else { location.reload(); } });
         } else {
             Swal.fire('Gagal!', result.message || 'Terjadi kesalahan', 'error');
         }
@@ -101,17 +112,28 @@ function updateProduct() {
     const formData = new FormData(form);
     const csrfToken = getCsrfToken();
 
+    Swal.fire({
+        title: 'Memproses...',
+        text: 'Sedang memperbarui data produk.',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading()
+        }
+    });
+
     fetch(`/admin/produk/edit/${productId}`, {
         method: 'POST',
         headers: {
-            'X-CSRF-TOKEN': csrfToken
+            'X-CSRF-TOKEN': csrfToken,
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json'
         },
         body: formData
     })
     .then(res => res.json())
     .then(result => {
         if (result.success) {
-            Swal.fire('Berhasil!', result.message, 'success').then(() => location.reload());
+            Swal.fire('Berhasil!', result.message, 'success').then(() => { if (result.redirect) { window.location.href = result.redirect; } else { location.reload(); } });
         } else {
             Swal.fire('Gagal!', result.message || 'Terjadi kesalahan', 'error');
         }
@@ -126,13 +148,15 @@ function deleteProduct(productId) {
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
-        confirmButtonText: 'Ya, Hapus!'
+        confirmButtonText: 'Ya, Hapus!', cancelButtonText: 'Batal', reverseButtons: true
     }).then((result) => {
         if (result.isConfirmed) {
             fetch(`/admin/produk/delete/${productId}`, {
                 method: 'DELETE',
                 headers: {
-                    'X-CSRF-TOKEN': getCsrfToken()
+                    'X-CSRF-TOKEN': getCsrfToken(),
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
                 }
             })
             .then(res => res.json())
@@ -171,3 +195,5 @@ function showProductModal(product) {
 
     $('#viewProductModal').modal('show');
 }
+
+

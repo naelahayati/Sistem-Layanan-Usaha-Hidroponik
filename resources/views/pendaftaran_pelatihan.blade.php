@@ -263,9 +263,9 @@
                     buttonText: { today: 'Hari ini' },
                     events: "{{ route('nazfram.pelatihan.events') }}?type=magang",
                     selectAllow: info => isDateAllowed(ref.cal, moment(info.start)),
-                    select:    info => onDatePicked(info.startStr),
+                    select:    info => onDatePicked(moment(info.start).format('YYYY-MM-DD')),
                     dateClick: info => {
-                        if (isDateAllowed(ref.cal, moment(info.date))) onDatePicked(info.dateStr);
+                        if (isDateAllowed(ref.cal, moment(info.date))) onDatePicked(moment(info.date).format('YYYY-MM-DD'));
                     }
                 });
                 ref.cal = cal;

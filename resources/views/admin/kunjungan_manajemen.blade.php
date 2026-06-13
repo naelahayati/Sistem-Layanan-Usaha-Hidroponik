@@ -276,6 +276,18 @@ function runScript() {
                 $('#det-status-skrg').val(data.status_pembayaran);
                 $('#selectStatus').val(data.status_pembayaran);
 
+                // Kunci jika Selesai
+                if (data.status_pembayaran === 'Selesai') {
+                    $('#selectStatus').attr('disabled', true);
+                    $('#formUpdateStatus button[type="submit"]').attr('disabled', true).addClass('btn-secondary').removeClass('btn-primary');
+                    $('#det-status-skrg').parent().find('small.text-danger').remove();
+                    $('#det-status-skrg').parent().append('<small class="text-danger font-weight-bold mt-1"><i class="fas fa-lock mr-1"></i> Data Terkunci (Selesai)</small>');
+                } else {
+                    $('#selectStatus').attr('disabled', false);
+                    $('#formUpdateStatus button[type="submit"]').attr('disabled', false).addClass('btn-primary').removeClass('btn-secondary');
+                    $('#det-status-skrg').parent().find('small.text-danger').remove();
+                }
+
                 // Logika Indikator Bayar Khusus Admin
                 let bayarLabel = 'Belum Bayar';
                 let bayarClass = 'badge-danger';
@@ -312,30 +324,66 @@ function runScript() {
                 const status = $('#selectStatus').val();
                 const token = $('input[name="_token"]').val();
 
-                $.ajax({
-                    url: `/admin/kunjungan/update-status/${id}`,
-                    method: 'POST',
-                    data: {
-                        _token: token,
-                        status: status
-                    },
-                    success: function(response) {
-                        $('#modalDetailKunjungan').modal('hide');
+                let confirmText = `Ubah status kunjungan ke "${status}"?`;
+                let confirmIcon = 'question';
+                
+                if (status === 'Dibatalkan') {
+                    confirmText = "Apakah Anda yakin ingin membatalkan/menolak kunjungan ini?";
+                    confirmIcon = 'warning';
+                } else if (status === 'Selesai') {
+                    confirmText = "Tandai kunjungan ini sebagai Selesai? Setelah status menjadi 'Selesai', data akan DIKUNCI dan tidak bisa diubah lagi untuk keamanan laporan.";
+                }
+
+                Swal.fire({
+                    title: 'Konfirmasi',
+                    text: confirmText,
+                    icon: confirmIcon,
+                    showCancelButton: true,
+                    confirmButtonColor: status === 'Dibatalkan' ? '#d33' : '#3085d6',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Ya, Update!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
                         Swal.fire({
-                            icon: 'success',
-                            title: 'Berhasil!',
-                            text: response.message,
-                            timer: 1500,
-                            showConfirmButton: false
-                        }).then(() => {
-                            location.reload();
+                            title: 'Memproses...',
+                            text: 'Harap tunggu sebentar, sedang mengirim notifikasi email.',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading()
+                            }
                         });
-                    },
-                    error: function(xhr) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Gagal!',
-                            text: 'Terjadi kesalahan saat memperbarui status.'
+
+                        $.ajax({
+                            url: `/admin/kunjungan/update-status/${id}`,
+                            method: 'POST',
+                            data: {
+                                _token: token,
+                                status: status
+                            },
+                            success: function(response) {
+                                $('#modalDetailKunjungan').modal('hide');
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil!',
+                                    text: response.message,
+                                    timer: 1500,
+                                    showConfirmButton: false
+                                }).then(() => {
+                                    location.reload();
+                                });
+                            },
+                            error: function(xhr) {
+                                let msg = 'Terjadi kesalahan saat memperbarui status.';
+                                if (xhr.responseJSON && xhr.responseJSON.message) {
+                                    msg = xhr.responseJSON.message;
+                                }
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Gagal!',
+                                    text: msg
+                                });
+                            }
                         });
                     }
                 });

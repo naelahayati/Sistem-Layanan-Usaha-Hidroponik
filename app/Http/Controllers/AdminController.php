@@ -220,8 +220,32 @@ class AdminController extends Controller
         ]);
 
         $order = Order::with(['user', 'items.product'])->findOrFail($id);
+        $oldStatus = $order->status;
+
+        // Kunci status jika sudah Selesai
+        if ($oldStatus === 'Selesai') {
+            return response()->json(["success" => false, "message" => "Transaksi yang sudah 'Selesai' tidak dapat diubah lagi."], 422);
+        }
+
         $order->status = $request->status;
         $order->save();
+
+        // LOGIKA STOK: Jika status diubah menjadi "Dibatalkan", kembalikan stok ke produk
+        if ($request->status === 'Dibatalkan' && $oldStatus !== 'Dibatalkan') {
+            foreach ($order->items as $item) {
+                if ($item->product) {
+                    $item->product->increment('stock', $item->quantity);
+                }
+            }
+        }
+        // Jika sebelumnya "Dibatalkan" lalu diubah ke status lain (revert), kurangi stok lagi
+        elseif ($oldStatus === 'Dibatalkan' && $request->status !== 'Dibatalkan') {
+            foreach ($order->items as $item) {
+                if ($item->product) {
+                    $item->product->decrement('stock', $item->quantity);
+                }
+            }
+        }
 
         if ($order->user && $order->user->email) {
             $order->user->notify(new StatusNotification('pesanan', $order, $request->status));
@@ -335,6 +359,14 @@ class AdminController extends Controller
 
         User::create($validated);
 
+        if (request()->ajax() || request()->wantsJson()) {
+            return response()->json([
+                'success' => true, 
+                'message' => 'Admin baru berhasil ditambahkan',
+                'redirect' => route('admin.kelola-admin')
+            ]);
+        }
+
         return redirect()->route('admin.kelola-admin')->with('success', 'Admin baru berhasil ditambahkan');
     }
 
@@ -397,6 +429,14 @@ class AdminController extends Controller
 
         // Bersihkan session OTP setelah berhasil update (jika ada)
         session()->forget(['admin_otp_verified', 'admin_otp_target_id', 'admin_otp_code', 'admin_otp_expires']);
+
+        if (request()->ajax() || request()->wantsJson()) {
+            return response()->json([
+                'success' => true, 
+                'message' => 'Data admin berhasil diperbarui!',
+                'redirect' => route('admin.kelola-admin')
+            ]);
+        }
 
         return redirect()->route('admin.kelola-admin')->with('success', 'Data admin berhasil diperbarui!');
     }
@@ -629,6 +669,14 @@ class AdminController extends Controller
 
         Product::create($validated);
 
+        if (request()->ajax() || request()->wantsJson()) {
+            return response()->json([
+                'success' => true, 
+                'message' => 'Produk berhasil ditambahkan',
+                'redirect' => route('admin.produk-admin')
+            ]);
+        }
+
         return redirect()->route('admin.produk-admin')->with('success', 'Produk berhasil ditambahkan');
     }
 
@@ -667,6 +715,9 @@ class AdminController extends Controller
         $new_total_stock = $current_total_stock + $add - $reduce;
 
         if ($new_total_stock < 0) {
+            if (request()->ajax() || request()->wantsJson()) {
+                return response()->json(['success' => false, 'message' => 'Stok akhir tidak boleh kurang dari 0.'], 422);
+            }
             return redirect()->back()->withErrors(['stock' => 'Stok akhir tidak boleh kurang dari 0.'])->withInput();
         }
 
@@ -693,6 +744,14 @@ class AdminController extends Controller
         }
 
         $product->update($validated);
+
+        if (request()->ajax() || request()->wantsJson()) {
+            return response()->json([
+                'success' => true, 
+                'message' => 'Produk berhasil diperbarui. Stok sekarang: ' . $finalStock,
+                'redirect' => route('admin.produk-admin')
+            ]);
+        }
 
         return redirect()->route('admin.produk-admin')->with('success', 'Produk berhasil diperbarui. Stok sekarang: ' . $finalStock);
     }
@@ -800,7 +859,15 @@ class AdminController extends Controller
 
         Kunjungan::create($validated);
 
-        return redirect()->route('admin.kunjungan-admin')->with('success', 'Kunjungan berhasil ditambahkan');
+        if (request()->ajax() || request()->wantsJson()) {
+            return response()->json([
+                'success' => true, 
+                'message' => 'Paket kunjungan berhasil ditambahkan',
+                'redirect' => route('admin.kunjungan-admin')
+            ]);
+        }
+
+        return redirect()->route('admin.kunjungan-admin')->with('success', 'Paket kunjungan berhasil ditambahkan');
     }
 
     public function editKunjungan(Request $request, $id)
@@ -840,7 +907,15 @@ class AdminController extends Controller
 
         $kunjungan->update($validated);
 
-        return redirect()->route('admin.kunjungan-admin')->with('success', 'Kunjungan berhasil diperbarui');
+        if (request()->ajax() || request()->wantsJson()) {
+            return response()->json([
+                'success' => true, 
+                'message' => 'Paket kunjungan berhasil diperbarui',
+                'redirect' => route('admin.kunjungan-admin')
+            ]);
+        }
+
+        return redirect()->route('admin.kunjungan-admin')->with('success', 'Paket kunjungan berhasil diperbarui');
     }
 
     public function deleteKunjungan($id)
@@ -932,6 +1007,14 @@ class AdminController extends Controller
 
         Magang::create($validated);
 
+        if (request()->ajax() || request()->wantsJson()) {
+            return response()->json([
+                'success' => true, 
+                'message' => 'Paket magang berhasil ditambahkan',
+                'redirect' => route('admin.magang-admin')
+            ]);
+        }
+
         return redirect()->route('admin.magang-admin')->with('success', 'Magang berhasil ditambahkan');
     }
 
@@ -971,6 +1054,15 @@ class AdminController extends Controller
         }
 
         $magang->update($validated);
+
+        if (request()->ajax() || request()->wantsJson()) {
+            return response()->json([
+                'success' => true, 
+                'message' => 'Paket magang berhasil diperbarui',
+                'redirect' => route('admin.magang-admin')
+            ]);
+        }
+
         return redirect()->route('admin.magang-admin')->with('success', 'Magang berhasil diperbarui');
     }
 
@@ -1431,7 +1523,7 @@ class AdminController extends Controller
                 $namaProdukArr = [];
                 $qtyArr = [];
                 foreach ($o->items as $item) {
-                    $prodName = $item->product ? $item->product->name : 'Produk Terhapus';
+                    $prodName = $item->product_name ?? ($item->product ? $item->product->name : 'Produk Terhapus');
                     // Menampilkan harga per unit yang tersimpan di order_items (bukan harga produk sekarang)
                     $detailItems[] = $item->quantity . ' kg ' . $prodName . ' (+ ' . number_format($item->price, 0, ',', '.') . ')';
                     $namaProdukArr[] = $prodName;
@@ -1454,14 +1546,16 @@ class AdminController extends Controller
         // Push Kunjungan
         if ($kategoriFilter == 'Semua' || $kategoriFilter == 'Kunjungan') {
             foreach ($kunjungans as $k) {
+                // Gunakan snapshot paket_name jika tersedia
+                $displayPackageName = $k->paket_name ?? 'Paket Terhapus';
                 // Hitung harga satuan saat itu
                 $unitPrice = ($k->jumlah_peserta > 0) ? ($k->total_harga / $k->jumlah_peserta) : 0;
                 $laporans->push((object) [
                     'id_transaksi' => 'KUN-' . str_pad($k->id_reservasi, 5, '0', STR_PAD_LEFT),
                     'tanggal' => Carbon::parse($k->created_at),
                     'kategori' => 'Kunjungan',
-                    'keterangan' => 'Kunjungan ' . $k->paket_name . ' (' . $k->jumlah_peserta . ' orang + ' . number_format($unitPrice, 0, ',', '.') . ')',
-                    'jenis_kunjungan' => $k->paket_name,
+                    'keterangan' => 'Kunjungan ' . $displayPackageName . ' (' . $k->jumlah_peserta . ' orang + ' . number_format($unitPrice, 0, ',', '.') . ')',
+                    'jenis_kunjungan' => $displayPackageName,
                     'jumlah_peserta' => $k->jumlah_peserta . ' Orang',
                     'metode_pembayaran' => $k->metode_pembayaran ?? 'QRIS',
                     'harga' => $k->total_harga,
@@ -1472,6 +1566,7 @@ class AdminController extends Controller
         // Push Magang
         if ($kategoriFilter == 'Semua' || $kategoriFilter == 'Magang') {
             foreach ($magangs as $m) {
+                $displayPackageName = $m->paket_name ?? 'Paket Terhapus';
                 $namaPeserta = $m->pekerjaan ? $m->user_name . ' (' . $m->pekerjaan . ')' : $m->user_name;
                 // Hitung harga satuan (per bulan) saat itu
                 $unitPrice = ($m->durasi_magang > 0) ? ($m->total_harga / $m->durasi_magang) : 0;
@@ -1479,9 +1574,9 @@ class AdminController extends Controller
                     'id_transaksi' => 'MAG-' . str_pad($m->id_pendaftaran, 5, '0', STR_PAD_LEFT),
                     'tanggal' => Carbon::parse($m->created_at),
                     'kategori' => 'Magang',
-                    'keterangan' => 'Pendaftaran ' . $m->paket_name . ' (' . $m->durasi_magang . ' bulan + ' . number_format($unitPrice, 0, ',', '.') . ') oleh ' . $namaPeserta,
+                    'keterangan' => 'Pendaftaran ' . $displayPackageName . ' (' . $m->durasi_magang . ' bulan + ' . number_format($unitPrice, 0, ',', '.') . ') oleh ' . $namaPeserta,
                     'nama_individu_instansi' => $namaPeserta,
-                    'jenis_magang' => $m->paket_name,
+                    'jenis_magang' => $displayPackageName,
                     'metode_pembayaran' => $m->metode_pembayaran ?? 'QRIS',
                     'harga' => $m->total_harga,
                 ]);
@@ -1768,6 +1863,16 @@ class AdminController extends Controller
             'status' => 'required|string'
         ]);
 
+        $reservasi = DB::table('reservasi_kunjungan')->where('id_reservasi', $id)->first();
+        if (!$reservasi) {
+            return response()->json(["success" => false, "message" => "Data tidak ditemukan"], 404);
+        }
+
+        // Kunci status jika sudah Selesai
+        if ($reservasi->status_pembayaran === 'Selesai') {
+            return response()->json(["success" => false, "message" => "Reservasi yang sudah 'Selesai' tidak dapat diubah lagi."], 422);
+        }
+
         DB::table('reservasi_kunjungan')
             ->where('id_reservasi', $id)
             ->update(['status_pembayaran' => $request->status, 'updated_at' => now()]);
@@ -1802,6 +1907,16 @@ class AdminController extends Controller
         $request->validate([
             'status' => 'required|string'
         ]);
+
+        $pendaftaran = DB::table('pendaftaran_magang')->where('id_pendaftaran', $id)->first();
+        if (!$pendaftaran) {
+            return response()->json(["success" => false, "message" => "Data tidak ditemukan"], 404);
+        }
+
+        // Kunci status jika sudah Selesai
+        if ($pendaftaran->status_pembayaran === 'Selesai') {
+            return response()->json(["success" => false, "message" => "Pendaftaran yang sudah 'Selesai' tidak dapat diubah lagi."], 422);
+        }
 
         $update = [
             'status_pembayaran' => $request->status,
@@ -2027,6 +2142,7 @@ class AdminController extends Controller
                 OrderItem::create([
                     'order_id' => $order->id,
                     'product_id' => $itemData['product']->id,
+                    'product_name' => $itemData['product']->name,
                     'quantity' => $itemData['quantity'],
                     'price' => $itemData['price'],
                 ]);
@@ -2101,12 +2217,14 @@ class AdminController extends Controller
                 }
             }
 
+            $tanggalReservasi = Carbon::parse($request->tanggal_reservasi)->toDateString();
             $total_harga = $paket->price * $request->jumlah_peserta;
 
             DB::table('reservasi_kunjungan')->insert([
                 'id_user' => $user->id,
                 'id_kunjungan' => $paket->id,
-                'tanggal_reservasi' => $request->tanggal_reservasi,
+                'paket_name' => $paket->name,
+                'tanggal_reservasi' => $tanggalReservasi,
                 'jumlah_peserta' => $request->jumlah_peserta,
                 'instansi' => $request->instansi,
                 'total_harga' => $total_harga,
@@ -2178,12 +2296,14 @@ class AdminController extends Controller
             }
 
             $total_harga = $paket->price * $request->durasi_magang;
+            $tanggal_magang = \Carbon\Carbon::parse($request->tanggal_magang)->toDateString();
 
             DB::table('pendaftaran_magang')->insert([
                 'id_user' => $user->id,
                 'id_magang' => $paket->id,
+                'paket_name' => $paket->name,
                 'pekerjaan' => $request->instansi,
-                'tanggal_magang' => $request->tanggal_magang,
+                'tanggal_magang' => $tanggal_magang,
                 'durasi_magang' => $request->durasi_magang,
                 'deskripsi_kemampuan' => 'Pendaftaran Offline',
                 'metode_pembayaran' => $request->metode_pembayaran,

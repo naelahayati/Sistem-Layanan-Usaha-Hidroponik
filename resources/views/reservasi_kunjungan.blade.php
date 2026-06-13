@@ -169,9 +169,9 @@ document.addEventListener('DOMContentLoaded', function () {
             buttonText: { today: 'Hari ini' },
             events: "{{ route('nazfram.pelatihan.events') }}?type=kunjungan",
             selectAllow: info => isDateAllowed(ref.instance, moment(info.start)),
-            select:    info => onDatePicked(info.startStr),
+            select:    info => onDatePicked(moment(info.start).format('YYYY-MM-DD')),
             dateClick: info => {
-                if (isDateAllowed(ref.instance, moment(info.date))) onDatePicked(info.dateStr);
+                if (isDateAllowed(ref.instance, moment(info.date))) onDatePicked(moment(info.date).format('YYYY-MM-DD'));
             }
         });
     }

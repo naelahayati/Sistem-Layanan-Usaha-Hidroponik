@@ -361,12 +361,24 @@
                 $('#status-select').html(optionsHtml);
                 $('#status-select').val(data.status);
 
+                // Kunci status jika sudah Selesai
+                if (data.status === 'Selesai') {
+                    $('#status-select').attr('disabled', true);
+                    $('#btn-update-status').attr('disabled', true).addClass('btn-secondary').removeClass('btn-primary');
+                    $('#det-status-skrg').parent().append('<small class="text-danger font-weight-bold mt-1"><i class="fas fa-lock mr-1"></i> Data Terkunci (Selesai)</small>');
+                } else {
+                    $('#status-select').attr('disabled', false);
+                    $('#btn-update-status').attr('disabled', false).addClass('btn-primary').removeClass('btn-secondary');
+                    $('#det-status-skrg').parent().find('small.text-danger').remove();
+                }
+
                 let itemsHtml = '';
                 data.items.forEach(item => {
                     const subtotal = item.price * item.quantity;
+                    const prodName = item.product_name ? item.product_name : (item.product ? item.product.name : 'Produk Terhapus');
                     itemsHtml += `
                         <tr>
-                            <td class="pl-2">${item.product.name}</td>
+                            <td class="pl-2">${prodName}</td>
                             <td class="text-center">${item.quantity} kg</td>
                             <td class="text-right pr-2">${formatRupiah(item.price)}</td>
                             <td class="text-right pr-2 font-weight-bold">${formatRupiah(subtotal)}</td>
@@ -381,17 +393,36 @@
         $('#btn-update-status').click(function() {
             const newStatus = $('#status-select').val();
             
+            let confirmText = `Ubah status pesanan ke "${newStatus}"?`;
+            let confirmIcon = 'question';
+            
+            if (newStatus === 'Dibatalkan') {
+                confirmText = "Apakah Anda yakin ingin membatalkan pesanan ini? Stok produk akan dikembalikan otomatis.";
+                confirmIcon = 'warning';
+            } else if (newStatus === 'Selesai') {
+                confirmText = "Selesaikan transaksi? Setelah status menjadi 'Selesai', data akan DIKUNCI dan tidak bisa diubah lagi untuk keamanan laporan.";
+            }
+
             Swal.fire({
                 title: 'Konfirmasi',
-                text: `Ubah status pesanan ke "${newStatus}"?`,
-                icon: 'question',
+                text: confirmText,
+                icon: confirmIcon,
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
+                confirmButtonColor: newStatus === 'Dibatalkan' ? '#d33' : '#3085d6',
+                cancelButtonColor: '#6c757d',
                 confirmButtonText: 'Ya, Update!',
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Memproses...',
+                        text: 'Harap tunggu sebentar, sedang mengirim notifikasi email.',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading()
+                        }
+                    });
+
                     $.post(`/admin/transaksi/update-status/${currentOrderId}`, {
                         _token: '{{ csrf_token() }}',
                         status: newStatus
@@ -407,6 +438,16 @@
                                 location.reload();
                             });
                         }
+                    }).fail(function(xhr) {
+                        let msg = 'Terjadi kesalahan saat memperbarui status.';
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            msg = xhr.responseJSON.message;
+                        }
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal!',
+                            text: msg
+                        });
                     });
                 }
             });

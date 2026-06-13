@@ -139,7 +139,8 @@ class StatusNotification extends Notification
             foreach ($items as $item) {
                 $hargaItem = number_format($item->price ?? 0, 0, ',', '.');
                 $namaProduk = $item->product->name ?? 'Produk';
-                $details[] = "   • {$namaProduk} x{$item->quantity} — Rp {$hargaItem}";
+                $satuan = $item->product->satuan ?? 'kg';
+                $details[] = "   • {$namaProduk} {$item->quantity} {$satuan} — Rp {$hargaItem}";
             }
         }
 
@@ -161,6 +162,10 @@ class StatusNotification extends Notification
         // Total Pembayaran
         $total     = number_format($this->data->grand_total ?? 0, 0, ',', '.');
         $details[] = "💰 Total Bayar : Rp {$total}";
+        $statusBayar = $this->data->status_pembayaran ?? $this->data->payment_status ?? null;
+        if ($statusBayar) {
+            $details[] = "✅ Status Bayar: {$statusBayar}";
+        }
 
         return $details;
     }
@@ -179,6 +184,19 @@ class StatusNotification extends Notification
             ];
         }
 
+        if ($this->tipe === 'pesanan' && $this->status === 'Selesai') {
+            $metode = $this->data->metode_pengambilan ?? $this->data->jenis_pengiriman ?? '';
+            $isAmbil = in_array(strtolower($metode), ['diambil', 'ambil', 'pickup', 'ambil sendiri']);
+            if ($isAmbil) {
+                return ["🏪 Pesanan telah berhasil diambil. Terima kasih!"];
+            } else {
+                return ["🚚 Pesanan telah diterima. Terima kasih!"];
+            }
+        }
+
+        if ($this->status === 'Dibatalkan') {
+            return ["🚫 Pengajuan/pesanan kamu telah dibatalkan karena pembayaran tidak valid."];
+        }
         return [];
     }
 

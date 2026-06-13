@@ -96,16 +96,13 @@ function addAdmin() {
             "Content-Type": "application/json",
             "Accept": "application/json",
             "X-CSRF-TOKEN": csrfToken,
+            "X-Requested-With": "XMLHttpRequest"
         },
         body: JSON.stringify(data),
     })
         .then((res) => res.json())
         .then((result) => {
-            if (result.success) {
-                Swal.fire("Berhasil!", result.message, "success").then(() =>
-                    location.reload(),
-                );
-            } else {
+            if (result.success) { Swal.fire("Berhasil!", result.message, "success").then(() => { if (result.redirect) { window.location.href = result.redirect; } else { location.reload(); } }); } else {
                 Swal.fire(
                     "Gagal!",
                     result.message || "Terjadi kesalahan",
@@ -141,16 +138,13 @@ function updateAdmin() {
             "Content-Type": "application/json",
             "Accept": "application/json",
             "X-CSRF-TOKEN": csrfToken,
+            "X-Requested-With": "XMLHttpRequest"
         },
         body: JSON.stringify(data),
     })
         .then((res) => res.json())
         .then((result) => {
-            if (result.success) {
-                Swal.fire("Berhasil!", result.message, "success").then(() =>
-                    location.reload(),
-                );
-            } else {
+            if (result.success) { Swal.fire("Berhasil!", result.message, "success").then(() => { if (result.redirect) { window.location.href = result.redirect; } else { location.reload(); } }); } else {
                 Swal.fire(
                     "Gagal!",
                     result.message || "Terjadi kesalahan",
@@ -168,7 +162,7 @@ function deleteAdmin(adminId) {
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#d33",
-        confirmButtonText: "Ya, Hapus!",
+        confirmButtonText: "Ya, Hapus!", cancelButtonText: "Batal", reverseButtons: true,
     }).then((result) => {
         if (result.isConfirmed) {
             fetch(`/admin/admin/delete/${adminId}`, {
@@ -192,3 +186,7 @@ function deleteAdmin(adminId) {
         }
     });
 }
+
+
+
+
