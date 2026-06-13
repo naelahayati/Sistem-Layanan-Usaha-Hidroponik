@@ -10,6 +10,26 @@
             <a href="{{ route('magang.riwayat') }}" class="hero-riwayat-link">Cek Riwayat Pendaftaran <i class="fas fa-arrow-right"></i></a>
         </header>
 
+        <div class="info-pendaftaran-bar">
+            <div class="info-pendaftaran-inner">
+                <div class="info-pendaftaran-item">
+                    <i class="fas fa-user-circle"></i>
+                    <div>
+                        <span class="info-p-title">Wajib Akun Pribadi</span>
+                        <span class="info-p-desc">Gunakan akun Anda sendiri, pendaftaran tidak bisa diwakilkan orang lain.</span>
+                    </div>
+                </div>
+                <div class="info-p-divider"></div>
+                <div class="info-pendaftaran-item">
+                    <i class="fas fa-id-card"></i>
+                    <div>
+                        <span class="info-p-title">Data Sesuai Profil</span>
+                        <span class="info-p-desc">Sistem otomatis mengambil data dari pemilik akun yang sedang login.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="container-pelatihan-list">
             @forelse($magangs as $item)
                 <section class="pelatihan-item">

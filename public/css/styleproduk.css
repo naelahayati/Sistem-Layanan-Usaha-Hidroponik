@@ -182,30 +182,54 @@ body {
 }
 
 .info-pengiriman {
-    background: #f0f9f0;
-    border-bottom: 2px solid transparent;
-    padding: 16px 24px;
+    background: transparent;
+    padding: 30px 24px;
+    margin-bottom: 40px;
+    position: relative;
+    text-align: center;
+}
+
+/* Garis Atas & Bawah yang Blur (Identik dengan Magang) */
+.info-pengiriman::before,
+.info-pengiriman::after {
+    content: "";
+    position: absolute;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(45, 90, 39, 0.4), transparent);
+    filter: blur(0.5px);
+}
+
+.info-pengiriman::before {
+    top: 0;
+}
+
+.info-pengiriman::after {
+    bottom: 0;
 }
 
 .info-pengiriman-inner {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 24px;
+    gap: 40px;
     flex-wrap: wrap;
-    max-width: 900px;
+    max-width: 1000px;
     margin: 0 auto;
 }
 
 .info-item {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
+    text-align: left;
 }
 
 .info-item i {
-    font-size: 22px;
-    color: #2e7d32;
+    font-size: 28px;
+    color: #2d5a27;
+    opacity: 0.8;
 }
 
 .info-item div {
@@ -214,30 +238,31 @@ body {
 }
 
 .info-title {
-    font-weight: 600;
-    font-size: 13px;
-    color: #1b5e20;
+    font-weight: 700;
+    font-size: 14px;
+    color: #1b3c18;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
 }
 
 .info-desc {
     font-size: 12px;
-    color: #4a4a4a;
+    color: #666;
+    font-weight: 500;
+    line-height: 1.4;
 }
 
 .info-divider {
     width: 1px;
-    height: 40px;
-    background: #a5d6a7;
+    height: 45px;
+    background: linear-gradient(to bottom, transparent, rgba(165, 214, 167, 0.6), transparent);
 }
 
-/* TABLET */
+/* Responsif Banner Identik */
 @media (max-width: 768px) {
-    .info-pengiriman {
-        padding: 14px 16px;
-    }
-
     .info-pengiriman-inner {
-        gap: 16px;
+        gap: 5px !important;
     }
 
     .info-divider {
@@ -246,49 +271,26 @@ body {
 
     .info-item {
         width: 100%;
-        background: #fff;
-        border: 1px solid #c8e6c9;
-        border-radius: 10px;
-        padding: 10px 14px;
+        background: transparent;
+        padding: 2px 0 !important;
     }
 
     .info-item i {
-        font-size: 20px;
+        font-size: 16px;
     }
 }
 
-/* HP */
 @media (max-width: 480px) {
-    .info-pengiriman {
-        padding: 12px;
+    .info-title {
+        font-size: 9px !important;
     }
-
-    .info-pengiriman-inner {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 10px;
-    }
-
-    .info-item {
-        width: 100%;
-        background: #fff;
-        border: 1px solid #c8e6c9;
-        border-radius: 10px;
-        padding: 10px 12px;
-        gap: 8px;
+    
+    .info-desc {
+        font-size: 8px !important;
     }
 
     .info-item i {
-        font-size: 18px;
-        min-width: 20px;
-    }
-
-    .info-title {
-        font-size: 12px;
-    }
-
-    .info-desc {
-        font-size: 11px;
+        font-size: 14px !important;
     }
 }
 
