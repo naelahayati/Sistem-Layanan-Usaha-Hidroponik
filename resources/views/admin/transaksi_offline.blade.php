@@ -452,7 +452,7 @@
                                     <div class="form-group mb-4">
                                         <label class="form-label-custom">Tanggal Mulai Magang</label>
                                         <p style="color: #555; font-size: 0.8rem; background: #fff8e1; padding: 8px 12px; border-left: 4px solid #ffc107; border-radius: 4px; margin-bottom: 10px; line-height: 1.4;">
-                                           <i class="fas fa-info-circle text-warning"></i> Pilih tanggal mulai magang. Tanggal merah adalah hari libur dan tidak bisa dipilih.
+                                           <i class="fas fa-info-circle text-warning"></i>  Jadwal kunjungan minimal <b>H+3</b> dari hari ini. Tanggal merah adalah hari libur dan tidak bisa dipilih.
                                         </p>
                                         <div id="calendar-magang-offline"></div>
                                         <input type="hidden" name="tanggal_magang" id="tanggal_magang_input" required>

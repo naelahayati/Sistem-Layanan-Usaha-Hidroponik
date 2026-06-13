@@ -247,7 +247,7 @@ class AdminController extends Controller
             }
         }
 
-        if ($order->user && $order->user->email) {
+        if ($order->is_offline != 1 && $order->user && $order->user->email) {
             $order->user->notify(new StatusNotification('pesanan', $order, $request->status));
         }
 
@@ -1505,7 +1505,7 @@ class AdminController extends Controller
             $magangQuery->where('metode_pembayaran', $metodeBayarFilter);
         }
 
-        if ($subMagangFilter != 'Semua') {
+        if ($kategoriFilter == 'Magang' && $subMagangFilter != 'Semua') {
             if ($subMagangFilter == 'PKL') {
                 $magangQuery->where('magangs.name', 'LIKE', 'PKL%');
             } else {
@@ -1604,6 +1604,60 @@ class AdminController extends Controller
 
         $total_pendapatan = $laporans->sum('harga');
 
+        // ============================================
+        // HITUNG REKAPITULASI PER ITEM/PAKET
+        // ============================================
+        $rekapProduk = [];
+        $rekapKunjungan = [];
+        $rekapMagang = [];
+
+        // Hitung Rekap Produk (berdasarkan item di pesanan yang masuk dalam laporans terfilter)
+        $filteredOrderIds = $laporans->where('kategori', 'Produk')->pluck('id_transaksi')->map(fn($id) => (int) str_replace('ORD-', '', $id))->toArray();
+        foreach ($orders->whereIn('id', $filteredOrderIds) as $o) {
+            foreach ($o->items as $item) {
+                // Gunakan snapshot jika ada, fallback ke model product
+                $pName = $item->product_name ?? ($item->product ? $item->product->name : 'Produk Terhapus');
+                if (!isset($rekapProduk[$pName])) {
+                    $rekapProduk[$pName] = ['total_qty' => 0, 'total_harga' => 0];
+                }
+                $rekapProduk[$pName]['total_qty'] += $item->quantity;
+                $rekapProduk[$pName]['total_harga'] += ($item->price * $item->quantity);
+            }
+        }
+
+        // Hitung Rekap Kunjungan
+        $filteredKunIds = $laporans->where('kategori', 'Kunjungan')->pluck('id_transaksi')->map(fn($id) => (int) str_replace('KUN-', '', $id))->toArray();
+        foreach ($kunjungans->whereIn('id_reservasi', $filteredKunIds) as $k) {
+            $pName = $k->paket_name ?? 'Paket Terhapus';
+            if (!isset($rekapKunjungan[$pName])) {
+                $rekapKunjungan[$pName] = ['total_orang' => 0, 'total_harga' => 0];
+            }
+            $rekapKunjungan[$pName]['total_orang'] += $k->jumlah_peserta;
+            $rekapKunjungan[$pName]['total_harga'] += $k->total_harga;
+        }
+
+        // Hitung Rekap Magang
+        $totalMagang = 0;
+        $filteredMagIds = $laporans->where('kategori', 'Magang')->pluck('id_transaksi')->map(fn($id) => (int) str_replace('MAG-', '', $id))->toArray();
+        foreach ($magangs->whereIn('id_pendaftaran', $filteredMagIds) as $m) {
+            $pName = $m->paket_name ?? 'Paket Terhapus';
+            if (!isset($rekapMagang[$pName])) {
+                $rekapMagang[$pName] = ['total_pendaftar' => 0, 'total_harga' => 0];
+            }
+            $rekapMagang[$pName]['total_pendaftar'] += 1;
+            $rekapMagang[$pName]['total_harga'] += $m->total_harga;
+            $totalMagang += $m->total_harga;
+        }
+
+        // Total per kategori untuk rekap utama
+        $totalProduk = collect($rekapProduk)->sum('total_harga');
+        $totalProdukVolume = collect($rekapProduk)->sum('total_qty');
+
+        $totalKunjungan = collect($rekapKunjungan)->sum('total_harga');
+        $totalKunjunganPax = collect($rekapKunjungan)->sum('total_orang');
+
+        $totalMagangVolume = collect($rekapMagang)->sum('total_pendaftar');
+
         return view('admin.laporan_penjualan', [
             'laporans' => $laporans,
             'startDate' => $startDate,
@@ -1612,7 +1666,16 @@ class AdminController extends Controller
             'kategoriFilter' => $kategoriFilter,
             'subMagangFilter' => $subMagangFilter,
             'metodeBayarFilter' => $metodeBayarFilter,
-            'search' => $search
+            'search' => $search,
+            'rekapProduk' => $rekapProduk,
+            'rekapKunjungan' => $rekapKunjungan,
+            'rekapMagang' => $rekapMagang,
+            'totalProduk' => $totalProduk,
+            'totalProdukVolume' => $totalProdukVolume,
+            'totalKunjungan' => $totalKunjungan,
+            'totalKunjunganPax' => $totalKunjunganPax,
+            'totalMagang' => $totalMagang,
+            'totalMagangVolume' => $totalMagangVolume
         ]);
     }
 
@@ -1889,7 +1952,7 @@ class AdminController extends Controller
             )
             ->first();
 
-        if ($reservasi && $reservasi->email) {
+        if ($reservasi->is_offline != 1 && $reservasi && $reservasi->email) {
             $user = User::where('email', $reservasi->email)->first();
             if ($user) {
                 $user->notify(new StatusNotification('kunjungan', $reservasi, $request->status));
@@ -1944,7 +2007,7 @@ class AdminController extends Controller
             )
             ->first();
 
-        if ($pendaftaran && $pendaftaran->email) {
+        if ($pendaftaran->is_offline != 1 && $pendaftaran && $pendaftaran->email) {
             $user = User::where('email', $pendaftaran->email)->first();
             if ($user) {
                 $user->notify(new StatusNotification('magang', $pendaftaran, $request->status));

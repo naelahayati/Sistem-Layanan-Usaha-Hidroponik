@@ -347,7 +347,7 @@ function runScript() {
                     if (result.isConfirmed) {
                         Swal.fire({
                             title: 'Memproses...',
-                            text: 'Harap tunggu sebentar, sedang mengirim notifikasi email.',
+                            text: 'Harap tunggu sebentar, sedang memperbarui status.',
                             allowOutsideClick: false,
                             didOpen: () => {
                                 Swal.showLoading()

@@ -150,6 +150,120 @@
             </div>
         </div>
 
+        <!-- Rekapitulasi Tabel Baru -->
+        <div class="row mb-5">
+            @if(isset($rekapProduk) && count($rekapProduk) > 0)
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm border-0" style="border-radius: 15px;">
+                    <div class="card-header bg-white border-0 pt-4 text-center">
+                        <h5 class="font-weight-bold text-dark text-uppercase">Rincian Produk</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table table-sm mb-0">
+                            <thead class="bg-light">
+                                <tr class="small text-muted">
+                                    <th class="pl-4 py-2 text-left">Item</th>
+                                    <th class="py-2 text-center">Vol</th>
+                                    <th class="pr-4 py-2 text-right">Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($rekapProduk as $name => $data)
+                                <tr>
+                                    <td class="pl-4 py-2 font-weight-bold text-left x-small" style="font-size: 0.75rem; color: black;">{{ $name }}</td>
+                                    <td class="py-2 text-center x-small" style="font-size: 0.75rem; color: black;">{{ $data['total_qty'] }} kg</td>
+                                    <td class="pr-4 py-2 text-right font-weight-bold x-small" style="font-size: 0.75rem; color: black;">{{ number_format($data['total_harga'], 0, ',', '.') }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                            <tfoot>
+                                <tr class="bg-light" style="color: black;">
+                                    <th class="pl-4 py-2 text-left small">TOTAL</th>
+                                    <th class="py-2 text-center small">{{ $totalProdukVolume }} kg</th>
+                                    <th class="pr-4 py-2 text-right font-weight-bold small">Rp {{ number_format($totalProduk, 0, ',', '.') }}</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            @if(isset($rekapKunjungan) && count($rekapKunjungan) > 0)
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm border-0" style="border-radius: 15px;">
+                    <div class="card-header bg-white border-0 pt-4 text-center">
+                        <h5 class="font-weight-bold text-dark text-uppercase">Rincian Kunjungan</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table table-sm mb-0">
+                            <thead class="bg-light">
+                                <tr class="small text-muted">
+                                    <th class="pl-4 py-2 text-left">Paket</th>
+                                    <th class="py-2 text-center">Pax</th>
+                                    <th class="pr-4 py-2 text-right">Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($rekapKunjungan as $name => $data)
+                                <tr>
+                                    <td class="pl-4 py-2 font-weight-bold text-left x-small" style="font-size: 0.75rem; color: black;">{{ $name }}</td>
+                                    <td class="py-2 text-center x-small" style="font-size: 0.75rem; color: black;">{{ $data['total_orang'] }} Org</td>
+                                    <td class="pr-4 py-2 text-right font-weight-bold x-small" style="font-size: 0.75rem; color: black;">{{ number_format($data['total_harga'], 0, ',', '.') }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                            <tfoot>
+                                <tr class="bg-light" style="color: black;">
+                                    <th class="pl-4 py-2 text-left small">TOTAL</th>
+                                    <th class="py-2 text-center small">{{ $totalKunjunganPax }} Org</th>
+                                    <th class="pr-4 py-2 text-right font-weight-bold small">Rp {{ number_format($totalKunjungan, 0, ',', '.') }}</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            @if(isset($rekapMagang) && count($rekapMagang) > 0)
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm border-0" style="border-radius: 15px;">
+                    <div class="card-header bg-white border-0 pt-4 text-center">
+                        <h5 class="font-weight-bold text-dark text-uppercase">Rincian Magang</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table table-sm mb-0">
+                            <thead class="bg-light">
+                                <tr class="small text-muted">
+                                    <th class="pl-4 py-2 text-left">Program</th>
+                                    <th class="py-2 text-center">Reg</th>
+                                    <th class="pr-4 py-2 text-right">Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($rekapMagang as $name => $data)
+                                <tr>
+                                    <td class="pl-4 py-2 font-weight-bold text-left x-small" style="font-size: 0.75rem; color: black;">{{ $name }}</td>
+                                    <td class="py-2 text-center x-small" style="font-size: 0.75rem; color: black;">{{ $data['total_pendaftar'] }} Org</td>
+                                    <td class="pr-4 py-2 text-right font-weight-bold x-small" style="font-size: 0.75rem; color: black;">{{ number_format($data['total_harga'], 0, ',', '.') }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                            <tfoot>
+                                <tr class="bg-light" style="color: black;">
+                                    <th class="pl-4 py-2 text-left small">TOTAL</th>
+                                    <th class="py-2 text-center small">{{ $totalMagangVolume }} Org</th>
+                                    <th class="pr-4 py-2 text-right font-weight-bold small">Rp {{ number_format($totalMagang, 0, ',', '.') }}</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            @endif
+        </div>
+
     </div>
 </section>
 @push('scripts')
