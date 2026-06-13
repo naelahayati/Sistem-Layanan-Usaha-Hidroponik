@@ -250,7 +250,10 @@ let tempLng = initialLng;
 
 function initMaps() {
     previewMap = L.map('map-preview-small', { zoomControl: false, dragging: false, scrollWheelZoom: false, doubleClickZoom: false }).setView([initialLat, initialLng], 15);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(previewMap);
+    L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+    maxZoom: 20,
+    attribution: '© Google Maps'
+    }).addTo(previewMap);
     L.marker([initialLat, initialLng]).addTo(previewMap);
 
     const mapModal = document.getElementById('mapModal');
@@ -285,7 +288,9 @@ function initMainMap() {
         return;
     }
     mainMap = L.map('map-full-container').setView([tempLat, tempLng], 15);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mainMap);
+    L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+        maxZoom: 20, attribution: '© Google Maps'
+    }).addTo(mainMap);
 
     marker = L.marker([tempLat, tempLng], { draggable: true }).addTo(mainMap);
 

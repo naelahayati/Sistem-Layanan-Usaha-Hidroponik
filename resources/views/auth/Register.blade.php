@@ -620,7 +620,9 @@
                 doubleClickZoom: false,
                 touchZoom: false
             }).setView([tempLat, tempLng], 15);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(previewMap);
+            L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+                maxZoom: 20, attribution: '© Google Maps'
+            }).addTo(previewMap);
             L.marker([tempLat, tempLng]).addTo(previewMap);
         }
         initPreviewMap();
@@ -628,7 +630,9 @@
         function initMainMap() {
             if (mainMap) mainMap.remove();
             mainMap = L.map('map-full-container').setView([tempLat, tempLng], 16);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mainMap);
+            L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+                maxZoom: 20, attribution: '© Google Maps'
+            }).addTo(mainMap);
             userMarker = L.marker([tempLat, tempLng], { draggable: true }).addTo(mainMap);
             userMarker.on('dragend', function(e) {
                 tempLat = e.target.getLatLng().lat;
