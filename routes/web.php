@@ -17,6 +17,11 @@ Route::get('/run-schedule', function () {
     return "Schedule is running...";
 });
 
+Route::get('/test-wa', function () {
+    Artisan::call('admin:daily-report');
+    return "Mencoba mengirim laporan WA... Cek WhatsApp Anda!";
+});
+
 Route::get('/sitemap.xml', function () {
     $sitemap = Sitemap::create()
         ->add(Url::create('/'))
