@@ -293,13 +293,15 @@ function runScript() {
                 let bayarClass = 'badge-danger';
 
                 // Jika QRIS atau statusnya sudah Diterima/Lunas/Selesai/Menunggu Konfirmasi, maka dianggap Sudah Bayar atau Menunggu
-                if (['Menunggu Konfirmasi'].includes(data.status_pembayaran)) {
+                if (data.status_pembayaran === 'Menunggu Konfirmasi') {
                     bayarLabel = 'Menunggu Konfirmasi';
                     bayarClass = 'badge-warning';
-                } else if (data.metode_pembayaran.toLowerCase() == 'qris' ||
-                    ['Lunas', 'Diterima', 'Selesai'].includes(data.status_pembayaran)) {
+                } else if (['Lunas', 'Diterima', 'Selesai'].includes(data.status_pembayaran)) {
                     bayarLabel = 'Sudah Bayar';
                     bayarClass = 'badge-success';
+                } else {
+                    bayarLabel = 'Belum Bayar';
+                    bayarClass = 'badge-danger';
                 }
                 $('#det-bayar-status').text(bayarLabel).attr('class', 'badge ' + bayarClass + ' p-1 px-2');
 

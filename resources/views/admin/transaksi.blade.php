@@ -314,10 +314,12 @@
                 if (data.status === 'Menunggu Konfirmasi') {
                     bayarLabel = 'Menunggu Konfirmasi';
                     bayarClass = 'badge-warning';
-                } else if (data.metode_pembayaran.toLowerCase() == 'qris' || 
-                    ['Lunas', 'Selesai', 'Dikirim', 'Pesanan Siap Diambil', 'Sedang Dikemas', 'Diproses'].includes(data.status)) {
+                } else if (['Lunas', 'Selesai', 'Dikirim', 'Pesanan Siap Diambil', 'Sedang Dikemas', 'Diproses'].includes(data.status)) {
                     bayarLabel = 'Sudah Bayar';
                     bayarClass = 'badge-success';
+                } else {
+                    bayarLabel = 'Belum Bayar';
+                    bayarClass = 'badge-danger';
                 }
                 $('#det-bayar-status').text(bayarLabel).attr('class', 'badge ' + bayarClass + ' p-1 px-2');
 

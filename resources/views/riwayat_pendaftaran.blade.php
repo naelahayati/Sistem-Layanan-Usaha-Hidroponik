@@ -98,19 +98,31 @@
 
                         @if($item->status_pembayaran == 'Menunggu Konfirmasi' && $item->is_wa_confirmation == 1 && $item->metode_pembayaran != 'qris')
                             @php
+                                $isPendaftarIkut = $item->is_pendaftar_ikut ?? true;
+                                $listNama = json_decode($item->list_nama_peserta, true) ?? [];
+                                
                                 $pesanWA = "Assalamu'alaikum Warahmatullahi Wabarakatuh,\n\n" .
                                 "Halo Admin Naz Hidrofarm,\n\n" .
-                                "Perkenalkan, saya:\n\n" .
-                                "Nama        : " . auth()->user()->name . "\n" .
-                                "ID Daftar   : #MAG-" . str_pad($item->id_pendaftaran, 4, '0', STR_PAD_LEFT) . "\n" .
-                                "Paket       : " . ($item->paket_name ?? 'Magang') . "\n" .
-                                "Tgl Mulai   : " . \Carbon\Carbon::parse($item->tanggal_magang)->format('d M Y') . "\n" .
-                                "Durasi      : " . $item->durasi_magang . " Bulan\n\n" .
-                                "Saya ingin mengonfirmasi pendaftaran saya di Naz Hidrofarm dan menyatakan kesiapan untuk mengikuti program sesuai jadwal yang telah ditentukan.\n\n" .
-                                "Mohon kiranya pendaftaran saya dapat segera diproses. Atas perhatian dan kerjasamanya, saya ucapkan terima kasih.\n\n" .
+                                "Perkenalkan, saya mewakili pendaftaran Magang PKL:\n\n" .
+                                "Pendaftar    : " . auth()->user()->name . ($isPendaftarIkut ? " (Ikut Melakukan Magang)" : " (Perwakilan dari sekolah/kampus)") . "\n";
+                                
+                                if (!empty($listNama)) {
+                                    $pesanWA .= "Daftar Siswa : \n";
+                                    foreach ($listNama as $idx => $nama) {
+                                        $pesanWA .= ($idx + 1) . ". " . $nama . "\n";
+                                    }
+                                }
+                                
+                                $pesanWA .= "\nID Daftar    : #MAG-" . str_pad($item->id_pendaftaran, 5, '0', STR_PAD_LEFT) . "\n" .
+                                "Paket        : " . ($item->paket_name ?? 'Magang') . "\n" .
+                                "Tgl Mulai    : " . \Carbon\Carbon::parse($item->tanggal_magang)->locale('id')->translatedFormat('d F Y') . "\n" .
+                                "Durasi       : " . $item->durasi_magang . " Bulan\n\n" .
+                                "Kami ingin mengonfirmasi pendaftaran tersebut di Naz Hidrofarm dan menyatakan kesiapan untuk mengikuti program sesuai jadwal yang telah ditentukan.\n\n" .
+                                "Mohon pendaftaran kami dapat segera diproses. Atas perhatiannya, kami ucapkan terima kasih.\n\n" .
                                 "Wassalamu'alaikum Warahmatullahi Wabarakatuh.\n\n" .
                                 "Hormat saya,\n" .
                                 auth()->user()->name;
+                                
                                 $waLink = "https://wa.me/" . $adminPhone . "?text=" . urlencode($pesanWA);
                             @endphp
 

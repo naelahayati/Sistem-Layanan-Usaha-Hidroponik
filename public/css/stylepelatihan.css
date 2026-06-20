@@ -1008,6 +1008,215 @@ body {
 }
 
 /* =========================================================
+   COLLECTIVE PENDAFTARAN (LIST MAHASISWA)
+   ========================================================= */
+.collective-section {
+    margin-top: 25px;
+    padding: 20px;
+    background: #fdfdfd;
+    border: 1px solid #e0e6e0;
+    border-radius: 18px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+}
+
+.collective-btn-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 12px;
+    background: #f1f4f1;
+    color: #2d5a27;
+    border: 1px dashed #2d5a27;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1rem; /* Ukuran default desktop */
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-bottom: 15px;
+}
+
+.collective-btn-toggle:hover {
+    background: #e8f0e8;
+}
+
+.collective-btn-toggle.active {
+    background: #2d5a27;
+    color: white;
+    border-style: solid;
+}
+
+.collective-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.collective-radio {
+    position: relative;
+    padding: 12px 15px;
+    background: white;
+    border: 2px solid #f0f0f0;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: 0.3s;
+}
+
+.collective-radio:hover {
+    border-color: #e0e0e0;
+}
+
+.collective-radio i {
+    font-size: 1.1rem;
+    color: #666;
+}
+
+.collective-radio.active {
+    border-color: #2d5a27;
+    background: #f6faf6;
+}
+
+.collective-radio.active i {
+    color: #2d5a27;
+}
+
+.collective-radio input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.collective-radio span {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #444;
+}
+
+.collective-radio.active span {
+    color: #1b3a1a;
+}
+
+.collective-list-label {
+    font-weight: 700; 
+    color: #1b3c18; 
+    font-size: 0.85rem; 
+    margin-bottom: 10px; 
+    display: block;
+}
+
+.collective-list-container {
+    margin-top: 15px;
+}
+
+.collective-input-wrapper {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    animation: fadeInSlideUp 0.3s ease forwards;
+}
+
+@keyframes fadeInSlideUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.collective-input-wrapper input {
+    flex: 1;
+    padding: clamp(10px, 2vw, 12px) clamp(12px, 3vw, 18px);
+    border: 2px solid #1b3c18; /* Sesuai gambar Anda yang memiliki border agak gelap */
+    border-radius: 12px !important;
+    font-family: "Montserrat", sans-serif;
+    font-size: clamp(0.8rem, 2vw, 0.9rem); /* Menyesuaikan dengan standar form Nazfram */
+    background: #ffffff;
+    transition: 0.3s;
+    outline: none;
+}
+
+.collective-input-wrapper input:focus {
+    border-color: #2d5a27;
+    box-shadow: 0 0 0 4px rgba(45, 90, 39, 0.1);
+}
+
+.btn-remove-name {
+    background: #fff0f0;
+    color: #d9534f;
+    border: 1px solid #fde0e0;
+    width: 40px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-remove-name:hover {
+    background: #d9534f;
+    color: white;
+}
+
+.btn-add-name {
+    width: 100%;
+    padding: 10px;
+    background: white;
+    color: #2d5a27;
+    border: 1px solid #2d5a27;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+    margin-top: 5px;
+}
+
+.btn-add-name:hover {
+    background: #f6faf6;
+}
+
+@media (max-width: 480px) {
+    .collective-options {
+        gap: 8px;
+    }
+    
+    .collective-radio {
+        padding: 10px;
+    }
+    
+    .collective-radio span {
+        font-size: 0.7rem !important; /* Mengecilkan teks opsi Saya ikut/perwakilan */
+    }
+
+    .collective-btn-toggle {
+        font-size: 0.8rem !important;
+        padding: 8px !important;
+    }
+
+    .collective-input-wrapper input {
+        font-size: 0.7rem !important;
+    }
+
+    .collective-section label.collective-list-label {
+        font-size: 0.7rem !important; /* Mengecilkan judul Daftar Nama Siswa */
+        margin-bottom: 8px !important;
+    }
+
+    /* Mengecilkan semua teks petunjuk (placeholder) di HP */
+    input::placeholder, textarea::placeholder {
+        font-size: 0.7rem !important;
+    }
+}
+
+/* =========================================================
    UTILITY
    ========================================= */
 img {

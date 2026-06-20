@@ -896,6 +896,12 @@ class Nazframcontroller extends Controller
 
         $tanggal_magang = \Carbon\Carbon::parse($request->tanggal_magang)->toDateString();
 
+        // Logika Peserta Kolektif
+        $isPendaftarIkut = $request->input('is_pendaftar_ikut', 1);
+        $listNamaRaw = $request->input('list_nama_peserta', []);
+        $listNama = array_filter($listNamaRaw, fn($name) => !empty(trim($name)));
+        $listNamaJson = !empty($listNama) ? json_encode(array_values($listNama)) : null;
+
         $id_pendaftaran = DB::table('pendaftaran_magang')->insertGetId([
             'id_user' => Auth::id(),
             'id_magang' => $request->id_pelatihan,
@@ -904,6 +910,8 @@ class Nazframcontroller extends Controller
             'durasi_magang' => $request->jumlah_peserta,
             'pekerjaan' => $request->instansi,
             'deskripsi_kemampuan' => $request->deskripsi_kemampuan,
+            'is_pendaftar_ikut' => $isPendaftarIkut,
+            'list_nama_peserta' => $listNamaJson,
             'total_harga' => $total_harga,
             'metode_pembayaran' => $metode_pembayaran,
             'status_pembayaran' => $status_pembayaran,
@@ -921,14 +929,22 @@ class Nazframcontroller extends Controller
             }
             $pesan = "Assalamu'alaikum Warahmatullahi Wabarakatuh,\n\n";
             $pesan .= "Halo Admin Naz Hidrofarm,\n\n";
-            $pesan .= "Perkenalkan, saya:\n\n";
-            $pesan .= "Nama        : " . Auth::user()->name . "\n";
-            $pesan .= "ID Daftar   : #MAG-" . str_pad($id_pendaftaran, 4, '0', STR_PAD_LEFT) . "\n";
-            $pesan .= "Paket       : " . $magangPkg->title . "\n";
-            $pesan .= "Tgl Mulai   : " . \Carbon\Carbon::parse($tanggal_magang)->format('d F Y') . "\n";
-            $pesan .= "Durasi      : " . $request->jumlah_peserta . " Bulan\n\n";
-            $pesan .= "Saya ingin mengonfirmasi pendaftaran " . $magangPkg->title . " saya di Naz Hidrofarm dan menyatakan kesiapan untuk mengikuti program sesuai jadwal yang telah ditentukan.\n\n";
-            $pesan .= "Mohon kiranya pendaftaran saya dapat segera diproses. Atas perhatian dan kerjasamanya, saya ucapkan terima kasih.\n\n";
+            $pesan .= "Perkenalkan, saya mewakili pendaftaran Magang PKL:\n\n";
+            $pesan .= "Pendaftar    : " . Auth::user()->name . ($isPendaftarIkut ? " (Ikut Melakukan Magang)" : " (Perwakilan dari sekolah/kampus)") . "\n";
+            
+            if (!empty($listNama)) {
+                $pesan .= "Daftar Siswa : \n";
+                foreach ($listNama as $idx => $namaSiswa) {
+                    $pesan .= ($idx + 1) . ". " . $namaSiswa . "\n";
+                }
+            }
+
+            $pesan .= "\nID Daftar    : #MAG-" . str_pad($id_pendaftaran, 5, '0', STR_PAD_LEFT) . "\n";
+            $pesan .= "Paket        : " . $magangPkg->name . "\n";
+            $pesan .= "Tgl Mulai    : " . \Carbon\Carbon::parse($tanggal_magang)->locale('id')->translatedFormat('d F Y') . "\n";
+            $pesan .= "Durasi       : " . $request->jumlah_peserta . " Bulan\n\n";
+            $pesan .= "Kami ingin mengonfirmasi pendaftaran tersebut di Naz Hidrofarm dan menyatakan kesiapan untuk mengikuti program sesuai jadwal yang telah ditentukan.\n\n";
+            $pesan .= "Mohon pendaftaran kami dapat segera diproses. Atas perhatiannya, kami ucapkan terima kasih.\n\n";
             $pesan .= "Wassalamu'alaikum Warahmatullahi Wabarakatuh.";
 
             $waUrl = "https://wa.me/" . $adminPhone . "?text=" . urlencode($pesan);

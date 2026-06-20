@@ -16,7 +16,7 @@
                     <i class="fas fa-user-circle"></i>
                     <div>
                         <span class="info-p-title">Wajib Akun Pribadi</span>
-                        <span class="info-p-desc">Gunakan akun Anda sendiri, pendaftaran tidak bisa diwakilkan orang lain.</span>
+                        <span class="info-p-desc">Pendaftaran wajib akun sendiri, <strong>kecuali paket PKL/Kolektif</strong> yang bisa mendaftarkan rekan tim.</span>
                     </div>
                 </div>
                 <div class="info-p-divider"></div>
@@ -47,7 +47,14 @@
                             <li><strong>💳 Pembayaran:</strong> Transfer & Cash</li>
                             <li><strong>💰 Harga:</strong> {{ $item->price == 0 ? 'Gratis' : 'Rp ' . number_format($item->price, 0, ',', '.') . '/Bulan' }}</li>
                         </ul>
-                        @if(auth()->check() && auth()->user()->role === 'admin')
+                        @if(!$item->is_active)
+                            <p class="text-danger mt-3 mb-2" style="font-size: 0.9rem; font-weight: 600;">
+                                <i class="fas fa-info-circle"></i> Mohon maaf, paket ini sedang tidak tersedia.
+                            </p>
+                            <button class="btn-Daftar" style="background: #a5a5a5; cursor: not-allowed;" onclick="return false;">
+                                Paket Tidak Tersedia
+                            </button>
+                        @elseif(auth()->check() && auth()->user()->role === 'admin')
                             <a href="#" onclick="if(typeof Swal !== 'undefined') { Swal.fire('Akses Terbatas', 'Anda sedang berada di akun admin. Jika ingin melakukan transaksi harus login menggunakan akun pengguna.', 'warning'); } else { alert('Anda sedang berada di akun admin. Jika ingin melakukan transaksi harus login menggunakan akun pengguna.'); } return false;" class="btn-Daftar">
                                 {{ $item->is_wa_confirmation ? 'Daftar & Konfirmasi WA' : 'Daftar' }}
                             </a>

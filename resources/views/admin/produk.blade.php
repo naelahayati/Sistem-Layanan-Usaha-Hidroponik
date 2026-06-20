@@ -50,17 +50,26 @@
                         <span class="text-muted"><i class="fas fa-image fa-2x"></i></span>
                     </div>
                     @endif
+
+                    <div class="position-absolute" style="top: 10px; left: 10px; z-index: 10;">
+                        <span class="badge {{ $product->is_active ? 'badge-success' : 'badge-danger' }} p-2">
+                            {{ $product->is_active ? 'Aktif' : 'Non-aktif' }}
+                        </span>
+                    </div>
                     
                     <div class="card-body p-3">
                         <h6 class="card-title text-truncate w-100 mb-2 font-weight-bold" style="font-size: 1rem;">{{ $product->name }}</h6>
                     </div>
                     
                     <!-- Action Buttons -->
-                    <div class="position-absolute" style="bottom: 10px; right: 10px; z-index: 10;">
-                        <a href="{{ route('admin.produk.edit_form', $product->id) }}" class="btn btn-sm btn-light text-primary">
+                    <div class="position-absolute" style="bottom: 10px; right: 10px; z-index: 15;">
+                        <button type="button" class="btn btn-sm toggleStatusBtn {{ $product->is_active ? 'btn-success' : 'btn-secondary' }}" data-id="{{ $product->id }}" title="{{ $product->is_active ? 'Matikan Produk' : 'Aktifkan Produk' }}">
+                            <i class="fas {{ $product->is_active ? 'fa-toggle-on' : 'fa-toggle-off' }}"></i>
+                        </button>
+                        <a href="{{ route('admin.produk.edit_form', $product->id) }}" class="btn btn-sm btn-light text-primary" style="margin-left: 4px;">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <button type="button" class="btn btn-sm deleteProductBtn" data-id="{{ $product->id }}" style="margin-left: 4px;">
+                        <button type="button" class="btn btn-sm btn-danger deleteProductBtn" data-id="{{ $product->id }}" style="margin-left: 4px;">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>

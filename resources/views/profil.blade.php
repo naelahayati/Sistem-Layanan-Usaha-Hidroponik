@@ -150,7 +150,7 @@
             </div>
             <div class="member-card">
                 <span class="role">Sarpras</span>
-                <span class="name">Ujang Komarudin</span>
+                <span class="name">Rendi Maolana</span>
             </div>
             <div class="member-card">
                 <span class="role">Pemasaran</span>

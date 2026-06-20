@@ -38,6 +38,7 @@
         </div>
 
         @foreach($daftarProduk as $p)
+            @if($p->is_active)
             <form
                 method="POST"
                 action="{{ route('nazfram.keranjang.tambah') }}"
@@ -77,6 +78,7 @@
                     {{ $p->stock <= 0 ? 'Habis' : 'ADD' }}
                 </button>
             </form>
+            @endif
         @endforeach
     </main>
 

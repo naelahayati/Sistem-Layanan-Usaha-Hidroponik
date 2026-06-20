@@ -13,6 +13,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     e.preventDefault();
                     const magangId = actionTarget.getAttribute('data-id');
                     deleteMagang(magangId);
+                } else if (actionTarget.classList.contains('toggleStatusBtn')) {
+                    e.preventDefault();
+                    const magangId = actionTarget.getAttribute('data-id');
+                    toggleMagangStatus(magangId);
                 }
                 // For edit link (<a>), navigation will happen naturally
                 return;
@@ -191,6 +195,45 @@ function showMagangModal(magang) {
     }
 
     $('#viewMagangModal').modal('show');
+}
+
+function toggleMagangStatus(magangId) {
+    Swal.fire({
+        title: 'Ubah Status Paket?',
+        text: 'Status aktif/non-aktif paket magang akan diubah.',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#2d5a27',
+        confirmButtonText: 'Ya, Ubah!',
+        cancelButtonText: 'Batal',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`/admin/magang/toggle/${magangId}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': getCsrfToken(),
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(res => res.json())
+            .then(result => {
+                if (result.success) {
+                    Swal.fire({
+                        title: 'Berhasil!',
+                        text: 'Status paket magang berhasil diperbarui.',
+                        icon: 'success',
+                        timer: 1500,
+                        showConfirmButton: false
+                    }).then(() => location.reload());
+                } else {
+                    Swal.fire('Gagal!', result.message, 'error');
+                }
+            })
+            .catch(err => Swal.fire('Error!', err.message, 'error'));
+        }
+    });
 }
 
 

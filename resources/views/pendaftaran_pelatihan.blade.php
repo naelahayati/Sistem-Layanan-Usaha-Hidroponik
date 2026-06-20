@@ -101,15 +101,59 @@
                     </div>
 
                     <div class="form-group-modern">
-                        <label>Nama Instansi / Kelompok</label>
+                        <label>Nama Instansi / Kelompok (Asal Sekolah/Kampus)</label>
                         <input type="text" name="instansi" class="@error('instansi') is-invalid @enderror"
-                            value="{{ old('instansi') }}" required>
+                            value="{{ old('instansi') }}" placeholder="Contoh: SMKN 1 Bogor atau Universitas Indonesia" required>
                         @error('instansi')
                             <div class="invalid-feedback"
                                 style="display: block; color: #dc3545; font-size: 0.85rem; margin-top: 5px;">{{ $message }}
                             </div>
                         @enderror
                     </div>
+
+                    {{-- Fitur Daftar Kolektif (Khusus PKL) --}}
+                    @php
+                        $isPKL = str_contains(strtolower($magang->name), 'pkl');
+                    @endphp
+
+                    @if($isPKL)
+                    <div class="collective-section">
+                        <button type="button" class="collective-btn-toggle" id="btn-toggle-collective">
+                            <i class="fas fa-users"></i> Daftar untuk Teman / Kolektif?
+                        </button>
+
+                        <div id="collective-content" style="display: none;">
+                            <div class="collective-options">
+                                <label class="collective-radio active" id="label-opsi-ikut">
+                                    <input type="radio" name="is_pendaftar_ikut" value="1" checked>
+                                    <i class="fas fa-user-check"></i>
+                                    <span>Saya ikut magang dan mewakili teman-teman</span>
+                                </label>
+                                <label class="collective-radio" id="label-opsi-wakil">
+                                    <input type="radio" name="is_pendaftar_ikut" value="0">
+                                    <i class="fas fa-user-tie"></i>
+                                    <span>Saya hanya perwakilan (Saya tidak ikut magang)</span>
+                                </label>
+                            </div>
+
+                            <label class="collective-list-label">
+                                Daftar Nama Siswa/Mahasiswa yang Mengikuti PKL:
+                            </label>
+                            
+                            <div id="collective-list-names" class="collective-list-container">
+                                {{-- Textbox baru akan muncul di sini --}}
+                                <div class="collective-input-wrapper">
+                                    <input type="text" name="list_nama_peserta[]" placeholder="Masukkan nama lengkap siswa/mahasiswa">
+                                    <button type="button" class="btn-remove-name" onclick="removeNameRow(this)" style="display:none;"><i class="fas fa-times"></i></button>
+                                </div>
+                            </div>
+
+                            <button type="button" class="btn-add-name" id="btn-add-name">
+                                <i class="fas fa-plus-circle"></i> Tambah Nama Lainnya
+                            </button>
+                        </div>
+                    </div>
+                    @endif
 
                     @php
                         $isPKL = str_contains(strtolower($magang->name), 'pkl');
@@ -302,9 +346,90 @@
                 triggerLabel.textContent = moment(inputTanggal.value).locale('id').format('dddd, D MMMM YYYY');
             }
 
+            // ── Logika Kolektif (PKL) ───────────────────────────────
+            const btnToggleColl = document.getElementById('btn-toggle-collective');
+            const collContent   = document.getElementById('collective-content');
+            const listNames     = document.getElementById('collective-list-names');
+            const btnAddName    = document.getElementById('btn-add-name');
+            const radiosParticipate = document.querySelectorAll('input[name="is_pendaftar_ikut"]');
+
+            if (btnToggleColl) {
+                btnToggleColl.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    if (collContent.style.display === 'none') {
+                        collContent.style.display = 'block';
+                        this.innerHTML = '<i class="fas fa-times-circle"></i> Batalkan Daftar Kolektif';
+                    } else {
+                        collContent.style.display = 'none';
+                        this.innerHTML = '<i class="fas fa-users"></i> Daftar untuk Teman / Kolektif?';
+                        // Reset list if needed or keep it hidden
+                    }
+                });
+            }
+
+            if (btnAddName) {
+                btnAddName.addEventListener('click', function() {
+                    // Validasi: Cek apakah input terakhir sudah diisi
+                    const allInputsLabels = listNames.querySelectorAll('input[name="list_nama_peserta[]"]');
+                    const lastInput = allInputsLabels[allInputsLabels.length - 1];
+                    
+                    if (lastInput && lastInput.value.trim() === "") {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Input Kosong',
+                            text: 'Silakan isi nama siswa/mahasiswa sebelumnya terlebih dahulu sebelum menambah nama baru.',
+                            confirmButtonColor: '#2d5a27'
+                        });
+                        lastInput.focus();
+                        return;
+                    }
+
+                    const row = document.createElement('div');
+                    row.className = 'collective-input-wrapper';
+                    row.innerHTML = `
+                        <input type="text" name="list_nama_peserta[]" placeholder="Masukkan nama lengkap siswa/mahasiswa">
+                        <button type="button" class="btn-remove-name" onclick="removeNameRow(this)"><i class="fas fa-times"></i></button>
+                    `;
+                    listNames.appendChild(row);
+                    updateRemoveButtons();
+                    
+                    // Focus ke input baru
+                    row.querySelector('input').focus();
+                });
+            }
+
+            window.removeNameRow = function(btn) {
+                btn.closest('.collective-input-wrapper').remove();
+                updateRemoveButtons();
+            }
+
+            function updateRemoveButtons() {
+                const rows = listNames.querySelectorAll('.collective-input-wrapper');
+                rows.forEach((row, index) => {
+                    const btn = row.querySelector('.btn-remove-name');
+                    if (rows.length > 1) {
+                        btn.style.display = 'flex';
+                    } else {
+                        // Alih-alih display:none, kita bisa biarkan dia tetap ada tapi tidak terlihat 
+                        // agar lebar input tetap konsisten, atau kita pastikan input tetap flex:1
+                        btn.style.display = 'none';
+                    }
+                });
+            }
+
+            radiosParticipate.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    document.querySelectorAll('.collective-radio').forEach(lbl => lbl.classList.remove('active'));
+                    this.closest('.collective-radio').classList.add('active');
+                });
+            });
+
             window.hitungTotal = function() {
                 let jumlah = parseInt(inputPeserta ? inputPeserta.value : 0) || 0;
                 let total = jumlah * hargaDasar;
+                
+                // Jika ingin mendukung harga per orang di masa depan, logika perkalian bisa ditambah di sini.
+                // Untuk sekarang PKL berharga Rp 0, jadi total tetap 0.
 
                 if (textTotal) {
                     textTotal.textContent = new Intl.NumberFormat('id-ID', {

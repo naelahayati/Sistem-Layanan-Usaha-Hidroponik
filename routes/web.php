@@ -10,6 +10,13 @@ use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
 
 
+use Illuminate\Support\Facades\Artisan;
+
+Route::get('/run-schedule', function () {
+    Artisan::call('schedule:run');
+    return "Schedule is running...";
+});
+
 Route::get('/sitemap.xml', function () {
     $sitemap = Sitemap::create()
         ->add(Url::create('/'))
@@ -130,6 +137,7 @@ Route::post("/admin/transaksi-offline/magang", [AdminController::class, "storeTr
     Route::post("/admin/produk/add", [AdminController::class, "addProduct"])->name("admin.produk.add");
     Route::get("/admin/produk/edit/{id}", [AdminController::class, "editProductForm"])->name("admin.produk.edit_form");
     Route::post("/admin/produk/edit/{id}", [AdminController::class, "editProduct"])->name("admin.produk.edit");
+    Route::post("/admin/produk/toggle/{id}", [AdminController::class, "toggleProductStatus"])->name("admin.produk.toggle");
     Route::delete("/admin/produk/delete/{id}", [AdminController::class, "deleteProduct"])->name("admin.produk.delete");
 
     // --- KELOLA KUNJUNGAN (ADMIN) ---
@@ -138,6 +146,7 @@ Route::post("/admin/transaksi-offline/magang", [AdminController::class, "storeTr
     Route::post("/admin/kunjungan/add", [AdminController::class, "addKunjungan"])->name("admin.kunjungan.add");
     Route::get("/admin/kunjungan/edit/{id}", [AdminController::class, "editKunjunganForm"])->name("admin.kunjungan.edit_form");
     Route::post("/admin/kunjungan/edit/{id}", [AdminController::class, "editKunjungan"])->name("admin.kunjungan.edit");
+    Route::post("/admin/kunjungan/toggle/{id}", [AdminController::class, "toggleKunjunganStatus"])->name("admin.kunjungan.toggle");
     Route::delete("/admin/kunjungan/delete/{id}", [AdminController::class, "deleteKunjungan"])->name("admin.kunjungan.delete");
 
     // --- KELOLA MAGANG (ADMIN UNTUK PAKET) ---
@@ -146,6 +155,7 @@ Route::post("/admin/transaksi-offline/magang", [AdminController::class, "storeTr
     Route::post("/admin/magang/add", [AdminController::class, "addMagang"])->name("admin.magang.add");
     Route::get("/admin/magang/edit/{id}", [AdminController::class, "editMagangForm"])->name("admin.magang.edit_form");
     Route::post("/admin/magang/edit/{id}", [AdminController::class, "editMagang"])->name("admin.magang.edit");
+    Route::post("/admin/magang/toggle/{id}", [AdminController::class, "toggleMagangStatus"])->name("admin.magang.toggle");
     Route::delete("/admin/magang/delete/{id}", [AdminController::class, "deleteMagang"])->name("admin.magang.delete");
 
     // --- MANAJEMEN PENDAFTARAN (KUNJUNGAN & MAGANG) ---

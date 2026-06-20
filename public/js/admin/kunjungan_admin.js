@@ -13,6 +13,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     e.preventDefault();
                     const kunjunganId = actionTarget.getAttribute('data-id');
                     deleteKunjungan(kunjunganId);
+                } else if (actionTarget.classList.contains('toggleStatusBtn')) {
+                    e.preventDefault();
+                    const kunjunganId = actionTarget.getAttribute('data-id');
+                    toggleKunjunganStatus(kunjunganId);
                 }
                 // For edit link (<a>), navigation will happen naturally
                 return;
@@ -195,6 +199,45 @@ function showKunjunganModal(kunjungan) {
     }
 
     $('#viewKunjunganModal').modal('show');
+}
+
+function toggleKunjunganStatus(kunjunganId) {
+    Swal.fire({
+        title: 'Ubah Status Paket?',
+        text: 'Status aktif/non-aktif paket kunjungan akan diubah.',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#2d5a27',
+        confirmButtonText: 'Ya, Ubah!',
+        cancelButtonText: 'Batal',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`/admin/kunjungan/toggle/${kunjunganId}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': getCsrfToken(),
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(res => res.json())
+            .then(result => {
+                if (result.success) {
+                    Swal.fire({
+                        title: 'Berhasil!',
+                        text: 'Status paket kunjungan berhasil diperbarui.',
+                        icon: 'success',
+                        timer: 1500,
+                        showConfirmButton: false
+                    }).then(() => location.reload());
+                } else {
+                    Swal.fire('Gagal!', result.message, 'error');
+                }
+            })
+            .catch(err => Swal.fire('Error!', err.message, 'error'));
+        }
+    });
 }
 
 

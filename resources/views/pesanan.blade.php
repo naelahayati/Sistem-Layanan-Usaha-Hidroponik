@@ -223,9 +223,26 @@
 
     function autoCalculateDistance() {
         if (userLat && userLng) {
-            const distance = haversineDistance(farmLat, farmLng, userLat, userLng);
-            document.getElementById('jarak_km_input').value = distance.toFixed(1);
-            updateCost();
+            // Gunakan API rute untuk hasil akurat sejak awal (Jarak Jalan Raya)
+            fetch(`https://router.project-osrm.org/route/v1/driving/${userLng},${userLat};${farmLng},${farmLat}?overview=false`)
+                .then(r => r.json())
+                .then(data => {
+                    if (data.routes && data.routes.length > 0) {
+                        const distance = data.routes[0].distance / 1000;
+                        document.getElementById('jarak_km_input').value = distance.toFixed(1);
+                        updateCost();
+                    } else {
+                        // Fallback jika API rute gagal
+                        const distance = haversineDistance(farmLat, farmLng, userLat, userLng);
+                        document.getElementById('jarak_km_input').value = distance.toFixed(1);
+                        updateCost();
+                    }
+                })
+                .catch(() => {
+                    const distance = haversineDistance(farmLat, farmLng, userLat, userLng);
+                    document.getElementById('jarak_km_input').value = distance.toFixed(1);
+                    updateCost();
+                });
         }
     }
 
@@ -367,6 +384,10 @@
 
                     document.getElementById('modal-jarak').textContent = jarakKm.toFixed(1) + ' km';
                     document.getElementById('modal-ongkir').textContent = formatRupiah(ongkirRute);
+
+                    // SINKRONISASI KE HALAMAN UTAMA
+                    document.getElementById('jarak_km_input').value = jarakKm.toFixed(1);
+                    updateCost();
 
                     const coords = route.geometry.coordinates.map(c => [c[1], c[0]]);
                     const polyline = L.polyline(coords, { color: '#1a73e8', weight: 4, opacity: 0.85 }).addTo(leafletMap);

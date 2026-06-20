@@ -241,6 +241,14 @@
 
                         <h6 class="text-uppercase text-muted font-weight-bold small mt-4 mb-3">Kemampuan Dasar</h6>
                         <div class="p-3 bg-light rounded" id="det-deskripsi" style="font-size: 0.9rem; min-height: 60px; white-space: pre-line;"></div>
+
+                        <div id="det-collective-section" style="display: none;">
+                            <h6 class="text-uppercase text-muted font-weight-bold small mt-4 mb-3">Daftar Anggota Kolektif</h6>
+                            <div class="p-3 bg-light rounded" style="font-size: 0.9rem;">
+                                <div id="det-pendaftar-status" class="mb-2 font-weight-bold" style="color: #1b3c18;"></div>
+                                <ul id="det-list-nama" class="mb-0 pl-3"></ul>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Sisi Kanan: Pembayaran & Status -->
@@ -309,17 +317,42 @@ function runScript() {
                 $('#det-metode').text(data.metode_pembayaran.toUpperCase());
                 $('#det-total').text('Rp ' + new Intl.NumberFormat('id-ID').format(data.total_harga));
 
+                // Logika Kolektif di Modal
+                const isParticipate = data.is_pendaftar_ikut === 1 || data.is_pendaftar_ikut === "1" || data.is_pendaftar_ikut === true;
+                const listPesertaRaw = data.list_nama_peserta;
+                let listPeserta = [];
+                try {
+                    if(listPesertaRaw) {
+                        listPeserta = typeof listPesertaRaw === 'string' ? JSON.parse(listPesertaRaw) : listPesertaRaw;
+                    }
+                } catch(e) { console.error("Error parsing list_nama_peserta", e); }
+
+                if (listPeserta && listPeserta.length > 0) {
+                    $('#det-collective-section').show();
+                    $('#det-pendaftar-status').text(isParticipate ? "Pendaftar (Akun Owner) : Ikut Magang" : "Pendaftar (Akun Owner) : Hanya Wakil");
+                    
+                    const $listContainer = $('#det-list-nama');
+                    $listContainer.empty();
+                    listPeserta.forEach(name => {
+                        $listContainer.append(`<li>${name}</li>`);
+                    });
+                } else {
+                    $('#det-collective-section').hide();
+                }
+
                 // Logika Indikator Bayar Khusus Admin
                 let bayarLabel = 'Belum Bayar';
                 let bayarClass = 'badge-danger';
 
-                if (['Menunggu Konfirmasi'].includes(data.status_pembayaran)) {
+                if (data.status_pembayaran === 'Menunggu Konfirmasi') {
                     bayarLabel = 'Menunggu Konfirmasi';
                     bayarClass = 'badge-warning';
-                } else if (data.metode_pembayaran.toLowerCase() == 'qris' || data.metode_pembayaran.toLowerCase() == 'tunai' ||
-                    ['Lunas', 'Diterima', 'Selesai'].includes(data.status_pembayaran)) {
+                } else if (['Lunas', 'Diterima', 'Selesai', 'Aktif', 'Diproses', 'Dikirim', 'Sedang Dikemas'].includes(data.status_pembayaran)) {
                     bayarLabel = 'Sudah Bayar';
                     bayarClass = 'badge-success';
+                } else {
+                    bayarLabel = 'Belum Bayar';
+                    bayarClass = 'badge-danger';
                 }
 
                 $('#det-bayar-status').text(bayarLabel).attr('class', 'badge ' + bayarClass + ' p-1 px-2');

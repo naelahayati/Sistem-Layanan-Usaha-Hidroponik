@@ -1644,7 +1644,16 @@ class AdminController extends Controller
             if (!isset($rekapMagang[$pName])) {
                 $rekapMagang[$pName] = ['total_pendaftar' => 0, 'total_harga' => 0];
             }
-            $rekapMagang[$pName]['total_pendaftar'] += 1;
+
+            // HITUNG JUMLAH ORANG SECARA KOLEKTIF
+            $isIkut = $m->is_pendaftar_ikut ?? 1;
+            $listPeserta = json_decode($m->list_nama_peserta ?? '[]', true);
+            $countPeserta = (int)$isIkut + count($listPeserta);
+            
+            // Jika tidak pakai fitur kolektif (PKL), minimal tetap 1 orang (fallback)
+            if ($countPeserta == 0) $countPeserta = 1;
+
+            $rekapMagang[$pName]['total_pendaftar'] += $countPeserta;
             $rekapMagang[$pName]['total_harga'] += $m->total_harga;
             $totalMagang += $m->total_harga;
         }
@@ -2383,5 +2392,43 @@ class AdminController extends Controller
             DB::rollBack();
             return response()->json(["success" => false, "message" => "Terjadi kesalahan: " . $e->getMessage()], 500);
         }
+    }
+
+    // --- TOGGLE STATUS AKTIF/NON-AKTIF ---
+    public function toggleProductStatus($id)
+    {
+        if (!$this->isAdmin()) return response()->json(['success' => false, 'message' => 'Akses ditolak'], 403);
+        $product = Product::findOrFail($id);
+        $product->is_active = !$product->is_active;
+        $product->save();
+        return response()->json(['success' => true, 'is_active' => $product->is_active]);
+    }
+
+    public function toggleMagangStatus($id)
+    {
+        if (!$this->isAdmin()) return response()->json(['success' => false, 'message' => 'Akses ditolak'], 403);
+        $magang = DB::table('magangs')->where('id', $id)->first();
+        if (!$magang) return response()->json(['success' => false, 'message' => 'Data tidak ditemukan'], 404);
+        
+        DB::table('magangs')->where('id', $id)->update([
+            'is_active' => !$magang->is_active,
+            'updated_at' => now()
+        ]);
+        
+        return response()->json(['success' => true, 'is_active' => !$magang->is_active]);
+    }
+
+    public function toggleKunjunganStatus($id)
+    {
+        if (!$this->isAdmin()) return response()->json(['success' => false, 'message' => 'Akses ditolak'], 403);
+        $kunjungan = DB::table('kunjungans')->where('id', $id)->first();
+        if (!$kunjungan) return response()->json(['success' => false, 'message' => 'Data tidak ditemukan'], 404);
+        
+        DB::table('kunjungans')->where('id', $id)->update([
+            'is_active' => !$kunjungan->is_active,
+            'updated_at' => now()
+        ]);
+        
+        return response()->json(['success' => true, 'is_active' => !$kunjungan->is_active]);
     }
 }

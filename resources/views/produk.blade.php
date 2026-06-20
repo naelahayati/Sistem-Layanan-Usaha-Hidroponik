@@ -50,17 +50,27 @@
         <!-- Product Grid: Card Bernapas dengan Soft Shadow -->
         <div class="container-produk-list">
             @foreach($produk as $p)
-                <div class="produk-item">
+                <div class="produk-item {{ !$p->is_active ? 'produk-unavailable' : '' }}">
                     <!-- Foto Produk -->
-                        <div class="produk-photo-box">
-                            <img src="{{ $p->image_url }}" alt="{{ $p->name }}" onload="this.classList.add('loaded')">
-                        </div>
+                    <div class="produk-photo-box">
+                        <img src="{{ $p->image_url }}" alt="{{ $p->name }}" onload="this.classList.add('loaded')">
+                        @if(!$p->is_active)
+                            <div class="unavailable-overlay">
+                                <span>Tidak Tersedia</span>
+                            </div>
+                        @endif
+                    </div>
 
                     <!-- Informasi Produk -->
                     <div class="produk-desc-box">
                         <h2>{{ strtoupper($p->name) }}</h2>
                         <div class="price-tag">Rp {{ number_format($p->price, 0, ',', '.') }}</div>
                         <div class="stock-tag">Stok Tersedia: {{ $p->stock }}</div>
+                        @if(!$p->is_active)
+                            <div class="status-msg text-danger font-weight-bold" style="font-size: 0.85rem; margin-bottom: 8px;">
+                                <i class="fas fa-exclamation-circle"></i> Produk Sedang Tidak Tersedia
+                            </div>
+                        @endif
                         <p class="produk-deskripsi">{{ Str::limit($p->description, 100) }}</p>
                     </div>
                 </div>
