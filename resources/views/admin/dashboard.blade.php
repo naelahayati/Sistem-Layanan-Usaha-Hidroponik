@@ -1,4 +1,4 @@
-﻿@extends('admin.Theme.defualt')
+@extends('admin.Theme.defualt')
 
 
 @push('styles')
@@ -242,7 +242,6 @@
                     <div class="card-body p-3">
                         @foreach([
                             'Menunggu Konfirmasi' => 'warning',
-                            'Diterima'            => 'success',
                         ] as $status => $color)
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <span class="text-muted small">{{ $status }}</span>
@@ -270,7 +269,6 @@
                         @foreach([
                             'Menunggu Konfirmasi' => 'warning',
                             'Terkonfirmasi'       => 'info',
-                            'Diterima'            => 'success',
                         ] as $status => $color)
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <span class="text-muted small">{{ $status }}</span>

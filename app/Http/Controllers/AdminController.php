@@ -52,14 +52,14 @@ class AdminController extends Controller
 
         // Status count kunjungan
         $statusKunjungan = DB::table('reservasi_kunjungan')
-            ->whereNotIn('status_pembayaran', ['Selesai', 'Expired', 'Dibatalkan Pengguna', 'Dibatalkan', 'Tidak Diterima'])
+            ->whereNotIn('status_pembayaran', ['Selesai', 'Expired', 'Dibatalkan Pengguna', 'Dibatalkan', 'Tidak Diterima', 'Diterima'])
             ->selectRaw('status_pembayaran as status, count(*) as total')
             ->groupBy('status_pembayaran')
             ->pluck('total', 'status');
 
         // Status count magang
         $statusMagang = DB::table('pendaftaran_magang')
-            ->whereNotIn('status_pembayaran', ['Selesai', 'Expired', 'Dibatalkan Pengguna', 'Dibatalkan', 'Tidak Diterima'])
+            ->whereNotIn('status_pembayaran', ['Selesai', 'Expired', 'Dibatalkan Pengguna', 'Dibatalkan', 'Tidak Diterima', 'Diterima'])
             ->selectRaw('status_pembayaran as status, count(*) as total')
             ->groupBy('status_pembayaran')
             ->pluck('total', 'status');
