@@ -14,12 +14,16 @@ use Illuminate\Support\Facades\Artisan;
 
 Route::get('/run-schedule', function () {
     Artisan::call('schedule:run');
-    return "Schedule is running...";
+    return "<pre>" . Artisan::output() . "</pre>";
 });
 
 Route::get('/test-wa', function () {
     Artisan::call('admin:daily-report');
     return "Mencoba mengirim laporan WA... Cek WhatsApp Anda!";
+});
+
+Route::get('/check-time', function () {
+    return "Waktu Server: " . now()->format('Y-m-d H:i:s') . " (" . config('app.timezone') . ")";
 });
 
 Route::get('/sitemap.xml', function () {
