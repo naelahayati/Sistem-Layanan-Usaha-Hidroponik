@@ -76,7 +76,8 @@ class SendAdminDailyReport extends Command
     {
         $token = env('FONNTE_TOKEN');
         $target = env('WHATSAPP_ADMIN');
-        if (!$token || !$target) return;
+        if (!$token || !$target)
+            return;
 
         Http::withHeaders(['Authorization' => $token])
             ->post('https://api.fonnte.com/send', [
