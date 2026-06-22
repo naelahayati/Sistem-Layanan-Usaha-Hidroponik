@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Artisan;
 
 Route::get('/run-schedule', function () {
     Artisan::call('schedule:run');
-    return "<pre>" . Artisan::output() . "</pre>";
+    Artisan::call('admin:daily-report');
+    return "Otomatisasi Berhasil Dijalankan!";
 });
 
 Route::get('/test-wa', function () {
