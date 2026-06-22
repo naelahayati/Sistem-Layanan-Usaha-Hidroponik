@@ -22,6 +22,14 @@ Route::get('/test-wa', function () {
     return "Mencoba mengirim laporan WA... Cek WhatsApp Anda!";
 });
 
+Route::get('/clear-cache', function () {
+    Artisan::call('config:clear');
+    Artisan::call('route:clear');
+    Artisan::call('cache:clear');
+    Artisan::call('view:clear');
+    return "Semua cache berhasil dibersihkan!";
+});
+
 Route::get('/check-time', function () {
     return "Waktu Server: " . now()->format('Y-m-d H:i:s') . " (" . config('app.timezone') . ")";
 });
