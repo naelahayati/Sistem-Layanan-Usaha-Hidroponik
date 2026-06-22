@@ -20,7 +20,7 @@ Route::get('/run-schedule', function () {
     $waktuSekarang = now()->format('H:i');
     
     // Daftar jam pengiriman laporan harian
-    $jadwalLaporan = ['08:00', '12:30', '13:00', '19:00'];
+    $jadwalLaporan = ['08:00', '13:00', '19:00'];
 
     if (in_array($waktuSekarang, $jadwalLaporan)) {
         Artisan::call('admin:daily-report');
@@ -28,19 +28,6 @@ Route::get('/run-schedule', function () {
     }
 
     return "Jadwal berjalan (Waktu: $waktuSekarang). Menunggu jam laporan...";
-});
-
-Route::get('/test-wa', function () {
-    Artisan::call('admin:daily-report');
-    return "Mencoba mengirim laporan WA... Cek WhatsApp Anda!";
-});
-
-Route::get('/clear-cache', function () {
-    Artisan::call('config:clear');
-    Artisan::call('route:clear');
-    Artisan::call('cache:clear');
-    Artisan::call('view:clear');
-    return "Semua cache berhasil dibersihkan!";
 });
 
 Route::get('/check-time', function () {

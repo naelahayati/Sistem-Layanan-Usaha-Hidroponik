@@ -14,8 +14,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('orders:check-expired')->everyMinute();
         $schedule->command('magang:expire-payments')->everyMinute();
 
-        // Laporan Harian Admin ke WhatsApp (Tes Tiap 5 Menit)
-        $schedule->command('admin:daily-report')->everyMinute();
+
     }
 
     protected function commands()
