@@ -13,9 +13,21 @@ use Spatie\Sitemap\Tags\Url;
 use Illuminate\Support\Facades\Artisan;
 
 Route::get('/run-schedule', function () {
+    // Jalankan scheduler standar Laravel (untuk expired dll)
     Artisan::call('schedule:run');
-    Artisan::call('admin:daily-report');
-    return "Otomatisasi Berhasil Dijalankan!";
+
+    // Cek jam menit sekarang (Format 24 jam)
+    $waktuSekarang = now()->format('H:i');
+    
+    // Daftar jam pengiriman laporan harian
+    $jadwalLaporan = ['08:00', '12:30', '13:00', '19:00'];
+
+    if (in_array($waktuSekarang, $jadwalLaporan)) {
+        Artisan::call('admin:daily-report');
+        return "Laporan harian dikirim pada jam $waktuSekarang";
+    }
+
+    return "Jadwal berjalan (Waktu: $waktuSekarang). Menunggu jam laporan...";
 });
 
 Route::get('/test-wa', function () {
