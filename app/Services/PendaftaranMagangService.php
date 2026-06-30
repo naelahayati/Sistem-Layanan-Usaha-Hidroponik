@@ -13,7 +13,7 @@ class PendaftaranMagangService
     {
         return DB::table('pendaftaran_magang')
             ->whereDate('tanggal_magang', '<=', Carbon::today())
-            ->whereIn('status_pembayaran', ['Menunggu Konfirmasi', 'Menunggu Pembayaran'])
+            ->whereIn('status_pembayaran', ['Menunggu Konfirmasi', 'Terkonfirmasi'])
             ->update([
                 'status_pembayaran' => 'Dibatalkan',
                 'expires_at' => null,
@@ -48,11 +48,11 @@ class PendaftaranMagangService
             return 'Expired';
         }
 
-        // 2. Cek Pembatalan Otomatis Hari H atau Lewat jika status masih belum dikonfirmasi/dibayar
+        // 2. Cek Pembatalan Otomatis di Hari H jika status masih Menunggu Konfirmasi / Terkonfirmasi (belum diproses admin)
         $startDate = Carbon::parse($row->tanggal_magang)->startOfDay();
         if (
             Carbon::today() >= $startDate
-            && in_array($row->status_pembayaran, ['Menunggu Konfirmasi', 'Menunggu Pembayaran'])
+            && in_array($row->status_pembayaran, ['Menunggu Konfirmasi', 'Terkonfirmasi'])
         ) {
             DB::table('pendaftaran_magang')
                 ->where('id_pendaftaran', $idPendaftaran)
