@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
 use App\Mail\SendKodeVerifikasiProfil;
 use App\Notifications\StatusNotification;
+use App\Services\ReservasiKunjunganService;
 
 class AdminController extends Controller
 {
@@ -41,6 +42,9 @@ class AdminController extends Controller
                 ->route("login")
                 ->with("error", "Silakan login sebagai admin.");
         }
+
+        // Jalankan auto pembatalan kunjungan (hari H atau lewat yang belum dikonfirmasi)
+        ReservasiKunjunganService::autoCancelPassedReservations();
 
         $today = Carbon::today();
 
@@ -1112,6 +1116,9 @@ class AdminController extends Controller
             return response()->json(["success" => false, "message" => "Akses ditolak"], 403);
         }
 
+        // Jalankan auto pembatalan kunjungan (hari H atau lewat yang belum dikonfirmasi)
+        ReservasiKunjunganService::autoCancelPassedReservations();
+
         $startLimit = Carbon::parse($request->input('start'))->startOfDay();
         $endLimit = Carbon::parse($request->input('end'))->endOfDay();
 
@@ -1693,6 +1700,9 @@ class AdminController extends Controller
         if (!$this->isAdmin()) {
             return redirect()->route("login")->with("error", "Akses ditolak.");
         }
+
+        // Jalankan auto pembatalan kunjungan (hari H atau lewat yang belum dikonfirmasi/dibayar)
+        ReservasiKunjunganService::autoCancelPassedReservations();
 
         $statusFilter = $request->query('status');
         $search = strtolower($request->query('search', ''));

@@ -19,6 +19,7 @@ use Carbon\Carbon;
 use App\Mail\SendKodeVerifikasiProfil;
 use Illuminate\Support\Facades\Auth;
 use App\Services\PendaftaranMagangService;
+use App\Services\ReservasiKunjunganService;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class Nazframcontroller extends Controller
@@ -359,6 +360,14 @@ class Nazframcontroller extends Controller
 
     public function pembayaranKunjungan($id)
     {
+        $status = ReservasiKunjunganService::expireIfNeeded((int) $id);
+        if ($status === 'Expired') {
+            return redirect()->route('nazfram.kunjungan')->with('error', 'Waktu pembayaran QRIS telah habis.');
+        }
+        if ($status === 'Dibatalkan') {
+            return redirect()->route('nazfram.kunjungan')->with('error', 'Reservasi ini telah dibatalkan.');
+        }
+
         $reservasi = DB::table('reservasi_kunjungan')
             ->join('kunjungans', 'reservasi_kunjungan.id_kunjungan', '=', 'kunjungans.id')
             ->where('id_reservasi', '=', $id)
@@ -795,6 +804,10 @@ class Nazframcontroller extends Controller
             return view('riwayat_pendaftaran', compact('judul', 'data', 'backRoute'));
         } else {
             $judul = "Riwayat Reservasi Kunjungan";
+
+            // Jalankan auto pembatalan kunjungan (hari H atau lewat yang belum dikonfirmasi)
+            ReservasiKunjunganService::autoCancelPassedReservations();
+
             $data = DB::table('reservasi_kunjungan')
                 ->leftJoin('users', 'reservasi_kunjungan.id_user', '=', 'users.id')
                 ->leftJoin('kunjungans', 'reservasi_kunjungan.id_kunjungan', '=', 'kunjungans.id')
@@ -804,6 +817,12 @@ class Nazframcontroller extends Controller
                 ->paginate($perPage);
 
             foreach ($data as $k) {
+                // Jalankan cek expired / batalkan per item
+                $newStatus = ReservasiKunjunganService::expireIfNeeded((int) $k->id_reservasi);
+                if ($newStatus) {
+                    $k->status_pembayaran = $newStatus;
+                }
+
                 // 1. Cek Selesai Berdasarkan Tanggal
                 if (Carbon::parse($k->tanggal_reservasi)->startOfDay() < Carbon::today() && ($k->status_pembayaran == 'Lunas' || $k->status_pembayaran == 'Diterima')) {
                     DB::table('reservasi_kunjungan')
