@@ -757,6 +757,10 @@ class Nazframcontroller extends Controller
 
         if ($type == 'magang') {
             $judul = "Riwayat Pendaftaran Magang";
+
+            // Jalankan auto pembatalan magang (hari H atau lewat yang belum disetujui/dibayar)
+            PendaftaranMagangService::autoCancelPassedMagangs();
+
             $data = DB::table('pendaftaran_magang')
                 ->leftJoin('users', 'pendaftaran_magang.id_user', '=', 'users.id')
                 ->leftJoin('magangs', 'pendaftaran_magang.id_magang', '=', 'magangs.id')
@@ -781,22 +785,6 @@ class Nazframcontroller extends Controller
                         ->where('id_pendaftaran', '=', $m->id_pendaftaran, 'and')
                         ->update(['status_pembayaran' => 'Selesai', 'updated_at' => now()]);
                     $m->status_pembayaran = 'Selesai';
-                }
-
-                // 2. Cek Expired QRIS
-                if ($m->status_pembayaran == 'Menunggu Pembayaran' && $m->expires_at && Carbon::parse($m->expires_at)->isPast()) {
-                    DB::table('pendaftaran_magang')
-                        ->where('id_pendaftaran', '=', $m->id_pendaftaran, 'and')
-                        ->update(['status_pembayaran' => 'Expired', 'updated_at' => now()]);
-                    $m->status_pembayaran = 'Expired';
-                }
-
-                // 3. Logika Otomatis: Jika PKL masih "Menunggu Konfirmasi" sampai hari H mulai, maka otomatis "Dibatalkan"
-                if (strtoupper($m->paket_name ?? '') == 'PKL' && $m->status_pembayaran == 'Menunggu Konfirmasi' && Carbon::today() >= Carbon::parse($m->tanggal_magang)->startOfDay()) {
-                    DB::table('pendaftaran_magang')
-                        ->where('id_pendaftaran', '=', $m->id_pendaftaran, 'and')
-                        ->update(['status_pembayaran' => 'Dibatalkan', 'updated_at' => now()]);
-                    $m->status_pembayaran = 'Dibatalkan';
                 }
             }
 

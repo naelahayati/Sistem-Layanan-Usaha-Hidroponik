@@ -9,6 +9,18 @@ class PendaftaranMagangService
 {
     public const PAYMENT_MINUTES = 25;
 
+    public static function autoCancelPassedMagangs(): int
+    {
+        return DB::table('pendaftaran_magang')
+            ->whereDate('tanggal_magang', '<=', Carbon::today())
+            ->whereIn('status_pembayaran', ['Menunggu Konfirmasi', 'Menunggu Pembayaran'])
+            ->update([
+                'status_pembayaran' => 'Dibatalkan',
+                'expires_at' => null,
+                'updated_at' => now(),
+            ]);
+    }
+
     public static function expireIfNeeded(int $idPendaftaran): ?string
     {
         $row = DB::table('pendaftaran_magang')
@@ -19,6 +31,7 @@ class PendaftaranMagangService
             return null;
         }
 
+        // 1. Cek Expired QRIS
         if (
             $row->status_pembayaran === 'Menunggu Pembayaran'
             && $row->expires_at
@@ -33,6 +46,23 @@ class PendaftaranMagangService
                 ]);
 
             return 'Expired';
+        }
+
+        // 2. Cek Pembatalan Otomatis Hari H atau Lewat jika status masih belum dikonfirmasi/dibayar
+        $startDate = Carbon::parse($row->tanggal_magang)->startOfDay();
+        if (
+            Carbon::today() >= $startDate
+            && in_array($row->status_pembayaran, ['Menunggu Konfirmasi', 'Menunggu Pembayaran'])
+        ) {
+            DB::table('pendaftaran_magang')
+                ->where('id_pendaftaran', $idPendaftaran)
+                ->update([
+                    'status_pembayaran' => 'Dibatalkan',
+                    'expires_at' => null,
+                    'updated_at' => now(),
+                ]);
+
+            return 'Dibatalkan';
         }
 
         return $row->status_pembayaran;

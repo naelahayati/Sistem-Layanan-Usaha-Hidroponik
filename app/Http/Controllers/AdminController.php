@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Mail\SendKodeVerifikasiProfil;
 use App\Notifications\StatusNotification;
 use App\Services\ReservasiKunjunganService;
+use App\Services\PendaftaranMagangService;
 
 class AdminController extends Controller
 {
@@ -45,6 +46,9 @@ class AdminController extends Controller
 
         // Jalankan auto pembatalan kunjungan (hari H atau lewat yang belum dikonfirmasi)
         ReservasiKunjunganService::autoCancelPassedReservations();
+
+        // Jalankan auto pembatalan magang (hari H atau lewat yang belum disetujui/dibayar)
+        PendaftaranMagangService::autoCancelPassedMagangs();
 
         $today = Carbon::today();
 
@@ -1119,6 +1123,9 @@ class AdminController extends Controller
         // Jalankan auto pembatalan kunjungan (hari H atau lewat yang belum dikonfirmasi)
         ReservasiKunjunganService::autoCancelPassedReservations();
 
+        // Jalankan auto pembatalan magang (hari H atau lewat yang belum disetujui/dibayar)
+        PendaftaranMagangService::autoCancelPassedMagangs();
+
         $startLimit = Carbon::parse($request->input('start'))->startOfDay();
         $endLimit = Carbon::parse($request->input('end'))->endOfDay();
 
@@ -1792,6 +1799,9 @@ class AdminController extends Controller
             return redirect()->route("login")->with("error", "Akses ditolak.");
         }
 
+        // Jalankan auto pembatalan magang (hari H atau lewat yang belum disetujui/dibayar)
+        PendaftaranMagangService::autoCancelPassedMagangs();
+
         $statusFilter = $request->query('status');
         $subMagangFilter = $request->query('sub_magang', 'Semua');
         $search = strtolower($request->query('search', ''));
@@ -1827,12 +1837,10 @@ class AdminController extends Controller
 
         $filteredMagangs = collect([]);
         foreach ($magangs as $m) {
-            // 0. Cek Expired QRIS (Jika Menunggu Pembayaran dan expires_at sudah lewat)
-            if ($m->status_pembayaran == 'Menunggu Pembayaran' && $m->expires_at && \Carbon\Carbon::parse($m->expires_at)->isPast()) {
-                DB::table('pendaftaran_magang')
-                    ->where('id_pendaftaran', $m->id_pendaftaran)
-                    ->update(['status_pembayaran' => 'Expired', 'expires_at' => null, 'updated_at' => now()]);
-                $m->status_pembayaran = 'Expired';
+            // Cek Expired QRIS & Auto Cancel Hari H
+            $newStatus = PendaftaranMagangService::expireIfNeeded((int) $m->id_pendaftaran);
+            if ($newStatus) {
+                $m->status_pembayaran = $newStatus;
             }
 
             // Pesanan Expired/Dibatalkan tidak boleh terlihat oleh admin
@@ -1848,14 +1856,6 @@ class AdminController extends Controller
                     ->where('id_pendaftaran', $m->id_pendaftaran)
                     ->update(['status_pembayaran' => 'Selesai', 'updated_at' => now()]);
                 $m->status_pembayaran = 'Selesai'; // Update object untuk tampilan saat ini
-            }
-
-            // Logika Otomatis: Jika PKL masih "Menunggu Konfirmasi" sampai hari H mulai, maka otomatis "Dibatalkan"
-            if (strtoupper($m->paket_name) == 'PKL' && $m->status_pembayaran == 'Menunggu Konfirmasi' && Carbon::today() >= $startDate) {
-                DB::table('pendaftaran_magang')
-                    ->where('id_pendaftaran', $m->id_pendaftaran)
-                    ->update(['status_pembayaran' => 'Dibatalkan', 'updated_at' => now()]);
-                $m->status_pembayaran = 'Dibatalkan';
             }
 
             // Logika Status Magang Berdasarkan Tanggal & Status Pembayaran untuk Filter Tab
