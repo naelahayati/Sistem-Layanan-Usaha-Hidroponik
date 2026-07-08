@@ -18,7 +18,7 @@ class AdminSeeder extends Seeder
             ['username' => 'admin'],
             [
                 'name' => 'Admin',
-                'email' => 'admin@nazfram.local',
+                'email' => 'admin.nazhidrofarm@gmail.com',
                 'password' => Hash::make('Admin14#'),
                 'role' => 'admin',
                 'status' => 'active',
